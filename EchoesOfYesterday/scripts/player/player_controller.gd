@@ -23,6 +23,7 @@ var _interact_timer: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("echo_trigger")  # 机关触发身份:压力开关/门洞检测均识别此组(docs/03 §4)
 	_apply_camera_limits()
 	_sprite.play(anim_state)
 
