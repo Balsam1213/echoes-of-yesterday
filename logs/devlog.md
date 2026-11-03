@@ -17,6 +17,25 @@
 
 ---
 
+## 2026-11-04 | M1:等距测试房间与玩家系统(T1.1—T1.4)
+
+**完成**:
+- Godot 4.7.2 就位(`Documents/Godot/`);`--import` 验证手写 project.godot 解析通过,引擎规范化 features→4.7;
+- T1.1:`tools/generate_placeholder_assets.gd` 生成 6 张占位素材(地板/墙/测试方块/玩家三帧);`tools/build_dev_room.gd` 构建 `scenes/dev/dev_grid_test.tscn`(12×8 DIAMOND_DOWN 等距房、TileMapLayer 地板、周界墙、3 个 Y-sort 验证方块、四边边界碰撞);
+- T1.2—T1.4:`player_controller.gd`(八向移动 140px/s、direction/anim_state 可采样字段、interact 状态)+ `Player.tscn`(层2/掩码1、floating 模式、脚底碰撞圆 r9、idle/walk/interact 三动画、平滑跟随镜头+limit)+ 主场景暂设 dev 房;
+- 验证:headless 运行 90 帧无错误;窗口冒烟截图核验——地板菱形无缝对齐、墙体/玩家/方块位置正确、镜头跟随生效。
+
+**问题与决定**:
+- **pack() 陷阱**:程序化创建的节点必须显式设 `owner` 指向场景根,否则 PackedScene.pack() 打包出空场景;
+- **等距布局**:引擎默认 `tile_layout=STACKED`,经典菱形须显式设 `TILE_LAYOUT_DIAMOND_DOWN`(T4.1 构建 Level_01 时必须保持);
+- 墙体用 Sprite2D+StaticBody2D 占位而非 tilemap 墙贴图:墙贴图进 TileMapLayer 的纹理锚点与 y-sort origin 行为未验证,留待 T4.1;
+- 相机 limit 在「房间小于视口」时表现为整房可见基本不动;Level_01(更大)下再验证跟随+边界夹取;
+- 引擎会删除 project.godot 中等于默认值的行(aspect=keep、physics 60Hz),意图不变、默认值即所需;
+- 主场景暂指 `dev_grid_test.tscn`,T4.1 切换为 `Level_01.tscn`。
+
+**下一步**:
+- 人工验收 TC-01/02(移动/碰撞)与 Y-sort(绕测试方块走一圈)→ M1 关闭 → M2/T2.1 压力开关。
+
 ## 2026-11-04 | Demo 制作计划书定稿与 M0 启动
 
 **完成**:

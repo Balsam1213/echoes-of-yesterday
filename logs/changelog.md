@@ -15,6 +15,8 @@
 - 文档体系转为自足模式:原始方案 docx 移出仓库,docs/00、README、docs/06 同步调整
 - 生成 `EchoesOfYesterday/project.godot`:视口 640×360、gl_compatibility、碰撞层命名、10 个输入 action(T0.2/T0.3)
 - main 分支首次提交并打 tag `demo-v0.0`(T0.4)
+- **M0 关闭**:工程配置经 Godot 4.7.2 导入/运行验证
+- **M1 代码完成(待人工验收)**:等距测试房间(F5 可玩)+ 玩家八向移动/碰撞/动画状态机/跟随镜头 + 占位素材生成与房间构建工具
 
 ## [demo-v0.0] - 2026-11-04
 
