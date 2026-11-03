@@ -1,0 +1,295 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/level/dev_mechanisms_room.gd" id="1_jffkr"]
+[ext_resource type="Texture2D" path="res://assets/environment/floor_tile.png" id="2_5h515"]
+[ext_resource type="Texture2D" path="res://assets/environment/wall_block.png" id="3_uj1uw"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/PressureSwitch.tscn" id="4_rdpr5"]
+[ext_resource type="Script" path="res://scripts/interaction/pressure_switch.gd" id="5_qypkh"]
+[ext_resource type="Texture2D" path="res://assets/mechanisms/switch_pad.png" id="6_gm4wa"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/SecurityDoor.tscn" id="7_3dmmu"]
+[ext_resource type="Script" path="res://scripts/interaction/security_door.gd" id="8_mjcft"]
+[ext_resource type="Texture2D" path="res://assets/mechanisms/door_block.png" id="9_77al3"]
+[ext_resource type="Texture2D" path="res://assets/mechanisms/light_dot.png" id="10_uvgnk"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="11_c0oxv"]
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="12_cc4wj"]
+[ext_resource type="Texture2D" path="res://assets/characters/player_idle.png" id="13_3i5ax"]
+[ext_resource type="Texture2D" path="res://assets/characters/player_walk_0.png" id="14_2p3kg"]
+[ext_resource type="Texture2D" path="res://assets/characters/player_walk_1.png" id="15_oi3oo"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_pqp4q"]
+texture = ExtResource("2_5h515")
+texture_region_size = Vector2i(64, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_wadc1"]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(64, 32)
+sources/0 = SubResource("TileSetAtlasSource_pqp4q")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4e3dd"]
+size = Vector2(318.2167, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cr22n"]
+size = Vector2(246.66252, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jd2lx"]
+size = Vector2(318.2167, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0g2rp"]
+size = Vector2(246.66252, 14)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
+size = Vector2(44, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_blocker"]
+size = Vector2(48, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hole"]
+size = Vector2(52, 22)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_foot"]
+radius = 9.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_player"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_3i5ax")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("13_3i5ax")
+}],
+"loop": 1,
+"name": &"interact",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("14_2p3kg")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_oi3oo")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 6.0
+}]
+
+[node name="DevMechanisms" type="Node2D" unique_id=784170726]
+script = ExtResource("1_jffkr")
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=1383781286]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_wadc1")
+
+[node name="Boundary" type="StaticBody2D" parent="." unique_id=2081606404]
+collision_mask = 0
+
+[node name="@CollisionShape2D@2" type="CollisionShape2D" parent="Boundary" unique_id=884696861]
+position = Vector2(154.63344, 74.73312)
+rotation = 0.4636476
+shape = SubResource("RectangleShape2D_4e3dd")
+
+[node name="@CollisionShape2D@3" type="CollisionShape2D" parent="Boundary" unique_id=1742015109]
+position = Vector2(186.63344, 165.26688)
+rotation = 2.6779451
+shape = SubResource("RectangleShape2D_cr22n")
+
+[node name="@CollisionShape2D@4" type="CollisionShape2D" parent="Boundary" unique_id=876889413]
+position = Vector2(-26.633438, 149.26688)
+rotation = -2.6779451
+shape = SubResource("RectangleShape2D_jd2lx")
+
+[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="Boundary" unique_id=967817670]
+position = Vector2(-58.63344, 58.733124)
+rotation = -0.4636476
+shape = SubResource("RectangleShape2D_0g2rp")
+
+[node name="YSorted" type="Node2D" parent="." unique_id=914430474]
+y_sort_enabled = true
+
+[node name="@Sprite2D@6" type="Sprite2D" parent="YSorted" unique_id=1266218977]
+position = Vector2(32, 16)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@7" type="Sprite2D" parent="YSorted" unique_id=1720510639]
+position = Vector2(0, 32)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@8" type="Sprite2D" parent="YSorted" unique_id=1720586116]
+position = Vector2(-32, 48)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@9" type="Sprite2D" parent="YSorted" unique_id=987578799]
+position = Vector2(-64, 64)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@10" type="Sprite2D" parent="YSorted" unique_id=2072026789]
+position = Vector2(-96, 80)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@11" type="Sprite2D" parent="YSorted" unique_id=1387180970]
+position = Vector2(-128, 96)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@12" type="Sprite2D" parent="YSorted" unique_id=954156798]
+position = Vector2(64, 32)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@13" type="Sprite2D" parent="YSorted" unique_id=635314889]
+position = Vector2(-96, 112)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@14" type="Sprite2D" parent="YSorted" unique_id=434245537]
+position = Vector2(96, 48)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@15" type="Sprite2D" parent="YSorted" unique_id=141511711]
+position = Vector2(-64, 128)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@16" type="Sprite2D" parent="YSorted" unique_id=766009899]
+position = Vector2(128, 64)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@17" type="Sprite2D" parent="YSorted" unique_id=809899224]
+position = Vector2(-32, 144)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@18" type="Sprite2D" parent="YSorted" unique_id=1519869842]
+position = Vector2(160, 80)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@19" type="Sprite2D" parent="YSorted" unique_id=810989084]
+position = Vector2(0, 160)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@20" type="Sprite2D" parent="YSorted" unique_id=1822036884]
+position = Vector2(192, 96)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@21" type="Sprite2D" parent="YSorted" unique_id=2140043362]
+position = Vector2(32, 176)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@22" type="Sprite2D" parent="YSorted" unique_id=1416765278]
+position = Vector2(224, 112)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@23" type="Sprite2D" parent="YSorted" unique_id=127825146]
+position = Vector2(64, 192)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@24" type="Sprite2D" parent="YSorted" unique_id=1568073134]
+position = Vector2(256, 128)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@25" type="Sprite2D" parent="YSorted" unique_id=1018783534]
+position = Vector2(224, 144)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@26" type="Sprite2D" parent="YSorted" unique_id=239296724]
+position = Vector2(192, 160)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@27" type="Sprite2D" parent="YSorted" unique_id=1808385936]
+position = Vector2(160, 176)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@28" type="Sprite2D" parent="YSorted" unique_id=1594022264]
+position = Vector2(128, 192)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@29" type="Sprite2D" parent="YSorted" unique_id=1473130960]
+position = Vector2(96, 208)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@30" type="Sprite2D" parent="YSorted" unique_id=823090307]
+position = Vector2(0, 64)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@31" type="Sprite2D" parent="YSorted" unique_id=804894580]
+position = Vector2(32, 80)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@32" type="Sprite2D" parent="YSorted" unique_id=761150157]
+position = Vector2(96, 112)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@33" type="Sprite2D" parent="YSorted" unique_id=242728513]
+position = Vector2(128, 128)
+texture = ExtResource("3_uj1uw")
+
+[node name="@Sprite2D@34" type="Sprite2D" parent="YSorted" unique_id=1565075797]
+position = Vector2(160, 144)
+texture = ExtResource("3_uj1uw")
+
+[node name="PressureSwitch" type="Area2D" parent="YSorted" unique_id=1086187065 instance=ExtResource("4_rdpr5")]
+unique_name_in_owner = true
+position = Vector2(64, 128)
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("5_qypkh")
+
+[node name="Zone" type="CollisionShape2D" parent="YSorted/PressureSwitch" unique_id=6028167]
+shape = SubResource("RectangleShape2D_zone")
+
+[node name="Pad" type="Sprite2D" parent="YSorted/PressureSwitch" unique_id=142497119]
+unique_name_in_owner = true
+texture = ExtResource("6_gm4wa")
+
+[node name="SecurityDoor" type="StaticBody2D" parent="YSorted" unique_id=1272076666 instance=ExtResource("7_3dmmu")]
+unique_name_in_owner = true
+position = Vector2(64, 96)
+collision_mask = 0
+script = ExtResource("8_mjcft")
+
+[node name="Blocker" type="CollisionShape2D" parent="YSorted/SecurityDoor" unique_id=1701655124]
+unique_name_in_owner = true
+shape = SubResource("RectangleShape2D_blocker")
+
+[node name="Panel" type="Sprite2D" parent="YSorted/SecurityDoor" unique_id=1913643239]
+unique_name_in_owner = true
+texture = ExtResource("9_77al3")
+
+[node name="Light" type="Sprite2D" parent="YSorted/SecurityDoor/Panel" unique_id=1445172493]
+unique_name_in_owner = true
+modulate = Color(0.85, 0.36, 0.36, 1)
+position = Vector2(20, -26)
+texture = ExtResource("10_uvgnk")
+
+[node name="DoorHole" type="Area2D" parent="YSorted/SecurityDoor" unique_id=1927634111]
+collision_layer = 0
+collision_mask = 6
+
+[node name="HoleShape" type="CollisionShape2D" parent="YSorted/SecurityDoor/DoorHole" unique_id=2084948874]
+shape = SubResource("RectangleShape2D_hole")
+
+[node name="Player" type="CharacterBody2D" parent="YSorted" unique_id=369423823 instance=ExtResource("11_c0oxv")]
+position = Vector2(0, 128)
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("12_cc4wj")
+camera_limit_rect = Rect2i(-160, -32, 448, 256)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="YSorted/Player" unique_id=684169779]
+position = Vector2(0, -9)
+shape = SubResource("CircleShape2D_foot")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="YSorted/Player" unique_id=1063592634]
+unique_name_in_owner = true
+position = Vector2(0, -24)
+sprite_frames = SubResource("SpriteFrames_player")
+animation = &"idle"
+autoplay = "idle"
+
+[node name="Camera" type="Camera2D" parent="YSorted/Player" unique_id=564386493]
+unique_name_in_owner = true
+position_smoothing_enabled = true
+position_smoothing_speed = 8.0
