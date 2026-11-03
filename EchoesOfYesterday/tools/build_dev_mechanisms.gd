@@ -61,6 +61,10 @@ func _run() -> void:
 			continue
 		ysorted.add_child(_make_wall(wall_tex, floor_layer.map_to_local(Vector2i(x, 2))))
 
+	# 横墙碰撞:两段旋转矩形夹住门洞(洞口由门的 Blocker 负责)
+	_add_wall_segment(room, floor_layer, Vector2i(1, 2), Vector2i(2, 2))
+	_add_wall_segment(room, floor_layer, Vector2i(4, 2), Vector2i(6, 2))
+
 	# 机关:压力开关 + 安全门,信号直连
 	var switch: PressureSwitch = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
 	switch.name = "PressureSwitch"
@@ -96,13 +100,35 @@ func _run() -> void:
 func _make_wall(tex: Texture2D, pos: Vector2) -> Sprite2D:
 	var sprite := Sprite2D.new()
 	sprite.texture = tex
-	sprite.position = pos
+	sprite.position = pos + Vector2(0, -24)  # 64×80 立体贴图:脚印菱形中心 (32,64) 对齐格位
 	return sprite
 
 
+## 沿两个格位中心生成一段墙体碰撞(旋转矩形,两端各外延 16px 盖住端点菱形)
+func _add_wall_segment(room: Node2D, floor_layer: TileMapLayer, from_cell: Vector2i, to_cell: Vector2i) -> void:
+	var a := floor_layer.map_to_local(from_cell)
+	var b := floor_layer.map_to_local(to_cell)
+	var dir: Vector2 = (b - a).normalized()
+	var body := StaticBody2D.new()
+	body.name = "WallSegment"
+	body.collision_layer = 1
+	body.collision_mask = 0
+	body.position = (a + b) / 2.0
+	room.add_child(body)
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(a.distance_to(b) + 32.0, 14.0)
+	var cs := CollisionShape2D.new()
+	cs.shape = shape
+	cs.rotation = dir.angle()
+	body.add_child(cs)
+
+
+## 只给无主(程序化创建)的节点设置 owner;子场景实例的内部节点已有 owner,
+## 若一并归属会导致 pack() 展开实例、产生静态影子副本(渲染与脚本节点并存)
 func _assign_owner(node: Node, owner: Node) -> void:
-	node.owner = owner
 	for child in node.get_children():
+		if child.owner == null:
+			child.owner = owner
 		_assign_owner(child, owner)
 
 

@@ -40,6 +40,13 @@ func _run() -> void:
 	var panel: Sprite2D = door.get_node("%Panel")
 	var light: Sprite2D = door.get_node("%Light")
 	print("A: panel_pos=", panel.position, " light_mod=", light.modulate, " blocker_disabled=", door.get_node("%Blocker").disabled)
+	for c in door.get_children():
+		var info := str(c.get_path()).get_file() + " (" + c.get_class() + ")"
+		if c is Node2D:
+			info += " pos=" + str(c.position) + " global=" + str(c.global_position)
+		if c is Sprite2D:
+			info += " mod=" + str(c.modulate)
+		print("  door child: ", info)
 	await _shot("smoke_m2_open.png")
 	# 2) 向下离开开关,门应关闭
 	Input.action_press("move_down")

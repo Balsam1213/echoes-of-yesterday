@@ -76,10 +76,12 @@ func _run() -> void:
 	quit()
 
 
-## 递归设置 owner,使子树全部归属场景根(否则 pack() 会丢弃)
+## 只给无主(程序化创建)的节点设置 owner;子场景实例的内部节点已有 owner,
+## 若一并归属会导致 pack() 展开实例、产生静态影子副本(渲染与脚本节点并存)
 func _assign_owner(node: Node, owner: Node) -> void:
-	node.owner = owner
 	for child in node.get_children():
+		if child.owner == null:
+			child.owner = owner
 		_assign_owner(child, owner)
 
 
@@ -126,6 +128,7 @@ func _make_block(tex_name: String, pos: Vector2, with_collision: bool) -> Static
 	body.position = pos
 	var sprite := Sprite2D.new()
 	sprite.texture = load("res://assets/environment/" + tex_name)
+	sprite.position = Vector2(0, -24)  # 64×80 立体贴图:脚印菱形中心 (32,64) 对齐节点原点
 	body.add_child(sprite)
 	if with_collision:
 		var shape := RectangleShape2D.new()
