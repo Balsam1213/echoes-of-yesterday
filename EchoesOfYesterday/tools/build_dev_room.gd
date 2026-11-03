@@ -113,7 +113,7 @@ func _add_boundary(room: Node2D, floor_layer: TileMapLayer) -> void:
 		shape.size = Vector2(a.distance_to(b) + 32.0, 14.0)
 		var cs := CollisionShape2D.new()
 		cs.shape = shape
-		cs.position = (a + b) / 2.0 + normal * 7.0  # 向房间内侧推半厚度,外沿贴齐菱形边
+		cs.position = (a + b) / 2.0 + normal * 12.0  # 向内推 12px:内侧面位于边线内 19px,玩家脚底止于周界墙块中心线外侧,由墙体遮挡脚部,避免"站进墙里"
 		cs.rotation = dir.angle()
 		body.add_child(cs)
 
