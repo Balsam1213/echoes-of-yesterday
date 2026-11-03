@@ -1,0 +1,22 @@
+# 变更日志 Changelog
+
+> 记录**使用者可感知**的项目变化(新功能/修复/文档结构变化);格式参考 Keep a Changelog。
+> 内部细粒度改动以 Git 提交历史与 devlog 为准,不在此重复。
+> 版本号约定见 docs/03 §7(demo-v0.x)。
+
+## [Unreleased]
+
+### Added
+- 建立开发文档体系 docs/00—08:需求规格、技术方案、工程与美术规范、第一关关卡设计、执行计划(M0—M5)、工作流程、测试用例与验收清单
+- 建立日志体系 logs/:开发日志、变更日志、缺陷跟踪
+- 建立 `EchoesOfYesterday/` Godot 工程目录骨架
+- 确定第一关 Demo 技术方案:物理帧 60Hz 记录/回放、玩家与回声互不碰撞、门防夹规则(详见 docs/02)
+- 新增 docs/09《Demo 制作计划书》:里程碑状态跟踪、质量门、风险与开工清单(制作主控文件)
+- 文档体系转为自足模式:原始方案 docx 移出仓库,docs/00、README、docs/06 同步调整
+- 生成 `EchoesOfYesterday/project.godot`:视口 640×360、gl_compatibility、碰撞层命名、10 个输入 action(T0.2/T0.3)
+- main 分支首次提交并打 tag `demo-v0.0`(T0.4)
+
+## [demo-v0.0] - 2026-11-04
+
+### Added
+- 项目启动:初始化 Git 仓库,录入上位需求文档《昨日回声_游戏开发方案v1.0.docx》

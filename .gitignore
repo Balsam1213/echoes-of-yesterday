@@ -1,0 +1,17 @@
+# ===== Godot 4 生成的缓存与临时文件 =====
+.godot/
+*.tmp
+*.translation
+
+# ===== 构建与导出输出 =====
+build/
+export/
+*.exe
+*.pck
+*.zip
+
+# ===== 系统与编辑器 =====
+Thumbs.db
+.DS_Store
+.vscode/
+.idea/
