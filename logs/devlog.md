@@ -17,6 +17,24 @@
 
 ---
 
+## 2026-11-04 | M2:机关系统(T2.1—T2.3)+ M1 边界修复
+
+**完成**:
+- M1 人工验收通过(移动/碰撞/Y-sort 三项);发现并修复**下边界穿模**:边界碰撞内移 12px,玩家脚部止于周界墙块脚印之外、由墙体遮挡(截图复验);
+- T2.1 `PressureSwitch`:Area2D 触发区(mask=6 识别 player+echo 层),激活判定用**实体清单**而非计数(防重复进出漏计);激活变黄 + 底座下沉 2px;玩家 `_ready` 加入 `echo_trigger` 组;
+- T2.2 `SecurityDoor`:StaticBody2D 门体,`Blocker` 碰撞随开关切换;面板抬起 + 指示灯红/绿;`DoorHole` 门洞 Area + **防夹**(关闭请求时门洞有实体则保持开启,清空后经 `body_exited` 再关);
+- T2.3 `dev_mechanisms.tscn` 联动测试房(8×6,横墙带门洞,开关 (4,3)、门 (3,2)、出生 (3,4));主场景暂切至此;开关→门连线经根脚本运行时完成;
+- 冒烟验证(带状态打印):A 点 `switch_active=true, door_open=true, panel y=-34, 灯=绿, blocker 停用`;B 点全部复位、灯=红、blocker 启用——四证据一致。
+
+**问题与决定**:
+- **冒烟脚本必须按物理帧计数**:`await process_frame` 在无垂直同步窗口下约 180fps,与 60Hz 物理帧脱节,24 渲染帧只走了 8 物理帧(移动量差 2.9 倍)导致首次冒烟误判;改用 `await physics_frame`;
+- **PackedScene.pack() 不保存运行时建立的信号连接**(.tscn 无 [connection] 段):开关→门连线改由场景根脚本 `dev_mechanisms_room.gd` 在 `_ready` 完成——与 Level_01 将由 LevelManager 连线的方案一致;
+- headless 模式下 `-s` 脚本 + `await process_frame` 会挂起(帧循环不推进),冒烟脚本一律窗口模式运行;
+- `%DoorHole` 漏标 `unique_name_in_owner` 导致 `%` 引用解析失败——手写场景时唯一名标记需逐一核对(已在 dev 冒烟中即时暴露并修复)。
+
+**下一步**:
+- 人工验收 TC-03~07(踩开关激活/离开复位/门开通行/门关阻挡/门洞防夹)→ M2 关闭 → **M3 记录与回声(核心里程碑,质量门)**。
+
 ## 2026-11-04 | M1:等距测试房间与玩家系统(T1.1—T1.4)
 
 **完成**:
