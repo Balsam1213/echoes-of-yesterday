@@ -8,6 +8,8 @@ signal closed
 
 const LIGHT_OFF := Color(0.85, 0.36, 0.36, 1.0)  # 红:关闭(#D95D5D)
 const LIGHT_ON := Color(0.42, 0.75, 0.48, 1.0)   # 绿:开启
+const PANEL_CLOSED_Y := -24.0   # 64×80 立体贴图脚印 (32,64) 对齐原点的偏移
+const PANEL_OPEN_LIFT := 34.0   # 开启时门体上抬高度
 
 var _open := false
 var _open_requested := false
@@ -62,7 +64,7 @@ func _on_hole_body_exited(body: Node2D) -> void:
 func _apply(open: bool) -> void:
 	_open = open
 	_blocker.set_deferred("disabled", open)
-	_panel.position.y = -34.0 if open else 0.0
+	_panel.position.y = (PANEL_CLOSED_Y - PANEL_OPEN_LIFT) if open else PANEL_CLOSED_Y
 	_panel.modulate.a = 0.85 if open else 1.0
 	_light.modulate = LIGHT_ON if open else LIGHT_OFF
 	if open:
