@@ -15,6 +15,9 @@ func _initialize() -> void:
 	_gen_floor_tile()
 	_gen_wall_block()
 	_gen_test_block()
+	_gen_switch_pad()
+	_gen_door_block()
+	_gen_light_dot()
 	_gen_player("player_idle.png", 0)
 	_gen_player("player_walk_0.png", 1)
 	_gen_player("player_walk_1.png", 2)
@@ -71,6 +74,42 @@ func _gen_test_block() -> void:
 	_fill_diamond(img, 31.5, 31.5, 32.0, 16.0, FLOOR_EDGE, 1.06)
 	_fill_diamond(img, 31.5, 31.5, 32.0, 16.0, Color("4a5d70"), 1.0)
 	img.save_png(_path("res://assets/environment/test_block.png"))
+
+## 64×32 压力开关底座:浅色菱形(供 modulate 染色:灰=关闭,黄=激活)+ 内环细节
+func _gen_switch_pad() -> void:
+	var img := Image.create_empty(64, 32, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	_fill_diamond(img, 31.5, 15.5, 32.0, 16.0, Color("394b5d"), 1.06)  # 深色描边
+	_fill_diamond(img, 31.5, 15.5, 32.0, 16.0, Color("e2e5ea"), 1.0)   # 浅色面(染色基底)
+	_fill_diamond(img, 31.5, 15.5, 18.0, 9.0, Color("c3c7cd"), 1.0)    # 内环
+	_fill_diamond(img, 31.5, 15.5, 8.0, 4.0, Color("aeb3ba"), 1.0)     # 中心
+	img.save_png(_path("res://assets/mechanisms/switch_pad.png"))
+
+## 64×64 门体:蓝黑面板 + 横向凹槽(指示灯为独立子节点,状态变色)
+func _gen_door_block() -> void:
+	var img := Image.create_empty(64, 64, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	_fill_rect(img, 2, 2, 61, 33, Color("2f4457"))
+	_fill_rect(img, 2, 2, 61, 3, Color("3a546b"))
+	_fill_rect(img, 2, 2, 3, 33, Color("3a546b"))
+	_fill_rect(img, 60, 2, 61, 33, Color("1e2f3d"))
+	for y in range(10, 30, 8):  # 横向凹槽
+		_fill_rect(img, 8, y, 55, y + 1, Color("263a4a"))
+	_fill_diamond(img, 31.5, 31.5, 32.0, 16.0, Color("394b5d"), 1.06)
+	_fill_diamond(img, 31.5, 31.5, 32.0, 16.0, Color("2f4457"), 1.0)
+	img.save_png(_path("res://assets/mechanisms/door_block.png"))
+
+## 6×6 白色圆点(指示灯,运行时 modulate 红/绿)
+func _gen_light_dot() -> void:
+	var img := Image.create_empty(6, 6, false, Image.FORMAT_RGBA8)
+	img.fill(Color(0, 0, 0, 0))
+	for y in 6:
+		for x in 6:
+			var dx: float = x - 2.5
+			var dy: float = y - 2.5
+			if dx * dx + dy * dy <= 6.0:
+				img.set_pixel(x, y, Color(1, 1, 1, 1))
+	img.save_png(_path("res://assets/mechanisms/light_dot.png"))
 
 ## 32×48 玩家占位(脚底在帧底部):frame 0=静止,1/2=行走两帧
 func _gen_player(file_name: String, frame: int) -> void:
