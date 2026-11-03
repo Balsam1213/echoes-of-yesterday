@@ -5,19 +5,20 @@
 ; Format:
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
-;
-; 《昨日回声》Echoes of Yesterday — Godot 4.x 工程配置
-; 配置依据:docs/02 §2.1(工程配置)、docs/02 §4(碰撞层)、docs/03 §5(输入映射)
-; 变更须同步上述文档。主场景待 M1 建出 Level_01.tscn 后设置(run/main_scene)。
 
 config_version=5
+
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 [application]
 
 config/name="EchoesOfYesterday"
 config/description="以时间记录与自我协作为核心机制的 2.5D 等距像素解谜游戏(Demo:第一关「第一次回声」)"
-config/features=PackedStringArray("4.3", "GL Compatibility")
+config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/bg_color=Color(0.0666667, 0.0941176, 0.152941, 1)
+run/main_scene="res://scenes/dev/dev_grid_test.tscn"
 
 [display]
 
@@ -26,7 +27,6 @@ window/size/viewport_height=360
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
-window/stretch/aspect="keep"
 
 [input]
 
@@ -88,12 +88,8 @@ pause={
 2d_physics/layer_3="echo"
 2d_physics/layer_4="trigger"
 
-[physics]
-
-common/physics_ticks_per_second=60
-
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-textures/canvas_textures/default_texture_filter=0
