@@ -15,3 +15,6 @@ Thumbs.db
 .DS_Store
 .vscode/
 .idea/
+
+# ===== 会话工具 =====
+.zcode/
