@@ -1,0 +1,56 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Script" path="res://scripts/echo/echo_controller.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/characters/player_idle.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/characters/player_walk_0.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/characters/player_walk_1.png" id="4"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_echo"]
+radius = 6.0
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_echo"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4")
+}],
+"loop": true,
+"name": &"walk",
+"speed": 6.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2")
+}],
+"loop": true,
+"name": &"interact",
+"speed": 5.0
+}]
+
+[node name="Echo" type="CharacterBody2D"]
+collision_layer = 4
+collision_mask = 1
+motion_mode = 1
+script = ExtResource("1")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -6)
+shape = SubResource("CircleShape2D_echo")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+unique_name_in_owner = true
+modulate = Color(0.271, 0.851, 0.949, 0.6)
+position = Vector2(0, -24)
+sprite_frames = SubResource("SpriteFrames_echo")
+animation = &"idle"
