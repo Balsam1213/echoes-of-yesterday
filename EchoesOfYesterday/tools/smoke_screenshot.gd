@@ -1,9 +1,17 @@
 extends SceneTree
-## 冒烟测试(T2.3):窗口模式运行机关联动测试房,模拟「踩上开关→截图 A(门开)→离开→截图 B(门关)」。
+## M3 冒烟:核心闭环验证。
+## 场景:玩家走到开关东侧 → R 记录"走回开关" → 走离开关 → Space 生成回声
+##   → 回声重演并踩住开关(门保持开)→ 玩家穿门到北侧 → 上限/删除测试。
 ## 运行:godot --path . -s tools/smoke_screenshot.gd
-## 产出:项目根 smoke_m2_open.png / smoke_m2_closed.png(验证用临时文件,不入库)。
+## 产出:项目根 smoke_m3_echo.png / smoke_m3_through.png(临时,不入库)。
 
-const WAIT := 12  # 状态切换后的等待帧数
+const WAIT := 12
+
+# 工具脚本(-s)编译期不得引用游戏类(autoload 编译期不可见),一律动态访问(docs/03 §1)
+var _player: Node2D
+var _switch: Area2D
+var _door: StaticBody2D
+var _mgr: Node
 
 
 func _initialize() -> void:
@@ -11,57 +19,77 @@ func _initialize() -> void:
 
 
 func _frames(n: int) -> void:
-	# 必须按物理帧计数:渲染帧率不受控(无垂直同步时可达 180fps),移动发生在 60Hz 物理帧
+	# 必须按物理帧计数(渲染帧率不受控,docs/devlog 2026-11-04 M2)
 	for i in n:
 		await physics_frame
 
 
+func _press(action: String, frames: int) -> void:
+	Input.action_press(action)
+	await _frames(maxi(frames, 2))
+	Input.action_release(action)
+
+
+func _tap(action: String) -> void:
+	Input.action_press(action)
+	await _frames(2)
+	Input.action_release(action)
+
+
 func _shot(file_name: String) -> void:
+	await physics_frame
 	await RenderingServer.frame_post_draw
 	var img := root.get_texture().get_image()
 	img.save_png(ProjectSettings.globalize_path("res://" + file_name))
 	print("saved ", file_name)
 
 
+func _state(tag: String) -> void:
+	print("%s pos=%s sw=%s door=%s echoes=%d" % [
+		tag, _player.global_position, _switch.is_active(), _door.is_open(), _mgr.echo_count()])
+
+
 func _run() -> void:
 	var scene: Node = (load("res://scenes/dev/dev_mechanisms.tscn") as PackedScene).instantiate()
 	root.add_child(scene)
 	await _frames(2)
-	var player: PlayerController = scene.get_node("YSorted/Player")
-	var sw: PressureSwitch = scene.get_node("YSorted/PressureSwitch")
-	var door: SecurityDoor = scene.get_node("YSorted/SecurityDoor")
-	print("spawn pos=", player.global_position, " switch=", sw.global_position, " door=", door.global_position)
-	# 1) 向右走到压力开关上((3,4)→(4,3) 同一世界高度,右移即踩上)
-	Input.action_press("move_right")
-	await _frames(24)
-	Input.action_release("move_right")
-	await _frames(WAIT)
-	print("A: pos=", player.global_position, " switch_active=", sw.is_active(), " door_open=", door.is_open())
-	var panel: Sprite2D = door.get_node("%Panel")
-	var light: Sprite2D = door.get_node("%Light")
-	print("A: panel_pos=", panel.position, " light_mod=", light.modulate, " blocker_disabled=", door.get_node("%Blocker").disabled)
-	for c in door.get_children():
-		var info := str(c.get_path()).get_file() + " (" + c.get_class() + ")"
-		if c is Node2D:
-			info += " pos=" + str(c.position) + " global=" + str(c.global_position)
-		if c is Sprite2D:
-			info += " mod=" + str(c.modulate)
-		print("  door child: ", info)
-	await _shot("smoke_m2_open.png")
-	# 2) 向下离开开关,门应关闭
-	Input.action_press("move_down")
-	await _frames(30)
-	Input.action_release("move_down")
-	await _frames(WAIT)
-	print("B: pos=", player.global_position, " switch_active=", sw.is_active(), " door_open=", door.is_open())
-	await _shot("smoke_m2_closed.png")
-	# 3) 向右下压到底墙:玩家应被墙立方体遮挡(墙在前),验证 Y-sort 排序基准修复
-	Input.action_press("move_right")
-	Input.action_press("move_down")
-	await _frames(30)
-	Input.action_release("move_right")
-	Input.action_release("move_down")
-	await _frames(WAIT)
-	print("C: pos=", player.global_position)
-	await _shot("smoke_bottom.png")
+	_player = scene.get_node("YSorted/Player")
+	_switch = scene.get_node("YSorted/PressureSwitch")
+	_door = scene.get_node("YSorted/SecurityDoor")
+	_mgr = scene.get_node("EchoManager")
+	root.get_node("GameEvents").notify_requested.connect(func(t: String) -> void: print("NOTIFY: ", t))
+	_state("spawn")
+
+	# 1) 走到开关东侧(记录起点,不在开关上)
+	await _press("move_right", 40)
+	_state("start_pos")
+	# 2) R 开始 → 向左走回开关上 → R 结束(记录内容:走向开关)
+	await _tap("record_toggle")
+	await _press("move_left", 16)
+	await _tap("record_toggle")
+	_state("recorded")
+	# 3) 玩家走离开关,Space 生成回声 → 回声重演走上开关并踩住(TC-11/13)
+	await _press("move_left", 15)
+	await _tap("play_echo")
+	await _frames(45)
+	_state("echo_on_pad")
+	await _shot("smoke_m3_echo.png")
+	# 4) 玩家经门洞走到北侧(门被回声保持打开,TC-05)
+	await _press("move_right", 14)
+	await _press("move_up", 26)
+	await _press("move_right", 10)
+	_state("through_door")
+	await _shot("smoke_m3_through.png")
+	# 5) 回声上限与删除(TC-16/17):再生成 2 个 → 第 4 个超限提示 → X 删除
+	await _tap("play_echo")
+	await _frames(5)
+	await _tap("play_echo")
+	await _frames(5)
+	_state("capped_3")
+	await _tap("play_echo")
+	await _frames(5)
+	_state("over_cap")
+	await _tap("delete_echo")
+	await _frames(5)
+	_state("after_delete")
 	quit()

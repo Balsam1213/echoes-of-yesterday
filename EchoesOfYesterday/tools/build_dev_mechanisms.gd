@@ -72,25 +72,32 @@ func _run() -> void:
 			continue
 		ysorted.add_child(_make_wall(wall_tex, floor_layer.map_to_local(Vector2i(x, 2))))
 
-	# 机关:压力开关 + 安全门,信号直连
-	var switch: PressureSwitch = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
+	# 机关:压力开关 + 安全门(实例化走 load,编译期不引用游戏类)
+	var switch: Area2D = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
 	switch.name = "PressureSwitch"
 	switch.unique_name_in_owner = true
 	switch.position = floor_layer.map_to_local(SWITCH_CELL)
 	ysorted.add_child(switch)
 
-	var door: SecurityDoor = (load("res://scenes/mechanisms/SecurityDoor.tscn") as PackedScene).instantiate()
+	var door: StaticBody2D = (load("res://scenes/mechanisms/SecurityDoor.tscn") as PackedScene).instantiate()
 	door.name = "SecurityDoor"
 	door.unique_name_in_owner = true
 	door.position = floor_layer.map_to_local(DOOR_CELL)
 	ysorted.add_child(door)
 
-	# 玩家
-	var player: PlayerController = (load("res://scenes/player/Player.tscn") as PackedScene).instantiate()
+	# 玩家(工具脚本编译期不得引用游戏类,docs/03 §1)
+	var player: Node2D = (load("res://scenes/player/Player.tscn") as PackedScene).instantiate()
 	player.name = "Player"
 	player.position = floor_layer.map_to_local(SPAWN_CELL)
 	player.camera_limit_rect = _camera_limits(floor_layer)
 	ysorted.add_child(player)
+
+	# 回声管理(T3.4):生成/上限/删除;dev 房开启轨迹调试(T3.5)
+	var echo_mgr: Node = load("res://scripts/level/echo_manager.gd").new()
+	echo_mgr.name = "EchoManager"
+	echo_mgr.debug_trajectory = true
+	echo_mgr.ysorted_path = NodePath("../YSorted")
+	room.add_child(echo_mgr)
 
 	_assign_owner(room, room)  # pack() 只包含 owner 指向根的节点
 	var packed := PackedScene.new()

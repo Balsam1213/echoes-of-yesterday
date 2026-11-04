@@ -62,11 +62,19 @@ func _run() -> void:
 		ysorted.add_child(_make_block("test_block.png", floor_layer.map_to_local(cell), true))
 
 	# --- 玩家 ---
-	var player: PlayerController = (load("res://scenes/player/Player.tscn") as PackedScene).instantiate()
+	# 注意:工具脚本(-s)编译期不得引用游戏类(autoload 编译期不可见),一律 load() + 动态访问(docs/03 §1)
+	var player: Node2D = (load("res://scenes/player/Player.tscn") as PackedScene).instantiate()
 	player.name = "Player"
 	player.position = floor_layer.map_to_local(Vector2i(2, 6))
 	player.camera_limit_rect = _camera_limits(floor_layer)
 	ysorted.add_child(player)
+
+	# 回声管理(T3.4)
+	var echo_mgr: Node = load("res://scripts/level/echo_manager.gd").new()
+	echo_mgr.name = "EchoManager"
+	echo_mgr.debug_trajectory = true
+	echo_mgr.ysorted_path = NodePath("../YSorted")
+	room.add_child(echo_mgr)
 
 	var packed := PackedScene.new()
 	_assign_owner(room, room)  # pack() 只包含 owner 指向根的节点,程序化节点必须显式归属
