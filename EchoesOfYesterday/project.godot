@@ -20,6 +20,11 @@ run/main_scene="res://scenes/dev/dev_mechanisms.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/bg_color=Color(0.0666667, 0.0941176, 0.152941, 1)
 
+[autoload]
+
+GawWorkbenchRuntimeProbe="*uid://b1gt47ammaqro"
+GameEvents="*res://scripts/core/game_events.gd"
+
 [display]
 
 window/size/viewport_width=640
@@ -27,6 +32,10 @@ window/size/viewport_height=360
 window/size/window_width_override=1280
 window/size/window_height_override=720
 window/stretch/mode="canvas_items"
+
+[editor_plugins]
+
+enabled=PackedStringArray("res://addons/godot_ai_workbench/plugin.cfg")
 
 [input]
 
