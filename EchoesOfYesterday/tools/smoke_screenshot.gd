@@ -77,6 +77,7 @@ func _state(tag: String) -> void:
 func _run() -> void:
 	var scene: Node = (load("res://scenes/levels/Level_01.tscn") as PackedScene).instantiate()
 	root.add_child(scene)
+	current_scene = scene  # 使 change_scene_to_file 在 -s 模式可用(关卡推进链验证)
 	await _frames(2)
 	_level = scene
 	_player = scene.get_node("YSorted/Player")

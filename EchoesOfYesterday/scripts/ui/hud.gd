@@ -25,9 +25,6 @@ func _ready() -> void:
 	_level_label.text = UIText.LEVEL_TITLE
 	_key_hints.text = UIText.T01_KEYS
 	_echo_label.text = UIText.echo_count_text(0)
-	%CompleteText.text = UIText.T07_COMPLETE
-	%CompleteTitle.text = UIText.T07_TITLE
-	%ReplayHint.text = UIText.T07_REPLAY
 	_timeline.max_value = RECORD_MAX
 	_timeline.show_percentage = false
 	_set_timeline_state("idle")
@@ -123,9 +120,12 @@ func _on_playback_stopped() -> void:
 	_set_timeline_state("idle")
 
 
-func _on_level_completed(_level_id: int) -> void:
+func _on_level_completed(level_id: int) -> void:
 	_complete = true
 	_complete_ready_at = Time.get_ticks_msec() + int(COMPLETE_INPUT_DELAY * 1000.0)
+	%CompleteText.text = UIText.complete_body(level_id)
+	%CompleteTitle.text = UIText.complete_title(level_id)
+	%ReplayHint.text = UIText.complete_hint(level_id)
 	_complete_overlay.visible = true
 
 
