@@ -13,6 +13,7 @@ const INTERACT_DURATION := 0.4  # 交互动作持续时间(秒)
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
 @onready var _camera: Camera2D = %Camera
+@onready var recorder: TimeRecorder = %TimeRecorder
 
 ## 朝向:最后一次非零移动方向,单位向量(记录字段 direction)
 var direction: Vector2 = Vector2.DOWN
@@ -23,6 +24,7 @@ var _interact_timer: float = 0.0
 
 
 func _ready() -> void:
+	add_to_group("player")
 	add_to_group("echo_trigger")  # 机关触发身份:压力开关/门洞检测均识别此组(docs/03 §4)
 	_apply_camera_limits()
 	_sprite.play(anim_state)
