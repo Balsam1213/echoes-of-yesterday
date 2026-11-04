@@ -8,6 +8,8 @@ extends SceneTree
 
 const ROOM_W := 12
 const ROOM_H := 8
+## 立起物脚印菱形(与视觉底面完全一致);碰撞体必须用它,禁止小矩形近似
+static var FOOTPRINT := PackedVector2Array([Vector2(0, -16), Vector2(32, 0), Vector2(0, 16), Vector2(-32, 0)])
 
 
 func _initialize() -> void:
@@ -38,8 +40,13 @@ func _run() -> void:
 			floor_layer.set_cell(Vector2i(x, y), 0, Vector2i.ZERO)
 	room.add_child(floor_layer)
 
-	# --- 边界碰撞:沿房间菱形四条边的静态墙体(world 层) ---
-	_add_boundary(room, floor_layer)
+	# --- 周界墙:视觉 + 脚印菱形碰撞(一圈菱形无缝密封房间) ---
+	var perimeter: Array[Vector2i] = []
+	for x in ROOM_W:
+		for y in ROOM_H:
+			if x == 0 or y == 0 or x == ROOM_W - 1 or y == ROOM_H - 1:
+				perimeter.append(Vector2i(x, y))
+	_add_wall_colliders(room, floor_layer, perimeter)
 
 	# --- 实体层(Y-sort 生效层) ---
 	var ysorted := Node2D.new()
@@ -47,11 +54,8 @@ func _run() -> void:
 	ysorted.y_sort_enabled = true
 	room.add_child(ysorted)
 
-	# 周界墙占位视觉(仅外观,碰撞由 Boundary 承担)
-	for x in ROOM_W:
-		for y in ROOM_H:
-			if x == 0 or y == 0 or x == ROOM_W - 1 or y == ROOM_H - 1:
-				ysorted.add_child(_make_block("wall_block.png", floor_layer.map_to_local(Vector2i(x, y)), false))
+	for cell in perimeter:
+		ysorted.add_child(_make_block("wall_block.png", floor_layer.map_to_local(cell), false))
 
 	# Y-sort 验证方块(带底座碰撞,玩家可绕行前后)
 	for cell in [Vector2i(3, 2), Vector2i(6, 4), Vector2i(9, 3)]:
@@ -85,38 +89,19 @@ func _assign_owner(node: Node, owner: Node) -> void:
 		_assign_owner(child, owner)
 
 
-## 房间四个角格中心 → 外沿顶点 → 四条边各生成一个旋转矩形碰撞体
-func _add_boundary(room: Node2D, floor_layer: TileMapLayer) -> void:
-	var p_top := floor_layer.map_to_local(Vector2i(0, 0))
-	var p_right := floor_layer.map_to_local(Vector2i(ROOM_W - 1, 0))
-	var p_bottom := floor_layer.map_to_local(Vector2i(ROOM_W - 1, ROOM_H - 1))
-	var p_left := floor_layer.map_to_local(Vector2i(0, ROOM_H - 1))
-	var verts: Array[Vector2] = [
-		p_top + Vector2(0, -16),
-		p_right + Vector2(32, 0),
-		p_bottom + Vector2(0, 16),
-		p_left + Vector2(-32, 0),
-	]
-	var center: Vector2 = (verts[0] + verts[1] + verts[2] + verts[3]) / 4.0
-
+## 在 body 下为每个格位加一个脚印菱形碰撞体(与视觉底面完全一致)
+func _add_wall_colliders(room: Node2D, floor_layer: TileMapLayer, cells: Array[Vector2i]) -> void:
 	var body := StaticBody2D.new()
-	body.name = "Boundary"
+	body.name = "WallColliders"
 	body.collision_layer = 1
 	body.collision_mask = 0
 	room.add_child(body)
-	for i in 4:
-		var a: Vector2 = verts[i]
-		var b: Vector2 = verts[(i + 1) % 4]
-		var dir: Vector2 = (b - a).normalized()
-		var normal: Vector2 = dir.orthogonal()
-		if (center - (a + b) / 2.0).dot(normal) < 0.0:
-			normal = -normal
-		var shape := RectangleShape2D.new()
-		shape.size = Vector2(a.distance_to(b) + 32.0, 14.0)
+	for cell in cells:
+		var shape := ConvexPolygonShape2D.new()
+		shape.points = FOOTPRINT
 		var cs := CollisionShape2D.new()
 		cs.shape = shape
-		cs.position = (a + b) / 2.0 + normal * 12.0  # 向内推 12px:内侧面位于边线内 19px,玩家脚底止于周界墙块中心线外侧,由墙体遮挡脚部,避免"站进墙里"
-		cs.rotation = dir.angle()
+		cs.position = floor_layer.map_to_local(cell)
 		body.add_child(cs)
 
 
@@ -131,8 +116,8 @@ func _make_block(tex_name: String, pos: Vector2, with_collision: bool) -> Static
 	sprite.position = Vector2(0, -24)  # 64×80 立体贴图:脚印菱形中心 (32,64) 对齐节点原点
 	body.add_child(sprite)
 	if with_collision:
-		var shape := RectangleShape2D.new()
-		shape.size = Vector2(48.0, 14.0)  # 覆盖底座菱形
+		var shape := ConvexPolygonShape2D.new()
+		shape.points = FOOTPRINT  # 脚印菱形,与视觉底面一致
 		var cs := CollisionShape2D.new()
 		cs.shape = shape
 		body.add_child(cs)

@@ -10,6 +10,8 @@ const ROOM_H := 6
 const DOOR_CELL := Vector2i(3, 2)
 const SWITCH_CELL := Vector2i(4, 3)
 const SPAWN_CELL := Vector2i(3, 4)
+## 立起物脚印菱形(与视觉底面完全一致);碰撞体必须用它,禁止小矩形近似
+static var FOOTPRINT := PackedVector2Array([Vector2(0, -16), Vector2(32, 0), Vector2(0, 16), Vector2(-32, 0)])
 
 
 func _initialize() -> void:
@@ -40,7 +42,16 @@ func _run() -> void:
 			floor_layer.set_cell(Vector2i(x, y), 0, Vector2i.ZERO)
 	room.add_child(floor_layer)
 
-	_add_boundary(room, floor_layer)
+	# 墙体脚印碰撞:周界 + 横墙(与视觉底面一致;门洞位由门的 Blocker 负责)
+	var wall_cells: Array[Vector2i] = []
+	for x in ROOM_W:
+		for y in ROOM_H:
+			if x == 0 or y == 0 or x == ROOM_W - 1 or y == ROOM_H - 1:
+				wall_cells.append(Vector2i(x, y))
+	for x in range(1, ROOM_W - 1):
+		if Vector2i(x, 2) != DOOR_CELL:
+			wall_cells.append(Vector2i(x, 2))
+	_add_wall_colliders(room, floor_layer, wall_cells)
 
 	var ysorted := Node2D.new()
 	ysorted.name = "YSorted"
@@ -60,10 +71,6 @@ func _run() -> void:
 		if Vector2i(x, 2) == DOOR_CELL:
 			continue
 		ysorted.add_child(_make_wall(wall_tex, floor_layer.map_to_local(Vector2i(x, 2))))
-
-	# 横墙碰撞:两段旋转矩形夹住门洞(洞口由门的 Blocker 负责)
-	_add_wall_segment(room, floor_layer, Vector2i(1, 2), Vector2i(2, 2))
-	_add_wall_segment(room, floor_layer, Vector2i(4, 2), Vector2i(6, 2))
 
 	# 机关:压力开关 + 安全门,信号直连
 	var switch: PressureSwitch = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
@@ -107,23 +114,20 @@ func _make_wall(tex: Texture2D, pos: Vector2) -> Sprite2D:
 	return sprite
 
 
-## 沿两个格位中心生成一段墙体碰撞(旋转矩形,两端各外延 16px 盖住端点菱形)
-func _add_wall_segment(room: Node2D, floor_layer: TileMapLayer, from_cell: Vector2i, to_cell: Vector2i) -> void:
-	var a := floor_layer.map_to_local(from_cell)
-	var b := floor_layer.map_to_local(to_cell)
-	var dir: Vector2 = (b - a).normalized()
+## 在 body 下为每个格位加一个脚印菱形碰撞体(与视觉底面完全一致)
+func _add_wall_colliders(room: Node2D, floor_layer: TileMapLayer, cells: Array[Vector2i]) -> void:
 	var body := StaticBody2D.new()
-	body.name = "WallSegment"
+	body.name = "WallColliders"
 	body.collision_layer = 1
 	body.collision_mask = 0
-	body.position = (a + b) / 2.0
 	room.add_child(body)
-	var shape := RectangleShape2D.new()
-	shape.size = Vector2(a.distance_to(b) + 32.0, 14.0)
-	var cs := CollisionShape2D.new()
-	cs.shape = shape
-	cs.rotation = dir.angle()
-	body.add_child(cs)
+	for cell in cells:
+		var shape := ConvexPolygonShape2D.new()
+		shape.points = FOOTPRINT
+		var cs := CollisionShape2D.new()
+		cs.shape = shape
+		cs.position = floor_layer.map_to_local(cell)
+		body.add_child(cs)
 
 
 ## 只给无主(程序化创建)的节点设置 owner;子场景实例的内部节点已有 owner,
@@ -133,40 +137,6 @@ func _assign_owner(node: Node, owner: Node) -> void:
 		if child.owner == null:
 			child.owner = owner
 		_assign_owner(child, owner)
-
-
-func _add_boundary(room: Node2D, floor_layer: TileMapLayer) -> void:
-	var p_top := floor_layer.map_to_local(Vector2i(0, 0))
-	var p_right := floor_layer.map_to_local(Vector2i(ROOM_W - 1, 0))
-	var p_bottom := floor_layer.map_to_local(Vector2i(ROOM_W - 1, ROOM_H - 1))
-	var p_left := floor_layer.map_to_local(Vector2i(0, ROOM_H - 1))
-	var verts: Array[Vector2] = [
-		p_top + Vector2(0, -16),
-		p_right + Vector2(32, 0),
-		p_bottom + Vector2(0, 16),
-		p_left + Vector2(-32, 0),
-	]
-	var center: Vector2 = (verts[0] + verts[1] + verts[2] + verts[3]) / 4.0
-
-	var body := StaticBody2D.new()
-	body.name = "Boundary"
-	body.collision_layer = 1
-	body.collision_mask = 0
-	room.add_child(body)
-	for i in 4:
-		var a: Vector2 = verts[i]
-		var b: Vector2 = verts[(i + 1) % 4]
-		var dir: Vector2 = (b - a).normalized()
-		var normal: Vector2 = dir.orthogonal()
-		if (center - (a + b) / 2.0).dot(normal) < 0.0:
-			normal = -normal
-		var shape := RectangleShape2D.new()
-		shape.size = Vector2(a.distance_to(b) + 32.0, 14.0)
-		var cs := CollisionShape2D.new()
-		cs.shape = shape
-		cs.position = (a + b) / 2.0 + normal * 12.0  # 内移 12px,防边界穿模(见 devlog 2026-11-04 M1)
-		cs.rotation = dir.angle()
-		body.add_child(cs)
 
 
 func _camera_limits(floor_layer: TileMapLayer) -> Rect2i:
