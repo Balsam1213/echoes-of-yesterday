@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=6 format=3]
 
 [ext_resource type="Script" path="res://scripts/interaction/time_recorder_device.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/environment/test_block.png" id="2"]
@@ -6,6 +6,9 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_proximity"]
 radius = 56.0
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_foot"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
 [node name="TimeRecorderDevice" type="Area2D"]
 collision_layer = 8
@@ -23,3 +26,10 @@ texture = ExtResource("2")
 modulate = Color(0.271, 0.851, 0.949, 1)
 position = Vector2(14, -2)
 texture = ExtResource("3")
+
+[node name="Solid" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape2D" parent="Solid"]
+shape = SubResource("ConvexPolygonShape2D_foot")
