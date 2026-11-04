@@ -1,17 +1,16 @@
 extends SceneTree
-## M3 冒烟:核心闭环验证。
-## 场景:玩家走到开关东侧 → R 记录"走回开关" → 走离开关 → Space 生成回声
-##   → 回声重演并踩住开关(门保持开)→ 玩家穿门到北侧 → 上限/删除测试。
+## M4 冒烟:第一关全流程。
+## 教学(T-03/T-02/T-05)→ 记录/回声协作 → 穿门 → 通关(存档+T-07)→ 任意键重玩 → 重置 → 暂停。
 ## 运行:godot --path . -s tools/smoke_screenshot.gd
-## 产出:项目根 smoke_m3_echo.png / smoke_m3_through.png(临时,不入库)。
+## 产出:smoke_m4_replaying.png / smoke_m4_complete.png(临时,不入库)。
 
 const WAIT := 12
 
-# 工具脚本(-s)编译期不得引用游戏类(autoload 编译期不可见),一律动态访问(docs/03 §1)
 var _player: Node2D
 var _switch: Area2D
 var _door: StaticBody2D
 var _mgr: Node
+var _level: Node
 
 
 func _initialize() -> void:
@@ -19,7 +18,6 @@ func _initialize() -> void:
 
 
 func _frames(n: int) -> void:
-	# 必须按物理帧计数(渲染帧率不受控,docs/devlog 2026-11-04 M2)
 	for i in n:
 		await physics_frame
 
@@ -36,6 +34,32 @@ func _tap(action: String) -> void:
 	Input.action_release(action)
 
 
+func _tap_key(keycode: Key) -> void:
+	var ev := InputEventKey.new()
+	ev.keycode = keycode
+	ev.physical_keycode = keycode
+	ev.pressed = true
+	Input.parse_input_event(ev)
+	await _frames(2)
+	var up := InputEventKey.new()
+	up.keycode = keycode
+	up.physical_keycode = keycode
+	up.pressed = false
+	Input.parse_input_event(up)
+
+
+func _tap_action_event(action: StringName) -> void:
+	var ev := InputEventAction.new()
+	ev.action = action
+	ev.pressed = true
+	Input.parse_input_event(ev)
+	await _frames(2)
+	var up := InputEventAction.new()
+	up.action = action
+	up.pressed = false
+	Input.parse_input_event(up)
+
+
 func _shot(file_name: String) -> void:
 	await physics_frame
 	await RenderingServer.frame_post_draw
@@ -45,53 +69,82 @@ func _shot(file_name: String) -> void:
 
 
 func _state(tag: String) -> void:
-	print("%s pos=%s sw=%s door=%s echoes=%d" % [
-		tag, _player.global_position, _switch.is_active(), _door.is_open(), _mgr.echo_count()])
+	print("%s pos=%s sw=%s door=%s echoes=%d paused=%s" % [
+		tag, _player.global_position, _switch.is_active(), _door.is_open(),
+		_mgr.echo_count(), paused])
 
 
 func _run() -> void:
-	var scene: Node = (load("res://scenes/dev/dev_mechanisms.tscn") as PackedScene).instantiate()
+	var scene: Node = (load("res://scenes/levels/Level_01.tscn") as PackedScene).instantiate()
 	root.add_child(scene)
 	await _frames(2)
+	_level = scene
 	_player = scene.get_node("YSorted/Player")
 	_switch = scene.get_node("YSorted/PressureSwitch")
 	_door = scene.get_node("YSorted/SecurityDoor")
 	_mgr = scene.get_node("EchoManager")
 	root.get_node("GameEvents").notify_requested.connect(func(t: String) -> void: print("NOTIFY: ", t))
+	root.get_node("GameEvents").level_completed.connect(func(id: int) -> void: print("LEVEL_COMPLETED id=", id))
 	_state("spawn")
 
-	# 1) 走到开关东侧(记录起点,不在开关上)
+	# 1) 向东南:经过记录装置(T-03)→ 踩上开关(TC-03)→ 走离开关(T-02)
+	await _press("move_down", 4)
 	await _press("move_right", 40)
-	_state("start_pos")
-	# 2) R 开始 → 向左走回开关上 → R 结束(记录内容:走向开关)
+	_state("near_device")
+	await _press("move_right", 30)
+	_state("on_pad")
+	await _press("move_right", 20)
+	_state("off_pad")
+
+	# 2) R 记录"走回开关" → 玩家离开 → Space 回声踩住(TC-08~13)
 	await _tap("record_toggle")
-	await _press("move_left", 16)
+	await _press("move_left", 30)
 	await _tap("record_toggle")
-	_state("recorded")
-	# 3) 玩家走离开关,Space 生成回声 → 回声重演走上开关并踩住(TC-11/13)
-	await _press("move_left", 15)
+	await _press("move_left", 12)
 	await _tap("play_echo")
-	await _frames(8)  # 回放进行中:调试线应与世界轨迹重合
-	await _shot("smoke_m3_replaying.png")
-	await _frames(37)
-	_state("echo_on_pad")
-	await _shot("smoke_m3_echo.png")
-	# 4) 玩家经门洞走到北侧(门被回声保持打开,TC-05)
+	await _frames(8)
+	await _shot("smoke_m4_replaying.png")
+	await _frames(40)
+	_state("echo_holds")
+
+	# 3) 穿门(TC-05)→ 抵达出口 → 通关(存档 + T-07,TC-14/15)
+	await _press("move_right", 26)
+	await _press("move_down", 8)
 	await _press("move_right", 14)
 	await _press("move_up", 26)
 	await _press("move_right", 10)
-	_state("through_door")
-	await _shot("smoke_m3_through.png")
-	# 5) 回声上限与删除(TC-16/17):再生成 2 个 → 第 4 个超限提示 → X 删除
+	_state("north_side")
+	await _press("move_up", 6)
+	await _press("move_right", 24)
+	await _frames(WAIT)
+	_state("complete")
+	await _shot("smoke_m4_complete.png")
+	print("save_exists=", FileAccess.file_exists("user://save.json"),
+		" content=", FileAccess.get_file_as_string("user://save.json") if FileAccess.file_exists("user://save.json") else "")
+
+	# 4) 按任意键重玩(FR-011):复位到出生点
+	await _tap_key(KEY_E)
+	await _frames(WAIT)
+	_state("after_replay")
+
+	# 5) 重置(T4.4):生成回声后 Backspace 全量复位
+	await _press("move_right", 20)
+	await _tap("record_toggle")
+	await _press("move_left", 8)
+	await _tap("record_toggle")
+	await _press("move_left", 10)
 	await _tap("play_echo")
-	await _frames(5)
-	await _tap("play_echo")
-	await _frames(5)
-	_state("capped_3")
-	await _tap("play_echo")
-	await _frames(5)
-	_state("over_cap")
-	await _tap("delete_echo")
-	await _frames(5)
-	_state("after_delete")
+	await _frames(10)
+	_state("before_reset")
+	await _tap("reset_room")
+	await _frames(WAIT)
+	_state("after_reset")
+
+	# 6) 暂停/继续(T4.6)
+	await _tap_action_event(&"pause")
+	await _frames(2)
+	_state("paused")
+	await _tap_action_event(&"pause")
+	await _frames(2)
+	_state("resumed")
 	quit()

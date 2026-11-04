@@ -57,6 +57,16 @@ func _update_anim_state(input_dir: Vector2) -> void:
 		anim_state = "idle"
 
 
+## 关卡重置:回出生点并复位全部运动/动画状态(docs/02 §8.2 第 3 步)
+func reset_to(pos: Vector2) -> void:
+	global_position = pos
+	velocity = Vector2.ZERO
+	direction = Vector2.DOWN
+	_interact_timer = 0.0
+	anim_state = "idle"
+	_sprite.play("idle")
+
+
 func _apply_camera_limits() -> void:
 	if camera_limit_rect.size == Vector2i.ZERO:
 		return

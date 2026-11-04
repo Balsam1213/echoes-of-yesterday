@@ -40,6 +40,7 @@ func clear_all() -> void:
 	for line in _debug_lines.values():
 		line.queue_free()
 	_debug_lines.clear()
+	GameEvents.echo_count_changed.emit(0)
 
 
 func _spawn() -> void:
@@ -49,10 +50,10 @@ func _spawn() -> void:
 		return  # 记录未结束按 Space:忽略(E-02)
 	var rec := _player.recorder.recording
 	if rec == null or rec.frames.is_empty():
-		GameEvents.notify_requested.emit("没有可播放的记录。按 R 先记录一段行动。")
+		GameEvents.notify_requested.emit(UIText.T_NO_RECORDING)
 		return
 	if _echoes.size() >= MAX_ECHOES:
-		GameEvents.notify_requested.emit("回声数量已达上限(3)。按 X 可删除回声。")  # T-06
+		GameEvents.notify_requested.emit(UIText.T06_CAP)
 		return
 	var echo: EchoController = ECHO_SCENE.instantiate()
 	echo.setup(rec)
@@ -64,6 +65,8 @@ func _spawn() -> void:
 	if debug_trajectory:
 		_spawn_debug_line(echo, rec)
 	GameEvents.echo_spawned.emit(echo.echo_id)
+	GameEvents.echo_count_changed.emit(_echoes.size())
+	GameEvents.echo_playback_started.emit(rec.duration())
 
 
 func _delete_latest() -> void:
@@ -72,11 +75,13 @@ func _delete_latest() -> void:
 	var echo: EchoController = _echoes.pop_back()
 	_remove_debug_line(echo.echo_id)
 	GameEvents.echo_deleted.emit(echo.echo_id)
+	GameEvents.echo_count_changed.emit(_echoes.size())
 	echo.queue_free()
 
 
 func _on_playback_finished(echo: EchoController) -> void:
 	_remove_debug_line(echo.echo_id)  # 回放结束,轨迹比对完成,调试线即时移除
+	GameEvents.echo_playback_stopped.emit()
 	# 回声本体停留在末帧,继续保留机关触发能力(docs/02 §6)
 
 
