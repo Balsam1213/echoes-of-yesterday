@@ -71,7 +71,9 @@ func _run() -> void:
 	# 3) 玩家走离开关,Space 生成回声 → 回声重演走上开关并踩住(TC-11/13)
 	await _press("move_left", 15)
 	await _tap("play_echo")
-	await _frames(45)
+	await _frames(8)  # 回放进行中:调试线应与世界轨迹重合
+	await _shot("smoke_m3_replaying.png")
+	await _frames(37)
 	_state("echo_on_pad")
 	await _shot("smoke_m3_echo.png")
 	# 4) 玩家经门洞走到北侧(门被回声保持打开,TC-05)
