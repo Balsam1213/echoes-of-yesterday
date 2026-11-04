@@ -17,6 +17,25 @@
 
 ---
 
+## 2026-11-05 | 第一章实现:第 2/3 关制作与三章连玩验证(全部通过)
+
+**完成**:
+- T-A 逐关回声上限:`EchoManager.max_echoes`(@export,L1=1/L2=2/L3=3);`echo_count_changed(count, cap)`;HUD/T-06 自适应;regression 运行时设 3 验证满额语义;
+- T-B `LevelManagerBase` 基类:状态机/通关冻结/重玩与 next_scene 推进链;L01 迁移至基类(行为回归验证通过);完成文案按关卡分档(UIText.complete_body/title/hint);
+- T-C `TimeLockSwitch extends PressureSwitch`:倒计时到期自动释放(E-31,不看脚下)、离开再进入重触发(E-32)、最后 3 秒闪烁、T-15 一次性教学(force_reset 重武装);
+- T-D Level_02「双重行动」:双开关 AND 聚合(LevelManager 层)、门体双指示灯(关卡层驱动)、回声上限 2、推进至 L3;冒烟全绿;
+- T-E Level_03「不同的路径」:三翼三路线、时间锁+双开关三灯 AND、章节末关;冒烟全绿(含 T-15 到期教学、窗口冲刺、章节完重玩);
+- **最终门禁**:regression ALL PASS + 三章连玩(L1→L2→L3→章节完)全绿。
+
+**过程要点**:
+- 走位验证改用**闭环 `_walk_to`**(每帧按实际位置修正方向):开环帧数标定受滑行/阻挡影响漂移 ~30%,闭环彻底消除,且沿菱形边滑行天然绕障;
+- 连带修复:常量名拼写(_LIGHT)、构建脚本漏设 next_scene、灯名 Light1/2/3 与 %LightA/B/C 不匹配、构建时序(改脚本后必须重跑构建——曾以旧产物跑验证);
+- 关卡推进用 `change_scene_to_file`,冒烟侧需设 `current_scene` 才生效(-s 模式)。
+
+**遗留**:TC-41(窗口关闭瞬间的门夹人)已由防夹规则覆盖但未单独自动化;三章时长/手感待人工体验验收;tag chapter1-v0.2。
+
+**下一步**:用户人工验收第一章 → 反馈或进入第二章(第 4—6 关)设计。
+
 ## 2026-11-05 | 第一章扩展:第 2/3 关设计(评审中)
 
 **完成**:

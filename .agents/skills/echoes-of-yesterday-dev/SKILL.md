@@ -12,9 +12,10 @@ description: >
 # 《昨日回声》开发规范(echoes-of-yesterday-dev)
 
 Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回放(空格)→ 自我协作**。
-仓库布局:`docs/`(上位文档 00—09)、`logs/`(devlog/changelog/issues)、`EchoesOfYesterday/`(Godot 工程)、`tools/`(构建与测试脚本)。
+当前进度:第一章(第 1—3 关)完成——回声上限逐关 1/2/3,含时间锁新机关与关卡推进链。
+仓库布局:`docs/`(上位文档 00—12)、`logs/`(devlog/changelog/issues)、`EchoesOfYesterday/`(Godot 工程)、`tools/`(构建与测试脚本)。
 
-本技能是**操作入口**;`docs/00—09` 是上位文档,冲突时以 docs 为准(docs/00 §2.4)。
+本技能是**操作入口**;`docs/00—12` 是上位文档,冲突时以 docs 为准(docs/00 §2.4)。
 
 ## 硬规则 Top 10(每条都有一次返修教训,违反即返修)
 
@@ -46,7 +47,7 @@ Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回�
 ## 接口速查(简单任务够用;涉及系统内部先读对应分册)
 
 ### Autoload
-- `GameEvents`(`scripts/core/game_events.gd`):`recording_started` / `recording_stopped(duration)` / `echo_spawned(id)` / `echo_deleted(id)` / `echo_count_changed(count)` / `echo_playback_started(duration)` / `echo_playback_stopped` / `notify_requested(text)` / `level_completed(id)` / `restart_requested`
+- `GameEvents`(`scripts/core/game_events.gd`):`recording_started` / `recording_stopped(duration)` / `echo_spawned(id)` / `echo_deleted(id)` / `echo_count_changed(count, cap)` / `echo_playback_started(duration)` / `echo_playback_stopped` / `notify_requested(text)` / `level_completed(id)` / `restart_requested`
 - `SaveManager`(`scripts/save/save_manager.gd`):`mark_level_completed(id)` / `is_level_unlocked(id)`;存档 `user://save.json`
 
 ### 碰撞层(位值)与分组
@@ -62,19 +63,22 @@ Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回�
 ### 关键契约
 - 玩家 `PlayerController`(CharacterBody2D 层2 掩码1,r6 圆,速度 140):字段 `position / direction / anim_state(idle|walk|interact)` 是记录采样来源;公开 `recorder`(TimeRecorder)与 `reset_to(pos)`
 - 记录 `TimeRecorder`(Player 子节点 `%TimeRecorder`):`recording`(最近已完成记录)、`is_recording`、`clear_all()` / `discard_buffer()`
-- 回声 `EchoController`(层3,逐帧赋位回放、末帧停留)+ `EchoManager`(生成/上限 3/X 删除/调试线,`echo_count()`)
-- 机关:`PressureSwitch` / `SecurityDoor` / `TimeRecorderDevice` / `ExitArea` —— 契约与新增示例见 [references/mechanisms.md](references/mechanisms.md)
-- 文案:`UIText`(`scripts/ui/ui_text.gd` 静态常量,T-01~T-07 与界面文案)
+- 回声 `EchoController`(层3,逐帧赋位回放、末帧停留)+ `EchoManager`(`max_echoes` 逐关配置 1/2/3:生成/X 删除/调试线,`echo_count()`)
+- 机关:`PressureSwitch` / `SecurityDoor` / `TimeRecorderDevice` / `ExitArea` / `TimeLockSwitch`(倒计时自动释放)—— 契约与新增示例见 [references/mechanisms.md](references/mechanisms.md)
+- 关卡:`LevelManagerBase` 基类(`next_scene` 推进链/状态机/重置四步)→ `Level01/02/03Manager`;构建脚本 `tools/build_level_XX.gd`
+- 文案:`UIText`(`scripts/ui/ui_text.gd` 静态常量,T-01~T-18 与界面文案)
 
 ## 三大工作流
 
 **新增机关** → 先读 [references/mechanisms.md](references/mechanisms.md):复用现有契约(Area2D 层4 掩码6、`echo_trigger` 组识别、`force_reset()`、脚印菱形、文案走 UIText),禁止另起一套触发系统。
-**新增关卡** → 先读 [references/levels.md](references/levels.md):复用 `tools/build_level_01.gd` 构建模式与 `Level01Manager` 状态机/重置四步/通关流程。
+**新增关卡** → 先读 [references/levels.md](references/levels.md):复用 `LevelManagerBase` + `tools/build_level_XX.gd` 构建模式;每关设置 `max_echoes` 与 `next_scene`。
 **修改核心机制** → 改完必跑并确认全绿:
 
 ```
 godot --path EchoesOfYesterday -s tools/regression_m5.gd     # TC-09/16/17/18/19/20/21(约 40s)
-godot --path EchoesOfYesterday -s tools/smoke_screenshot.gd  # 全流程通关 + 截图
+godot --path EchoesOfYesterday -s tools/smoke_screenshot.gd  # L1 全流程通关 + 截图
+godot --path EchoesOfYesterday -s tools/smoke_level02.gd     # L2 全流程 + 推进
+godot --path EchoesOfYesterday -s tools/smoke_level03.gd     # L3 全流程(时间锁)+ 章节完
 ```
 
 任何 FAIL、`SCRIPT ERROR`、`Error calling from signal` 都须修复;流程类缺陷登记 `logs/issues.md`。
