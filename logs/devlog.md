@@ -17,6 +17,27 @@
 
 ---
 
+## 2026-11-05 | M4:第一关组装与关卡流程(T4.1—T4.7)
+
+**完成**:
+- T4.1 `Level_01.tscn`(12×8,布局按 docs/05 §3.2):横墙嵌安全门、周界菱形碰撞、出口三格不设墙并由出口背后一排虚拟碰撞兜底;主场景切至 Level_01;
+- T4.2 `TimeRecorderDevice`:首次靠近提示 T-03(once 标志,重置时重新武装);
+- T4.3 `ExitArea`(仅玩家)+ 通关流程:`LEVEL_COMPLETED` → SaveManager 写 `user://save.json`(`{"unlocked_levels":[1]}` 已验证)→ T-07 通关界面 → 按任意键 `restart_requested` → 全量重置;
+- T4.4 Backspace 全量复位(02 §8.2 四步):EchoManager.clear_all / recorder.discard_buffer / 机关 force_reset(新增开关/门/装置重置接口)/ 玩家 reset_to —— 冒烟验证回声 1→0、位置与机关全部回初始;
+- T4.5 HUD:关卡名/回声数(●○○)/记录时间轴三态(暗-黄-青)/常驻键位提示;文案唯一来源 `ui_text.gd`;
+- T4.6 暂停菜单:Esc 经 InputEventAction 驱动(process_mode=ALWAYS),继续/重开/退出;
+- T4.7 教学提示链:T-03(靠近装置)→ T-02(首次踩上后离开)→ T-05(记录完成)经 notify_requested 进 HUD;
+- 冒烟全流程(自动化):教学提示 → 记录/回声协作 → 穿门 → 通关存档 → 重玩 → 重置 → 暂停,全部通过。
+
+**问题与决定**:
+- **出生点 (2,7) 落在周界墙 collider 内**被物理挤出——按 docs/05 意图改 (2,6)(墙行内一格);布局文档的"格位"以"墙环内圈"理解;
+- **Level01Manager 漏接开关→门连线**(此前由 dev 房间脚本承担)——正式关的接线归属关卡管理器,已接;
+- 录制走位会路过装置导致 T-03 重复 → 装置提示改 once + 重置重武装;
+- 通关时若在记录中:discard_buffer 静默取消(E-09);
+- GameEvents 新增 echo_playback_started/stopped(HUD 时间轴回放态)、echo_count_changed(回声计数)、restart_requested(通关重玩)。
+
+**下一步**:用户人工验收 M4(F5 完整通关 + 暂停/重置/重玩)→ M4 关闭 → M5 测试与打磨(全量回归、8 条 TC 补充、demo-v0.1 定版)。
+
 ## 2026-11-05 | M3 返修:轨迹调试线生命周期(用户验收反馈)
 
 **用户反馈**:① 回放结束后调试线仍渲染、未及时去掉;② 轨迹线不在真实轨迹上、位置偏在回声下方一段并随回声同步移动。
