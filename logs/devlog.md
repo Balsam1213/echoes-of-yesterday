@@ -17,6 +17,27 @@
 
 ---
 
+## 2026-11-05 | M3:记录与回声(T3.1—T3.5)——核心里程碑
+
+**完成**:
+- T3.1 `EchoRecording`(RefCounted 帧数据:60Hz、30s/1800 帧上限)+ `TimeRecorder`(挂 Player 子节点,R 开关、逐物理帧采样、上限自动结束、discard_buffer 供重置);
+- T3.2/T3.3 `EchoController` + `Echo.tscn`:逐物理帧直接赋位回放(不做物理解算)、播完末帧停留、青色 #45D9F2 半透明、层 3 + `echo_trigger` 组 → **回声可踩住压力开关**(核心验证点 R2/R3 通过);
+- T3.4 `EchoManager`(挂关卡场景):Space 生成(最近记录)、上限 3、X 删最新、超限发 T-06 提示(GameEvents.notify_requested,M4 HUD 订阅)、clear_all() 预留重置;
+- T3.5 轨迹调试:回声挂记录路径 Line2D + 回放结束打印最大误差 → **实测 max_pos_err=0.000 px**(验证点 R1:复现精度由架构保证);
+- 自动化核心闭环冒烟(全绿):记录 17 帧 → 回放零误差 → 玩家离开后 **sw=true(回声踩住)** → 玩家经门洞到北侧(门被回声保持开)→ 第 4 次生成触发 T-06 → X 删除 3→2。
+
+**附带修复与决定**:
+- **角色/回声碰撞圆 r9→r6**(圆心 (0,-6)):1 格门洞的菱形通道下 r9 会被邻墙菱形顶点卡死;已固化 docs/03 §4;
+- **GameEvents autoload** 接入(project.godot);
+- **工具脚本编译解耦**:`-s` 脚本在 autoload 注册前编译,编译期引用游戏类会连锁失败——构建/冒烟脚本全部改为 load()+动态访问,规范固化 docs/03 §1;
+- 教训:手改 .tscn 改 sub_resource id 必须同步所有引用(本次门 Blocker 踩坑);headless -s 出错未到 quit() 会挂起,调用侧一律 timeout。
+
+**待办/交接**:
+- 用户人工验收 TC-08~13/16/17(记录→回放→协作→上限/删除);编辑器需「项目 → 重新加载当前项目」以加载 GameEvents autoload(否则编辑器内解析报 GameEvents 未声明,运行不受影响);
+- MCP runtime 操控待插件切 full_control 后接入验证流程。
+
+**下一步**:人工验收 → M3 关闭 → M4 关卡流程(组装 Level_01、教学提示、重置、HUD、存档)。
+
 ## 2026-11-05 | M2 关闭;接入 Godot MCP;进入 M3
 
 **完成**:
