@@ -3,9 +3,10 @@ extends Node
 ## 回声管理(T3.4):Space 以最近一条已完成记录生成回声,上限 3,X 删除最新。
 ## 挂在关卡场景,不写死关卡内容(NFR-04);重置时由关卡流程调用 clear_all()(T4.4 接入)。
 
-const MAX_ECHOES := 3
 const ECHO_SCENE := preload("res://scenes/echo/Echo.tscn")
 
+## 回声上限逐关配置(docs/10 §4):L1=1、L2=2、L3=3,由关卡构建脚本设置
+@export var max_echoes := 3
 @export var debug_trajectory := false
 ## 回声放入的容器(应为开启 y_sort 的实体层);为空时用父节点的 YSorted 子节点
 @export var ysorted_path: NodePath
@@ -40,7 +41,7 @@ func clear_all() -> void:
 	for line in _debug_lines.values():
 		line.queue_free()
 	_debug_lines.clear()
-	GameEvents.echo_count_changed.emit(0)
+	GameEvents.echo_count_changed.emit(0, max_echoes)
 
 
 func _spawn() -> void:
@@ -52,8 +53,8 @@ func _spawn() -> void:
 	if rec == null or rec.frames.is_empty():
 		GameEvents.notify_requested.emit(UIText.T_NO_RECORDING)
 		return
-	if _echoes.size() >= MAX_ECHOES:
-		GameEvents.notify_requested.emit(UIText.T06_CAP)
+	if _echoes.size() >= max_echoes:
+		GameEvents.notify_requested.emit(UIText.T06_CAP % max_echoes)
 		return
 	var echo: EchoController = ECHO_SCENE.instantiate()
 	echo.setup(rec)
@@ -65,7 +66,7 @@ func _spawn() -> void:
 	if debug_trajectory:
 		_spawn_debug_line(echo, rec)
 	GameEvents.echo_spawned.emit(echo.echo_id)
-	GameEvents.echo_count_changed.emit(_echoes.size())
+	GameEvents.echo_count_changed.emit(_echoes.size(), max_echoes)
 	GameEvents.echo_playback_started.emit(rec.duration())
 
 
@@ -75,7 +76,7 @@ func _delete_latest() -> void:
 	var echo: EchoController = _echoes.pop_back()
 	_remove_debug_line(echo.echo_id)
 	GameEvents.echo_deleted.emit(echo.echo_id)
-	GameEvents.echo_count_changed.emit(_echoes.size())
+	GameEvents.echo_count_changed.emit(_echoes.size(), max_echoes)
 	echo.queue_free()
 
 

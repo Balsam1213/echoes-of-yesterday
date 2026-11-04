@@ -41,6 +41,7 @@ func _run() -> void:
 	_door = scene.get_node("YSorted/SecurityDoor")
 	_mgr = scene.get_node("EchoManager")
 	_recorder = _player.get_node("%TimeRecorder")
+	_mgr.max_echoes = 3  # 本套件验证满额语义(TC-17 上限 3),与逐关配置无关
 
 	# TC-09:记录满 30 秒自动结束(E-03)
 	await _tap("record_toggle")

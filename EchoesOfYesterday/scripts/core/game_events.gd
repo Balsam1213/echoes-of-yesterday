@@ -6,7 +6,7 @@ signal recording_started
 signal recording_stopped(duration: float)
 signal echo_spawned(echo_id: int)
 signal echo_deleted(echo_id: int)
-signal echo_count_changed(count: int)
+signal echo_count_changed(count: int, cap: int)
 signal echo_playback_started(duration: float)
 signal echo_playback_stopped
 signal notify_requested(text: String)  # 面向玩家的提示(HUD 订阅,如 T-06 超限提示)

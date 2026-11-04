@@ -117,10 +117,11 @@ func _run() -> void:
 	player.camera_limit_rect = _camera_limits(floor_layer)
 	ysorted.add_child(player)
 
-	# 回声管理
+	# 回声管理(第一关:上限 1,docs/10 §3)
 	var echo_mgr: Node = load("res://scripts/level/echo_manager.gd").new()
 	echo_mgr.name = "EchoManager"
 	echo_mgr.unique_name_in_owner = true
+	echo_mgr.max_echoes = 1
 	echo_mgr.debug_trajectory = true
 	echo_mgr.ysorted_path = NodePath("../YSorted")
 	level.add_child(echo_mgr)

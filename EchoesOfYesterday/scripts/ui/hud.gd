@@ -105,8 +105,8 @@ func _on_echo_changed(_id: int) -> void:
 	pass  # 计数经 echo_count_changed 更新
 
 
-func _on_echo_count_changed(count: int) -> void:
-	_echo_label.text = UIText.echo_count_text(count)
+func _on_echo_count_changed(count: int, cap: int) -> void:
+	_echo_label.text = UIText.echo_count_text(count, cap)
 
 
 func _on_playback_started(duration: float) -> void:
