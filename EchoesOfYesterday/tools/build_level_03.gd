@@ -97,7 +97,7 @@ func _run() -> void:
 	var door_pos := floor_layer.map_to_local(DOOR_CELL)
 	for i in 3:
 		var light := Sprite2D.new()
-		light.name = "Light%d" % (i + 1)
+		light.name = ["LightA", "LightB", "LightC"][i]
 		light.unique_name_in_owner = true
 		light.texture = load("res://assets/mechanisms/light_dot.png")
 		light.position = door_pos + Vector2(-36 + 36 * i, -30)
