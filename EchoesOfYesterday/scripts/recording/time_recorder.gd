@@ -27,10 +27,17 @@ func _physics_process(_delta: float) -> void:
 
 
 func discard_buffer() -> void:
-	## 丢弃未完成记录(重置房间时调用,docs/02 §8.2);静默取消,不发信号
+	## 丢弃未完成记录(通关静默取消时调用,E-09);不影响已完成记录
 	if is_recording:
 		is_recording = false
 		_buffer = null
+
+
+func clear_all() -> void:
+	## 关卡重置:未完成与已完成记录一并清除(docs/02 §8.2 第 1 步)
+	is_recording = false
+	_buffer = null
+	recording = null
 
 
 func _start() -> void:

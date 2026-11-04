@@ -38,7 +38,7 @@ func _physics_process(_delta: float) -> void:
 ## Backspace 全量复位(docs/02 §8.2 四步):回声与记录 → 机关 → 玩家 → 教学/UI
 func reset_room() -> void:
 	_echo_mgr.clear_all()
-	_player.recorder.discard_buffer()
+	_player.recorder.clear_all()
 	_switch.force_reset()
 	_door.force_reset()
 	_device.force_reset()
