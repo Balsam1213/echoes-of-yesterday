@@ -16,9 +16,9 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 
 config/name="EchoesOfYesterday"
 config/description="以时间记录与自我协作为核心机制的 2.5D 等距像素解谜游戏(Demo:第一关「第一次回声」)"
+run/main_scene="res://scenes/dev/dev_mechanisms.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/bg_color=Color(0.0666667, 0.0941176, 0.152941, 1)
-run/main_scene="res://scenes/dev/dev_mechanisms.tscn"
 
 [display]
 
