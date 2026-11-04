@@ -64,12 +64,13 @@ func _on_exit_entered() -> void:
 	if _player.recorder.is_recording:
 		_player.recorder.discard_buffer()  # E-09 预留:通关时静默取消记录
 	_state = State.COMPLETE
+	get_tree().paused = true  # 冻结世界:玩家进门时可能仍按着移动键,冻结保证看清通关界面
 	GameEvents.level_completed.emit(1)
 	SaveManager.mark_level_completed(1)
 
 
 func _on_restart_requested() -> void:
-	if _state != State.COMPLETE:
-		return
+	## 通关界面按任意键 / 暂停菜单"重新开始本关" 共用;解除冻结并全量复位
 	reset_room()
+	get_tree().paused = false
 	_state = State.PLAY

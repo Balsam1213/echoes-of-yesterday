@@ -122,7 +122,9 @@ func _run() -> void:
 	print("save_exists=", FileAccess.file_exists("user://save.json"),
 		" content=", FileAccess.get_file_as_string("user://save.json") if FileAccess.file_exists("user://save.json") else "")
 
-	# 4) 按任意键重玩(FR-011):复位到出生点
+	# 4) 按任意键重玩(FR-011):通关冻结 1.2s 后接受按键 → 复位到出生点
+	await _frames(90)
+	_state("complete_settled")
 	await _tap_key(KEY_E)
 	await _frames(WAIT)
 	_state("after_replay")

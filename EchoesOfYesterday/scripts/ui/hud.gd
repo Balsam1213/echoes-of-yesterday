@@ -3,6 +3,7 @@ extends CanvasLayer
 ## 状态来源:GameEvents 总线;本层不直接引用关卡节点。
 
 const RECORD_MAX := 30.0
+const COMPLETE_INPUT_DELAY := 1.2  # 通关界面静置秒数:期间吞掉全部输入,防止移动键误触重玩
 
 var _recording := false
 var _record_elapsed := 0.0
@@ -10,6 +11,7 @@ var _playback_total := 0.0
 var _playback_elapsed := 0.0
 var _hint_timer := 0.0
 var _complete := false
+var _complete_ready_at := 0
 
 @onready var _level_label: Label = %LevelLabel
 @onready var _echo_label: Label = %EchoLabel
@@ -62,11 +64,17 @@ func show_hint(text: String) -> void:
 	_hint_timer = UIText.HINT_SECONDS
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if _complete and event is InputEventKey and event.pressed:
+func _input(event: InputEvent) -> void:
+	## 通关冻结期:_input 先于其他节点处理,吞掉输入(防暂停菜单/移动键误触);
+	## 静置 COMPLETE_INPUT_DELAY 后,接受一次非回声的按键按下 → 重玩
+	if not _complete:
+		return
+	get_viewport().set_input_as_handled()
+	if Time.get_ticks_msec() < _complete_ready_at:
+		return
+	if event is InputEventKey and event.pressed and not event.echo:
 		_complete = false
 		GameEvents.restart_requested.emit()
-		get_viewport().set_input_as_handled()
 
 
 func _set_timeline_state(state: String) -> void:
@@ -117,6 +125,7 @@ func _on_playback_stopped() -> void:
 
 func _on_level_completed(_level_id: int) -> void:
 	_complete = true
+	_complete_ready_at = Time.get_ticks_msec() + int(COMPLETE_INPUT_DELAY * 1000.0)
 	_complete_overlay.visible = true
 
 
