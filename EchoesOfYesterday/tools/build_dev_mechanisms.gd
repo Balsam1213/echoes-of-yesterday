@@ -100,7 +100,10 @@ func _run() -> void:
 func _make_wall(tex: Texture2D, pos: Vector2) -> Sprite2D:
 	var sprite := Sprite2D.new()
 	sprite.texture = tex
-	sprite.position = pos + Vector2(0, -24)  # 64×80 立体贴图:脚印菱形中心 (32,64) 对齐格位
+	sprite.position = pos
+	# 贴图上移必须用 offset(仅影响绘制):Y-sort 按节点 position 排序,
+	# 若把偏移烘进 position,排序点会北移 24px,导致玩家在墙后却画在墙前(墙"躺倒"穿模)
+	sprite.offset = Vector2(0, -24)
 	return sprite
 
 

@@ -39,187 +39,216 @@ size = Vector2(67.777084, 14)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_c0oxv"]
 size = Vector2(103.55418, 14)
 
-[node name="DevMechanisms" type="Node2D" unique_id=1821516071]
+[node name="DevMechanisms" type="Node2D" unique_id=862901063]
 script = ExtResource("1_t70o4")
 
-[node name="Floor" type="TileMapLayer" parent="." unique_id=2026852258]
+[node name="Floor" type="TileMapLayer" parent="." unique_id=988600950]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_qypkh")
 
-[node name="Boundary" type="StaticBody2D" parent="." unique_id=542240605]
+[node name="Boundary" type="StaticBody2D" parent="." unique_id=1971430031]
 collision_mask = 0
 
-[node name="@CollisionShape2D@2" type="CollisionShape2D" parent="Boundary" unique_id=988461792]
+[node name="@CollisionShape2D@2" type="CollisionShape2D" parent="Boundary" unique_id=1413036446]
 position = Vector2(154.63344, 74.73312)
 rotation = 0.4636476
 shape = SubResource("RectangleShape2D_gm4wa")
 
-[node name="@CollisionShape2D@3" type="CollisionShape2D" parent="Boundary" unique_id=403427502]
+[node name="@CollisionShape2D@3" type="CollisionShape2D" parent="Boundary" unique_id=235032683]
 position = Vector2(186.63344, 165.26688)
 rotation = 2.6779451
 shape = SubResource("RectangleShape2D_3dmmu")
 
-[node name="@CollisionShape2D@4" type="CollisionShape2D" parent="Boundary" unique_id=488194938]
+[node name="@CollisionShape2D@4" type="CollisionShape2D" parent="Boundary" unique_id=1895517864]
 position = Vector2(-26.633438, 149.26688)
 rotation = -2.6779451
 shape = SubResource("RectangleShape2D_mjcft")
 
-[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="Boundary" unique_id=1030120173]
+[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="Boundary" unique_id=2003696988]
 position = Vector2(-58.63344, 58.733124)
 rotation = -0.4636476
 shape = SubResource("RectangleShape2D_77al3")
 
-[node name="YSorted" type="Node2D" parent="." unique_id=1669271590]
+[node name="YSorted" type="Node2D" parent="." unique_id=334919033]
 y_sort_enabled = true
 
-[node name="@Sprite2D@6" type="Sprite2D" parent="YSorted" unique_id=1963004389]
-position = Vector2(32, -8)
+[node name="@Sprite2D@6" type="Sprite2D" parent="YSorted" unique_id=796629372]
+position = Vector2(32, 16)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@7" type="Sprite2D" parent="YSorted" unique_id=968760052]
-position = Vector2(0, 8)
+[node name="@Sprite2D@7" type="Sprite2D" parent="YSorted" unique_id=1407209199]
+position = Vector2(0, 32)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@8" type="Sprite2D" parent="YSorted" unique_id=1089097070]
-position = Vector2(-32, 24)
+[node name="@Sprite2D@8" type="Sprite2D" parent="YSorted" unique_id=581726120]
+position = Vector2(-32, 48)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@9" type="Sprite2D" parent="YSorted" unique_id=329062011]
-position = Vector2(-64, 40)
+[node name="@Sprite2D@9" type="Sprite2D" parent="YSorted" unique_id=1327588504]
+position = Vector2(-64, 64)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@10" type="Sprite2D" parent="YSorted" unique_id=1736220198]
-position = Vector2(-96, 56)
+[node name="@Sprite2D@10" type="Sprite2D" parent="YSorted" unique_id=772804822]
+position = Vector2(-96, 80)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@11" type="Sprite2D" parent="YSorted" unique_id=1853195467]
-position = Vector2(-128, 72)
+[node name="@Sprite2D@11" type="Sprite2D" parent="YSorted" unique_id=98760150]
+position = Vector2(-128, 96)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@12" type="Sprite2D" parent="YSorted" unique_id=505480990]
-position = Vector2(64, 8)
+[node name="@Sprite2D@12" type="Sprite2D" parent="YSorted" unique_id=1338939790]
+position = Vector2(64, 32)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@13" type="Sprite2D" parent="YSorted" unique_id=1083163771]
-position = Vector2(-96, 88)
+[node name="@Sprite2D@13" type="Sprite2D" parent="YSorted" unique_id=276531579]
+position = Vector2(-96, 112)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@14" type="Sprite2D" parent="YSorted" unique_id=350976340]
-position = Vector2(96, 24)
+[node name="@Sprite2D@14" type="Sprite2D" parent="YSorted" unique_id=330719686]
+position = Vector2(96, 48)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@15" type="Sprite2D" parent="YSorted" unique_id=1060462720]
-position = Vector2(-64, 104)
+[node name="@Sprite2D@15" type="Sprite2D" parent="YSorted" unique_id=1948458803]
+position = Vector2(-64, 128)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@16" type="Sprite2D" parent="YSorted" unique_id=521570040]
-position = Vector2(128, 40)
+[node name="@Sprite2D@16" type="Sprite2D" parent="YSorted" unique_id=56879980]
+position = Vector2(128, 64)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@17" type="Sprite2D" parent="YSorted" unique_id=101847524]
-position = Vector2(-32, 120)
+[node name="@Sprite2D@17" type="Sprite2D" parent="YSorted" unique_id=373196708]
+position = Vector2(-32, 144)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@18" type="Sprite2D" parent="YSorted" unique_id=1257135660]
-position = Vector2(160, 56)
+[node name="@Sprite2D@18" type="Sprite2D" parent="YSorted" unique_id=1268918904]
+position = Vector2(160, 80)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@19" type="Sprite2D" parent="YSorted" unique_id=381446506]
-position = Vector2(0, 136)
+[node name="@Sprite2D@19" type="Sprite2D" parent="YSorted" unique_id=543474471]
+position = Vector2(0, 160)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@20" type="Sprite2D" parent="YSorted" unique_id=187021777]
-position = Vector2(192, 72)
+[node name="@Sprite2D@20" type="Sprite2D" parent="YSorted" unique_id=1413724273]
+position = Vector2(192, 96)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@21" type="Sprite2D" parent="YSorted" unique_id=1921352517]
-position = Vector2(32, 152)
+[node name="@Sprite2D@21" type="Sprite2D" parent="YSorted" unique_id=103157421]
+position = Vector2(32, 176)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@22" type="Sprite2D" parent="YSorted" unique_id=2045308116]
-position = Vector2(224, 88)
+[node name="@Sprite2D@22" type="Sprite2D" parent="YSorted" unique_id=148914367]
+position = Vector2(224, 112)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@23" type="Sprite2D" parent="YSorted" unique_id=1711966493]
-position = Vector2(64, 168)
+[node name="@Sprite2D@23" type="Sprite2D" parent="YSorted" unique_id=13778691]
+position = Vector2(64, 192)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@24" type="Sprite2D" parent="YSorted" unique_id=1994777352]
-position = Vector2(256, 104)
+[node name="@Sprite2D@24" type="Sprite2D" parent="YSorted" unique_id=265488760]
+position = Vector2(256, 128)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@25" type="Sprite2D" parent="YSorted" unique_id=1977728794]
-position = Vector2(224, 120)
+[node name="@Sprite2D@25" type="Sprite2D" parent="YSorted" unique_id=532909070]
+position = Vector2(224, 144)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@26" type="Sprite2D" parent="YSorted" unique_id=353895014]
-position = Vector2(192, 136)
+[node name="@Sprite2D@26" type="Sprite2D" parent="YSorted" unique_id=1107136825]
+position = Vector2(192, 160)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@27" type="Sprite2D" parent="YSorted" unique_id=1708611947]
-position = Vector2(160, 152)
+[node name="@Sprite2D@27" type="Sprite2D" parent="YSorted" unique_id=1961997775]
+position = Vector2(160, 176)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@28" type="Sprite2D" parent="YSorted" unique_id=952884389]
-position = Vector2(128, 168)
+[node name="@Sprite2D@28" type="Sprite2D" parent="YSorted" unique_id=1765811173]
+position = Vector2(128, 192)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@29" type="Sprite2D" parent="YSorted" unique_id=1059461470]
-position = Vector2(96, 184)
+[node name="@Sprite2D@29" type="Sprite2D" parent="YSorted" unique_id=147834476]
+position = Vector2(96, 208)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@30" type="Sprite2D" parent="YSorted" unique_id=438017661]
-position = Vector2(0, 40)
+[node name="@Sprite2D@30" type="Sprite2D" parent="YSorted" unique_id=1551741765]
+position = Vector2(0, 64)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@31" type="Sprite2D" parent="YSorted" unique_id=1534628938]
-position = Vector2(32, 56)
+[node name="@Sprite2D@31" type="Sprite2D" parent="YSorted" unique_id=876049794]
+position = Vector2(32, 80)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@32" type="Sprite2D" parent="YSorted" unique_id=818173039]
-position = Vector2(96, 88)
+[node name="@Sprite2D@32" type="Sprite2D" parent="YSorted" unique_id=216726865]
+position = Vector2(96, 112)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@33" type="Sprite2D" parent="YSorted" unique_id=908095519]
-position = Vector2(128, 104)
+[node name="@Sprite2D@33" type="Sprite2D" parent="YSorted" unique_id=1779236921]
+position = Vector2(128, 128)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="@Sprite2D@34" type="Sprite2D" parent="YSorted" unique_id=1900452111]
-position = Vector2(160, 120)
+[node name="@Sprite2D@34" type="Sprite2D" parent="YSorted" unique_id=374579048]
+position = Vector2(160, 144)
 texture = ExtResource("3_jucjc")
+offset = Vector2(0, -24)
 
-[node name="PressureSwitch" type="Area2D" parent="YSorted" unique_id=1292401468 instance=ExtResource("4_kdvtn")]
+[node name="PressureSwitch" type="Area2D" parent="YSorted" unique_id=989943400 instance=ExtResource("4_kdvtn")]
 unique_name_in_owner = true
 position = Vector2(64, 128)
 collision_layer = 8
 collision_mask = 6
 script = ExtResource("5_uf0ug")
 
-[node name="SecurityDoor" type="StaticBody2D" parent="YSorted" unique_id=1521501669 instance=ExtResource("6_nphhp")]
+[node name="SecurityDoor" type="StaticBody2D" parent="YSorted" unique_id=1712296728 instance=ExtResource("6_nphhp")]
 unique_name_in_owner = true
 position = Vector2(64, 96)
 collision_mask = 0
 script = ExtResource("7_jffkr")
 
-[node name="Player" type="CharacterBody2D" parent="YSorted" unique_id=429095675 instance=ExtResource("8_5h515")]
+[node name="Player" type="CharacterBody2D" parent="YSorted" unique_id=212102953 instance=ExtResource("8_5h515")]
 position = Vector2(0, 128)
 collision_layer = 2
 motion_mode = 1
 script = ExtResource("9_uj1uw")
 camera_limit_rect = Rect2i(-160, -32, 448, 256)
 
-[node name="WallSegment" type="StaticBody2D" parent="." unique_id=1021863026]
+[node name="WallSegment" type="StaticBody2D" parent="." unique_id=1213329340]
 position = Vector2(16, 72)
 collision_mask = 0
 
-[node name="@CollisionShape2D@35" type="CollisionShape2D" parent="WallSegment" unique_id=2089427414]
+[node name="@CollisionShape2D@35" type="CollisionShape2D" parent="WallSegment" unique_id=1857381177]
 rotation = 0.4636476
 shape = SubResource("RectangleShape2D_uvgnk")
 
-[node name="@StaticBody2D@36" type="StaticBody2D" parent="." unique_id=894947591]
+[node name="@StaticBody2D@36" type="StaticBody2D" parent="." unique_id=1479627936]
 position = Vector2(128, 128)
 collision_mask = 0
 
-[node name="@CollisionShape2D@37" type="CollisionShape2D" parent="@StaticBody2D@36" unique_id=568622351]
+[node name="@CollisionShape2D@37" type="CollisionShape2D" parent="@StaticBody2D@36" unique_id=63826690]
 rotation = 0.4636476
 shape = SubResource("RectangleShape2D_c0oxv")
