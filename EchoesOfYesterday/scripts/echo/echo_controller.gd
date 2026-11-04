@@ -12,7 +12,7 @@ var recording: EchoRecording
 var frame_index := 0
 var playing := true
 
-## 调试(T3.5):显示记录轨迹线,回放结束打印最大位置误差
+## 调试(T3.5):回放结束打印最大位置误差(轨迹线由 EchoManager 画在世界空间)
 @export var debug_trajectory := false
 
 @onready var _sprite: AnimatedSprite2D = %Sprite
@@ -29,8 +29,6 @@ func setup(rec: EchoRecording) -> void:
 func _ready() -> void:
 	add_to_group("echo")
 	add_to_group("echo_trigger")
-	if debug_trajectory:
-		_spawn_debug_path()
 
 
 func _physics_process(_delta: float) -> void:
@@ -54,14 +52,3 @@ func _finish() -> void:
 	if debug_trajectory:
 		print("echo %d replay done: %d frames, max_pos_err=%.3f px" % [echo_id, recording.frames.size(), _max_error])
 	playback_finished.emit(self)
-
-
-## 记录轨迹调试线(T3.5):青色细线叠加记录路径
-func _spawn_debug_path() -> void:
-	var line := Line2D.new()
-	line.name = "DebugPath"
-	line.width = 1.0
-	line.default_color = Color(0.271, 0.851, 0.949, 0.5)
-	for f in recording.frames:
-		line.add_point(f["pos"])
-	add_child(line)
