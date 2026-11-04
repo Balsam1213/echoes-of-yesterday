@@ -1,0 +1,682 @@
+[gd_scene format=4]
+
+[ext_resource type="Script" path="res://scripts/level/level_03_manager.gd" id="1_5dxya"]
+[ext_resource type="Texture2D" path="res://assets/environment/floor_tile.png" id="2_fei51"]
+[ext_resource type="Texture2D" path="res://assets/environment/wall_block.png" id="3_ag8wc"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/PressureSwitch.tscn" id="4_eaars"]
+[ext_resource type="Script" path="res://scripts/interaction/pressure_switch.gd" id="5_l2yap"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/TimeLockSwitch.tscn" id="6_wm7ww"]
+[ext_resource type="Script" path="res://scripts/interaction/time_lock_switch.gd" id="7_26y65"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/SecurityDoor.tscn" id="8_j0k6w"]
+[ext_resource type="Script" path="res://scripts/interaction/security_door.gd" id="9_718jy"]
+[ext_resource type="Texture2D" path="res://assets/mechanisms/light_dot.png" id="10_j34oy"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/ExitArea.tscn" id="11_igsnf"]
+[ext_resource type="Script" path="res://scripts/interaction/exit_area.gd" id="12_an5u4"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="13_hdcp8"]
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="14_jcfwv"]
+[ext_resource type="Script" path="res://scripts/level/echo_manager.gd" id="15_k0n1s"]
+[ext_resource type="PackedScene" path="res://scenes/ui/UI.tscn" id="16_sotxn"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="17_00ljb"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_i8ocq"]
+texture = ExtResource("2_fei51")
+texture_region_size = Vector2i(64, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_nus5b"]
+tile_shape = 1
+tile_layout = 5
+tile_size = Vector2i(64, 32)
+sources/0 = SubResource("TileSetAtlasSource_i8ocq")
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_1lhsm"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_h6jev"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_q0qah"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_msm5b"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_21ofb"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_utg5w"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_fwcly"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_8nu6f"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_ldmpk"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_605bv"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_i8out"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_n7fcq"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_knt1a"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_1m2y8"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_1lej4"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_ftq1w"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_olygv"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_tx30e"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_mpkid"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_nm6bx"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_oh761"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_7l6mc"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_6mohb"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_gd8rm"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_ghfso"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_kyvx7"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_di4ui"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_pd3mx"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_aylwp"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_7g6tk"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_dxcju"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_rk71p"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_h3d3q"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_44hqk"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_7wwdr"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qee18"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_sh7gk"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_c2gdj"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_kpuhq"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_wando"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_o1vky"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_opjob"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_yviti"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_dipg2"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_0eymq"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_63ueo"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_twt3a"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_2l0nf"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="Level_03" type="Node2D" unique_id=734307858]
+script = ExtResource("1_5dxya")
+
+[node name="Floor" type="TileMapLayer" parent="." unique_id=615118147]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAABAAgAAAAAAAAAAAABAAkAAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAACAAYAAAAAAAAAAAACAAcAAAAAAAAAAAACAAgAAAAAAAAAAAACAAkAAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAADAAgAAAAAAAAAAAADAAkAAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAEAAgAAAAAAAAAAAAEAAkAAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAcAAAAAAAAAAAAFAAgAAAAAAAAAAAAFAAkAAAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAkAAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAAAAAAAAAAIAAkAAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAKAAAAAAAAAAAAAAAKAAEAAAAAAAAAAAAKAAIAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAAAAAAAAAAKAAcAAAAAAAAAAAAKAAgAAAAAAAAAAAAKAAkAAAAAAAAAAAALAAAAAAAAAAAAAAALAAEAAAAAAAAAAAALAAIAAAAAAAAAAAALAAMAAAAAAAAAAAALAAQAAAAAAAAAAAALAAUAAAAAAAAAAAALAAYAAAAAAAAAAAALAAcAAAAAAAAAAAALAAgAAAAAAAAAAAALAAkAAAAAAAAAAAAMAAAAAAAAAAAAAAAMAAEAAAAAAAAAAAAMAAIAAAAAAAAAAAAMAAMAAAAAAAAAAAAMAAQAAAAAAAAAAAAMAAUAAAAAAAAAAAAMAAYAAAAAAAAAAAAMAAcAAAAAAAAAAAAMAAgAAAAAAAAAAAAMAAkAAAAAAAAAAAANAAAAAAAAAAAAAAANAAEAAAAAAAAAAAANAAIAAAAAAAAAAAANAAMAAAAAAAAAAAANAAQAAAAAAAAAAAANAAUAAAAAAAAAAAANAAYAAAAAAAAAAAANAAcAAAAAAAAAAAANAAgAAAAAAAAAAAANAAkAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_nus5b")
+
+[node name="WallColliders" type="StaticBody2D" parent="." unique_id=1797909833]
+collision_mask = 0
+
+[node name="@CollisionShape2D@2" type="CollisionShape2D" parent="WallColliders" unique_id=257296138]
+position = Vector2(32, 16)
+shape = SubResource("ConvexPolygonShape2D_1lhsm")
+
+[node name="@CollisionShape2D@3" type="CollisionShape2D" parent="WallColliders" unique_id=1088652843]
+position = Vector2(0, 32)
+shape = SubResource("ConvexPolygonShape2D_h6jev")
+
+[node name="@CollisionShape2D@4" type="CollisionShape2D" parent="WallColliders" unique_id=1150105842]
+position = Vector2(-32, 48)
+shape = SubResource("ConvexPolygonShape2D_q0qah")
+
+[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="WallColliders" unique_id=1872151477]
+position = Vector2(-64, 64)
+shape = SubResource("ConvexPolygonShape2D_msm5b")
+
+[node name="@CollisionShape2D@6" type="CollisionShape2D" parent="WallColliders" unique_id=1776079033]
+position = Vector2(-96, 80)
+shape = SubResource("ConvexPolygonShape2D_21ofb")
+
+[node name="@CollisionShape2D@7" type="CollisionShape2D" parent="WallColliders" unique_id=1653197197]
+position = Vector2(-128, 96)
+shape = SubResource("ConvexPolygonShape2D_utg5w")
+
+[node name="@CollisionShape2D@8" type="CollisionShape2D" parent="WallColliders" unique_id=164801453]
+position = Vector2(-160, 112)
+shape = SubResource("ConvexPolygonShape2D_fwcly")
+
+[node name="@CollisionShape2D@9" type="CollisionShape2D" parent="WallColliders" unique_id=1497223725]
+position = Vector2(-192, 128)
+shape = SubResource("ConvexPolygonShape2D_8nu6f")
+
+[node name="@CollisionShape2D@10" type="CollisionShape2D" parent="WallColliders" unique_id=2100548887]
+position = Vector2(-224, 144)
+shape = SubResource("ConvexPolygonShape2D_ldmpk")
+
+[node name="@CollisionShape2D@11" type="CollisionShape2D" parent="WallColliders" unique_id=1212809330]
+position = Vector2(-256, 160)
+shape = SubResource("ConvexPolygonShape2D_605bv")
+
+[node name="@CollisionShape2D@12" type="CollisionShape2D" parent="WallColliders" unique_id=1347282023]
+position = Vector2(64, 32)
+shape = SubResource("ConvexPolygonShape2D_i8out")
+
+[node name="@CollisionShape2D@13" type="CollisionShape2D" parent="WallColliders" unique_id=1962654257]
+position = Vector2(-224, 176)
+shape = SubResource("ConvexPolygonShape2D_n7fcq")
+
+[node name="@CollisionShape2D@14" type="CollisionShape2D" parent="WallColliders" unique_id=220015435]
+position = Vector2(96, 48)
+shape = SubResource("ConvexPolygonShape2D_knt1a")
+
+[node name="@CollisionShape2D@15" type="CollisionShape2D" parent="WallColliders" unique_id=661994455]
+position = Vector2(-192, 192)
+shape = SubResource("ConvexPolygonShape2D_1m2y8")
+
+[node name="@CollisionShape2D@16" type="CollisionShape2D" parent="WallColliders" unique_id=1747945361]
+position = Vector2(128, 64)
+shape = SubResource("ConvexPolygonShape2D_1lej4")
+
+[node name="@CollisionShape2D@17" type="CollisionShape2D" parent="WallColliders" unique_id=790692484]
+position = Vector2(-160, 208)
+shape = SubResource("ConvexPolygonShape2D_ftq1w")
+
+[node name="@CollisionShape2D@18" type="CollisionShape2D" parent="WallColliders" unique_id=521008196]
+position = Vector2(160, 80)
+shape = SubResource("ConvexPolygonShape2D_olygv")
+
+[node name="@CollisionShape2D@19" type="CollisionShape2D" parent="WallColliders" unique_id=550983475]
+position = Vector2(-128, 224)
+shape = SubResource("ConvexPolygonShape2D_tx30e")
+
+[node name="@CollisionShape2D@20" type="CollisionShape2D" parent="WallColliders" unique_id=325741766]
+position = Vector2(192, 96)
+shape = SubResource("ConvexPolygonShape2D_mpkid")
+
+[node name="@CollisionShape2D@21" type="CollisionShape2D" parent="WallColliders" unique_id=233641798]
+position = Vector2(-96, 240)
+shape = SubResource("ConvexPolygonShape2D_nm6bx")
+
+[node name="@CollisionShape2D@22" type="CollisionShape2D" parent="WallColliders" unique_id=950850991]
+position = Vector2(224, 112)
+shape = SubResource("ConvexPolygonShape2D_oh761")
+
+[node name="@CollisionShape2D@23" type="CollisionShape2D" parent="WallColliders" unique_id=1856227554]
+position = Vector2(-64, 256)
+shape = SubResource("ConvexPolygonShape2D_7l6mc")
+
+[node name="@CollisionShape2D@24" type="CollisionShape2D" parent="WallColliders" unique_id=454955737]
+position = Vector2(288, 144)
+shape = SubResource("ConvexPolygonShape2D_6mohb")
+
+[node name="@CollisionShape2D@25" type="CollisionShape2D" parent="WallColliders" unique_id=1557495005]
+position = Vector2(0, 288)
+shape = SubResource("ConvexPolygonShape2D_gd8rm")
+
+[node name="@CollisionShape2D@26" type="CollisionShape2D" parent="WallColliders" unique_id=265735244]
+position = Vector2(320, 160)
+shape = SubResource("ConvexPolygonShape2D_ghfso")
+
+[node name="@CollisionShape2D@27" type="CollisionShape2D" parent="WallColliders" unique_id=1343168516]
+position = Vector2(32, 304)
+shape = SubResource("ConvexPolygonShape2D_kyvx7")
+
+[node name="@CollisionShape2D@28" type="CollisionShape2D" parent="WallColliders" unique_id=897331515]
+position = Vector2(352, 176)
+shape = SubResource("ConvexPolygonShape2D_di4ui")
+
+[node name="@CollisionShape2D@29" type="CollisionShape2D" parent="WallColliders" unique_id=354322893]
+position = Vector2(64, 320)
+shape = SubResource("ConvexPolygonShape2D_pd3mx")
+
+[node name="@CollisionShape2D@30" type="CollisionShape2D" parent="WallColliders" unique_id=350791471]
+position = Vector2(384, 192)
+shape = SubResource("ConvexPolygonShape2D_aylwp")
+
+[node name="@CollisionShape2D@31" type="CollisionShape2D" parent="WallColliders" unique_id=1473216356]
+position = Vector2(96, 336)
+shape = SubResource("ConvexPolygonShape2D_7g6tk")
+
+[node name="@CollisionShape2D@32" type="CollisionShape2D" parent="WallColliders" unique_id=507373152]
+position = Vector2(416, 208)
+shape = SubResource("ConvexPolygonShape2D_dxcju")
+
+[node name="@CollisionShape2D@33" type="CollisionShape2D" parent="WallColliders" unique_id=475860522]
+position = Vector2(128, 352)
+shape = SubResource("ConvexPolygonShape2D_rk71p")
+
+[node name="@CollisionShape2D@34" type="CollisionShape2D" parent="WallColliders" unique_id=934638401]
+position = Vector2(448, 224)
+shape = SubResource("ConvexPolygonShape2D_h3d3q")
+
+[node name="@CollisionShape2D@35" type="CollisionShape2D" parent="WallColliders" unique_id=5806100]
+position = Vector2(416, 240)
+shape = SubResource("ConvexPolygonShape2D_44hqk")
+
+[node name="@CollisionShape2D@36" type="CollisionShape2D" parent="WallColliders" unique_id=1186158151]
+position = Vector2(384, 256)
+shape = SubResource("ConvexPolygonShape2D_7wwdr")
+
+[node name="@CollisionShape2D@37" type="CollisionShape2D" parent="WallColliders" unique_id=287890102]
+position = Vector2(352, 272)
+shape = SubResource("ConvexPolygonShape2D_qee18")
+
+[node name="@CollisionShape2D@38" type="CollisionShape2D" parent="WallColliders" unique_id=150554223]
+position = Vector2(320, 288)
+shape = SubResource("ConvexPolygonShape2D_sh7gk")
+
+[node name="@CollisionShape2D@39" type="CollisionShape2D" parent="WallColliders" unique_id=462186243]
+position = Vector2(288, 304)
+shape = SubResource("ConvexPolygonShape2D_c2gdj")
+
+[node name="@CollisionShape2D@40" type="CollisionShape2D" parent="WallColliders" unique_id=1497336196]
+position = Vector2(256, 320)
+shape = SubResource("ConvexPolygonShape2D_kpuhq")
+
+[node name="@CollisionShape2D@41" type="CollisionShape2D" parent="WallColliders" unique_id=760207793]
+position = Vector2(224, 336)
+shape = SubResource("ConvexPolygonShape2D_wando")
+
+[node name="@CollisionShape2D@42" type="CollisionShape2D" parent="WallColliders" unique_id=1661834564]
+position = Vector2(192, 352)
+shape = SubResource("ConvexPolygonShape2D_o1vky")
+
+[node name="@CollisionShape2D@43" type="CollisionShape2D" parent="WallColliders" unique_id=1892743407]
+position = Vector2(160, 368)
+shape = SubResource("ConvexPolygonShape2D_opjob")
+
+[node name="@CollisionShape2D@44" type="CollisionShape2D" parent="WallColliders" unique_id=1988486854]
+position = Vector2(192, 128)
+shape = SubResource("ConvexPolygonShape2D_yviti")
+
+[node name="@CollisionShape2D@45" type="CollisionShape2D" parent="WallColliders" unique_id=1443825856]
+position = Vector2(256, 160)
+shape = SubResource("ConvexPolygonShape2D_dipg2")
+
+[node name="@CollisionShape2D@46" type="CollisionShape2D" parent="WallColliders" unique_id=406715167]
+position = Vector2(160, 240)
+shape = SubResource("ConvexPolygonShape2D_0eymq")
+
+[node name="@CollisionShape2D@47" type="CollisionShape2D" parent="WallColliders" unique_id=1483518485]
+position = Vector2(128, 256)
+shape = SubResource("ConvexPolygonShape2D_63ueo")
+
+[node name="@CollisionShape2D@48" type="CollisionShape2D" parent="WallColliders" unique_id=1097477367]
+position = Vector2(64, 160)
+shape = SubResource("ConvexPolygonShape2D_twt3a")
+
+[node name="@CollisionShape2D@49" type="CollisionShape2D" parent="WallColliders" unique_id=1742887839]
+position = Vector2(288, 112)
+shape = SubResource("ConvexPolygonShape2D_2l0nf")
+
+[node name="YSorted" type="Node2D" parent="." unique_id=666015465]
+y_sort_enabled = true
+
+[node name="@Sprite2D@50" type="Sprite2D" parent="YSorted" unique_id=1364664353]
+position = Vector2(32, 16)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@51" type="Sprite2D" parent="YSorted" unique_id=577881687]
+position = Vector2(0, 32)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@52" type="Sprite2D" parent="YSorted" unique_id=1658838083]
+position = Vector2(-32, 48)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@53" type="Sprite2D" parent="YSorted" unique_id=2107058076]
+position = Vector2(-64, 64)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@54" type="Sprite2D" parent="YSorted" unique_id=744486797]
+position = Vector2(-96, 80)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@55" type="Sprite2D" parent="YSorted" unique_id=1330476118]
+position = Vector2(-128, 96)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@56" type="Sprite2D" parent="YSorted" unique_id=90124494]
+position = Vector2(-160, 112)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@57" type="Sprite2D" parent="YSorted" unique_id=1654044524]
+position = Vector2(-192, 128)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@58" type="Sprite2D" parent="YSorted" unique_id=1822381594]
+position = Vector2(-224, 144)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@59" type="Sprite2D" parent="YSorted" unique_id=1007433375]
+position = Vector2(-256, 160)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@60" type="Sprite2D" parent="YSorted" unique_id=1452950032]
+position = Vector2(64, 32)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@61" type="Sprite2D" parent="YSorted" unique_id=1407364900]
+position = Vector2(-224, 176)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@62" type="Sprite2D" parent="YSorted" unique_id=1413233125]
+position = Vector2(96, 48)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@63" type="Sprite2D" parent="YSorted" unique_id=1595733809]
+position = Vector2(-192, 192)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@64" type="Sprite2D" parent="YSorted" unique_id=189594309]
+position = Vector2(128, 64)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@65" type="Sprite2D" parent="YSorted" unique_id=837797091]
+position = Vector2(-160, 208)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@66" type="Sprite2D" parent="YSorted" unique_id=2121887282]
+position = Vector2(160, 80)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@67" type="Sprite2D" parent="YSorted" unique_id=2134172263]
+position = Vector2(-128, 224)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@68" type="Sprite2D" parent="YSorted" unique_id=1802665688]
+position = Vector2(192, 96)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@69" type="Sprite2D" parent="YSorted" unique_id=725441272]
+position = Vector2(64, 160)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@70" type="Sprite2D" parent="YSorted" unique_id=84511683]
+position = Vector2(-96, 240)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@71" type="Sprite2D" parent="YSorted" unique_id=1849700962]
+position = Vector2(224, 112)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@72" type="Sprite2D" parent="YSorted" unique_id=1466251245]
+position = Vector2(192, 128)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@73" type="Sprite2D" parent="YSorted" unique_id=73286604]
+position = Vector2(-64, 256)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@74" type="Sprite2D" parent="YSorted" unique_id=1313318378]
+position = Vector2(288, 144)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@75" type="Sprite2D" parent="YSorted" unique_id=949033898]
+position = Vector2(256, 160)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@76" type="Sprite2D" parent="YSorted" unique_id=501347256]
+position = Vector2(0, 288)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@77" type="Sprite2D" parent="YSorted" unique_id=1244175951]
+position = Vector2(320, 160)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@78" type="Sprite2D" parent="YSorted" unique_id=2123514131]
+position = Vector2(160, 240)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@79" type="Sprite2D" parent="YSorted" unique_id=764104093]
+position = Vector2(128, 256)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@80" type="Sprite2D" parent="YSorted" unique_id=1148015418]
+position = Vector2(32, 304)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@81" type="Sprite2D" parent="YSorted" unique_id=898282059]
+position = Vector2(352, 176)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@82" type="Sprite2D" parent="YSorted" unique_id=1234713597]
+position = Vector2(64, 320)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@83" type="Sprite2D" parent="YSorted" unique_id=1826250100]
+position = Vector2(384, 192)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@84" type="Sprite2D" parent="YSorted" unique_id=1544243236]
+position = Vector2(96, 336)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@85" type="Sprite2D" parent="YSorted" unique_id=564030994]
+position = Vector2(416, 208)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@86" type="Sprite2D" parent="YSorted" unique_id=704170687]
+position = Vector2(128, 352)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@87" type="Sprite2D" parent="YSorted" unique_id=1787971192]
+position = Vector2(448, 224)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@88" type="Sprite2D" parent="YSorted" unique_id=277862398]
+position = Vector2(416, 240)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@89" type="Sprite2D" parent="YSorted" unique_id=157756053]
+position = Vector2(384, 256)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@90" type="Sprite2D" parent="YSorted" unique_id=915011866]
+position = Vector2(352, 272)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@91" type="Sprite2D" parent="YSorted" unique_id=41058675]
+position = Vector2(320, 288)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@92" type="Sprite2D" parent="YSorted" unique_id=707942034]
+position = Vector2(288, 304)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@93" type="Sprite2D" parent="YSorted" unique_id=1555696006]
+position = Vector2(256, 320)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@94" type="Sprite2D" parent="YSorted" unique_id=1616933757]
+position = Vector2(224, 336)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@95" type="Sprite2D" parent="YSorted" unique_id=1698216276]
+position = Vector2(192, 352)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="@Sprite2D@96" type="Sprite2D" parent="YSorted" unique_id=626240888]
+position = Vector2(160, 368)
+texture = ExtResource("3_ag8wc")
+offset = Vector2(0, -24)
+
+[node name="SwitchA" type="Area2D" parent="YSorted" unique_id=2121262754 instance=ExtResource("4_eaars")]
+unique_name_in_owner = true
+position = Vector2(-96, 144)
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("5_l2yap")
+
+[node name="SwitchB" type="Area2D" parent="YSorted" unique_id=713344000 instance=ExtResource("4_eaars")]
+unique_name_in_owner = true
+position = Vector2(288, 272)
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("5_l2yap")
+
+[node name="TimeLock" type="Area2D" parent="YSorted" unique_id=109194283 instance=ExtResource("6_wm7ww")]
+unique_name_in_owner = true
+position = Vector2(128, 128)
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("7_26y65")
+
+[node name="SecurityDoor" type="StaticBody2D" parent="YSorted" unique_id=130302849 instance=ExtResource("8_j0k6w")]
+unique_name_in_owner = true
+position = Vector2(224, 144)
+collision_mask = 0
+script = ExtResource("9_718jy")
+
+[node name="Light1" type="Sprite2D" parent="YSorted" unique_id=539119819]
+unique_name_in_owner = true
+position = Vector2(188, 114)
+texture = ExtResource("10_j34oy")
+
+[node name="Light2" type="Sprite2D" parent="YSorted" unique_id=225217563]
+unique_name_in_owner = true
+position = Vector2(224, 114)
+texture = ExtResource("10_j34oy")
+
+[node name="Light3" type="Sprite2D" parent="YSorted" unique_id=2062055538]
+unique_name_in_owner = true
+position = Vector2(260, 114)
+texture = ExtResource("10_j34oy")
+
+[node name="ExitArea" type="Area2D" parent="YSorted" unique_id=1657582236 instance=ExtResource("11_igsnf")]
+unique_name_in_owner = true
+position = Vector2(256, 128)
+collision_layer = 8
+collision_mask = 2
+script = ExtResource("12_an5u4")
+
+[node name="Player" type="CharacterBody2D" parent="YSorted" unique_id=1056743411 instance=ExtResource("13_hdcp8")]
+unique_name_in_owner = true
+position = Vector2(0, 256)
+collision_layer = 2
+motion_mode = 1
+script = ExtResource("14_jcfwv")
+camera_limit_rect = Rect2i(-288, -32, 768, 416)
+
+[node name="EchoManager" type="Node" parent="." unique_id=1590874012]
+unique_name_in_owner = true
+script = ExtResource("15_k0n1s")
+debug_trajectory = true
+ysorted_path = NodePath("../YSorted")
+
+[node name="UI" type="CanvasLayer" parent="." unique_id=1945505843 instance=ExtResource("16_sotxn")]
+unique_name_in_owner = true
+process_mode = 3
+script = ExtResource("17_00ljb")

@@ -23,6 +23,7 @@ func _run() -> void:
 	var level := Node2D.new()
 	level.name = "Level_01"
 	level.set_script(load("res://scripts/level/level_01_manager.gd"))
+	level.next_scene = "res://scenes/levels/Level_02.tscn"  # 通关推进链(docs/10 §4)
 
 	# --- TileSet(等距 64×32,DIAMOND_DOWN) ---
 	var tile_set := TileSet.new()
