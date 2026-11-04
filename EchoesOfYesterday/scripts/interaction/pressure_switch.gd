@@ -25,6 +25,12 @@ func is_active() -> bool:
 	return not _bodies_inside.is_empty()
 
 
+func force_reset() -> void:
+	## 关卡重置:清空触发清单并复位视觉(不 emit 信号;玩家随后被传送走,docs/02 §8.2)
+	_bodies_inside.clear()
+	_apply_visual(false)
+
+
 func _on_body_entered(body: Node2D) -> void:
 	if not body.is_in_group("echo_trigger") or body in _bodies_inside:
 		return

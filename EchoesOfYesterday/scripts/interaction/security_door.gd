@@ -32,6 +32,13 @@ func is_open() -> bool:
 	return _open
 
 
+func force_reset() -> void:
+	## 关卡重置:强制关门并清空门洞检测(docs/02 §8.2 第 2 步)
+	_open_requested = false
+	_bodies_in_hole.clear()
+	_refresh()
+
+
 func set_open(open: bool) -> void:
 	_open_requested = open
 	_refresh()
