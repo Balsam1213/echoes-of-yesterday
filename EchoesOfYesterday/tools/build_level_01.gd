@@ -44,6 +44,11 @@ func _run() -> void:
 			floor_layer.set_cell(Vector2i(x, y), 0, Vector2i.ZERO)
 	level.add_child(floor_layer)
 
+	# 地面贴花层(平底物件:开关底座等,恒在角色之下)
+	var decals := Node2D.new()
+	decals.name = "Decals"
+	level.add_child(decals)
+
 	# --- 墙体碰撞:周界(北缘扣除出口三格)+ 横墙;出口背后虚拟碰撞防走出地图 ---
 	var wall_cells: Array[Vector2i] = []
 	for x in ROOM_W:
@@ -93,6 +98,14 @@ func _run() -> void:
 	switch.unique_name_in_owner = true
 	switch.position = floor_layer.map_to_local(SWITCH_CELL)
 	ysorted.add_child(switch)
+
+	# 开关底座贴花(地面层,恒在角色之下——平底物件不参与 Y-sort)
+	var sw_pad := Sprite2D.new()
+	sw_pad.name = "SwitchPad"
+	sw_pad.texture = load("res://assets/mechanisms/switch_pad.png")
+	sw_pad.position = floor_layer.map_to_local(SWITCH_CELL)
+	decals.add_child(sw_pad)
+	switch.bind_pad(sw_pad, sw_pad.position)
 
 	var device: Area2D = (load("res://scenes/mechanisms/TimeRecorderDevice.tscn") as PackedScene).instantiate()
 	device.name = "TimeRecorderDevice"
@@ -174,6 +187,20 @@ func _add_wall_colliders(level: Node2D, floor_layer: TileMapLayer, cells: Array[
 		cs.shape = shape
 		cs.position = floor_layer.map_to_local(cell)
 		body.add_child(cs)
+
+	# 房间四角凸角封堵:角顶点的 X 形楔形缝可沿内壁滑行绕出地图(devlog 2026-11-06)
+	var used: Rect2i = floor_layer.get_used_rect()
+	var c00: Vector2 = floor_layer.map_to_local(used.position)
+	var c10: Vector2 = floor_layer.map_to_local(used.position + Vector2i(used.size.x - 1, 0))
+	var c11: Vector2 = floor_layer.map_to_local(used.position + used.size - Vector2i(1, 1))
+	var c01: Vector2 = floor_layer.map_to_local(used.position + Vector2i(0, used.size.y - 1))
+	for v: Vector2 in [c00 + Vector2(0, -16), c10 + Vector2(32, 0), c11 + Vector2(0, 16), c01 + Vector2(-32, 0)]:
+		var plug := CircleShape2D.new()
+		plug.radius = 14.0
+		var pcs := CollisionShape2D.new()
+		pcs.shape = plug
+		pcs.position = v
+		body.add_child(pcs)
 
 
 func _camera_limits(floor_layer: TileMapLayer) -> Rect2i:

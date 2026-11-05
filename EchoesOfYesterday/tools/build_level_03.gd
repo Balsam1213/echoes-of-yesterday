@@ -40,6 +40,11 @@ func _run() -> void:
 			floor_layer.set_cell(Vector2i(x, y), 0, Vector2i.ZERO)
 	level.add_child(floor_layer)
 
+	# 地面贴花层(平底物件:开关底座等,恒在角色之下)
+	var decals := Node2D.new()
+	decals.name = "Decals"
+	level.add_child(decals)
+
 	# 墙体:周界(北缘扣除出口格)+ 门侧翼 + 路线造型短墙 + 出口背后虚拟格
 	var wall_cells: Array[Vector2i] = []
 	for x in ROOM_W:
@@ -69,12 +74,19 @@ func _run() -> void:
 			if wall_cells_set.has(c) and not (y == -1):
 				ysorted.add_child(_make_wall(wall_tex, floor_layer.map_to_local(c)))
 
-	# 机关:双压力开关 + 时间锁 + 安全门(三灯)
+	# 机关:双压力开关 + 时间锁 + 安全门(三灯);底座贴花入地面层
 	var sw_a: Area2D = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
 	sw_a.name = "SwitchA"
 	sw_a.unique_name_in_owner = true
 	sw_a.position = floor_layer.map_to_local(SWITCH_A_CELL)
 	ysorted.add_child(sw_a)
+
+	var sw_a_pad := Sprite2D.new()
+	sw_a_pad.name = "SwitchAPad"
+	sw_a_pad.texture = load("res://assets/mechanisms/switch_pad.png")
+	sw_a_pad.position = floor_layer.map_to_local(SWITCH_A_CELL)
+	decals.add_child(sw_a_pad)
+	sw_a.bind_pad(sw_a_pad, sw_a_pad.position)
 
 	var sw_b: Area2D = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
 	sw_b.name = "SwitchB"
@@ -82,11 +94,25 @@ func _run() -> void:
 	sw_b.position = floor_layer.map_to_local(SWITCH_B_CELL)
 	ysorted.add_child(sw_b)
 
+	var sw_b_pad := Sprite2D.new()
+	sw_b_pad.name = "SwitchBPad"
+	sw_b_pad.texture = load("res://assets/mechanisms/switch_pad.png")
+	sw_b_pad.position = floor_layer.map_to_local(SWITCH_B_CELL)
+	decals.add_child(sw_b_pad)
+	sw_b.bind_pad(sw_b_pad, sw_b_pad.position)
+
 	var lock: Area2D = (load("res://scenes/mechanisms/TimeLockSwitch.tscn") as PackedScene).instantiate()
 	lock.name = "TimeLock"
 	lock.unique_name_in_owner = true
 	lock.position = floor_layer.map_to_local(LOCK_CELL)
 	ysorted.add_child(lock)
+
+	var lock_pad := Sprite2D.new()
+	lock_pad.name = "TimeLockPad"
+	lock_pad.texture = load("res://assets/mechanisms/switch_pad.png")
+	lock_pad.position = floor_layer.map_to_local(LOCK_CELL)
+	decals.add_child(lock_pad)
+	lock.bind_pad(lock_pad, lock_pad.position)
 
 	var door: StaticBody2D = (load("res://scenes/mechanisms/SecurityDoor.tscn") as PackedScene).instantiate()
 	door.name = "SecurityDoor"
@@ -175,6 +201,20 @@ func _add_wall_colliders(level: Node2D, floor_layer: TileMapLayer, cells: Array[
 		cs.shape = shape
 		cs.position = floor_layer.map_to_local(cell)
 		body.add_child(cs)
+
+	# 房间四角凸角封堵:角顶点的 X 形楔形缝可沿内壁滑行绕出地图(devlog 2026-11-06)
+	var used: Rect2i = floor_layer.get_used_rect()
+	var c00: Vector2 = floor_layer.map_to_local(used.position)
+	var c10: Vector2 = floor_layer.map_to_local(used.position + Vector2i(used.size.x - 1, 0))
+	var c11: Vector2 = floor_layer.map_to_local(used.position + used.size - Vector2i(1, 1))
+	var c01: Vector2 = floor_layer.map_to_local(used.position + Vector2i(0, used.size.y - 1))
+	for v: Vector2 in [c00 + Vector2(0, -16), c10 + Vector2(32, 0), c11 + Vector2(0, 16), c01 + Vector2(-32, 0)]:
+		var plug := CircleShape2D.new()
+		plug.radius = 14.0
+		var pcs := CollisionShape2D.new()
+		pcs.shape = plug
+		pcs.position = v
+		body.add_child(pcs)
 
 
 func _camera_limits(floor_layer: TileMapLayer) -> Rect2i:

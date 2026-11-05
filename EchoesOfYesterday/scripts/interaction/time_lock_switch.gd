@@ -96,7 +96,7 @@ func _physics_process(delta: float) -> void:
 		return
 	_remaining -= delta
 	if _remaining <= BLINK_FROM:
-		_pad.modulate = COLOR_ON if fmod(_remaining, 0.5) < 0.25 else COLOR_OFF
+		pad_sprite.modulate = COLOR_ON if fmod(_remaining, 0.5) < 0.25 else COLOR_OFF
 		if not _t17_sent:
 			_t17_sent = true
 			GameEvents.notify_requested.emit(UIText.T17_COUNTDOWN)

@@ -84,20 +84,20 @@ func _probe(path: String) -> void:
 	while not queue.is_empty():
 		var p: Vector2 = queue.pop_front()
 		var p_depth := _quad_signed_dist(p, quad)
-		for off: Vector2 in [Vector2(STEP, 0), Vector2(-STEP, 0), Vector2(0, STEP), Vector2(0, -STEP)]:
+		for off: Vector2 in [Vector2(STEP, 0), Vector2(-STEP, 0), Vector2(0, STEP), Vector2(0, -STEP), Vector2(STEP, STEP), Vector2(STEP, -STEP), Vector2(-STEP, STEP), Vector2(-STEP, -STEP)]:
 			var np: Vector2 = p + off
 			var key := np.snapped(Vector2(STEP, STEP))
-			if walkable.has(key) and not reachable.has(key):
+			if walkable.has(key) and not reachable.has(key) and not (off.x != 0 and off.y != 0 and not (walkable.has(p.snapped(Vector2(STEP, STEP)) + Vector2(off.x, 0)) and walkable.has(p.snapped(Vector2(STEP, STEP)) + Vector2(0, off.y)))):
 				reachable[key] = true
 				queue.push_back(key)
 				var np_depth := _quad_signed_dist(np, quad)
-				if np_depth > 48.0 and p_depth <= 48.0:
+				if np_depth > 12.0 and p_depth <= 12.0:
 					crossings[floor_layer.local_to_map(np)] = np
-				if np_depth > 48.0:
+				if np_depth > 12.0:
 					outside += 1
 
 	print("== %s ==" % path.get_file())
-	print("  可达采样 %d,其中房间外(深) %d;泄漏入口 %d 处" % [reachable.size(), outside, crossings.size()])
+	print("  可达采样 %d,其中房间外(深≥12px) %d;泄漏入口 %d 处" % [reachable.size(), outside, crossings.size()])
 	if not crossings.is_empty():
 		_fails += 1
 		for cell: Vector2i in crossings:

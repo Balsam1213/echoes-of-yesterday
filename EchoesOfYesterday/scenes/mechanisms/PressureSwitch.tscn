@@ -14,6 +14,3 @@ script = ExtResource("1")
 [node name="Zone" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_zone")
 
-[node name="Pad" type="Sprite2D" parent="."]
-unique_name_in_owner = true
-texture = ExtResource("2")

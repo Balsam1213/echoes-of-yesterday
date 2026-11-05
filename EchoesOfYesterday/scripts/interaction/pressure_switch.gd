@@ -11,7 +11,8 @@ const COLOR_ON := Color(0.957, 0.827, 0.369, 1.0)  # 激活:#F4D35E 明亮黄
 
 var _bodies_inside: Array[Node2D] = []
 
-@onready var _pad: Sprite2D = %Pad
+## 开关底座贴花(地面层,由关卡构建脚本注入;不参与 Y-sort,恒在角色之下)
+@export var pad_sprite: Sprite2D
 
 
 func _ready() -> void:
@@ -50,5 +51,17 @@ func _on_body_exited(body: Node2D) -> void:
 
 ## 视觉反馈:指示变黄 + 底座下沉 2px(docs/05 §4)
 func _apply_visual(active: bool) -> void:
-	_pad.modulate = COLOR_ON if active else COLOR_OFF
-	_pad.position.y = 2.0 if active else 0.0
+	if pad_sprite == null:
+		return
+	pad_sprite.modulate = COLOR_ON if active else COLOR_OFF
+	pad_sprite.position.y = _pad_base_offset.y + (2.0 if active else 0.0)
+
+
+var _pad_base_offset := Vector2.ZERO
+
+
+## 由构建脚本调用:贴花基准位置(格位),下沉偏移在此基础上叠加
+func bind_pad(sprite: Sprite2D, base_position: Vector2) -> void:
+	pad_sprite = sprite
+	pad_sprite.position = base_position
+	_pad_base_offset = base_position
