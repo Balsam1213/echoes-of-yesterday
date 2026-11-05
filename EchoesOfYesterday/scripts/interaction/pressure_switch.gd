@@ -50,18 +50,15 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 ## 视觉反馈:指示变黄 + 底座下沉 2px(docs/05 §4)
+## 下沉用 Sprite2D.offset(纯渲染偏移):节点 position 是贴花的唯一锚点,
+## 运行时覆写 position 会因普通变量不随场景保存而把底座"飞"到错误位置(返修教训)
 func _apply_visual(active: bool) -> void:
 	if pad_sprite == null:
 		return
 	pad_sprite.modulate = COLOR_ON if active else COLOR_OFF
-	pad_sprite.position.y = _pad_base_offset.y + (2.0 if active else 0.0)
+	pad_sprite.offset = Vector2(0, 2.0 if active else 0.0)
 
 
-var _pad_base_offset := Vector2.ZERO
-
-
-## 由构建脚本调用:贴花基准位置(格位),下沉偏移在此基础上叠加
-func bind_pad(sprite: Sprite2D, base_position: Vector2) -> void:
+## 由构建脚本调用:注入地面贴花层中的底座贴图引用
+func bind_pad(sprite: Sprite2D) -> void:
 	pad_sprite = sprite
-	pad_sprite.position = base_position
-	_pad_base_offset = base_position

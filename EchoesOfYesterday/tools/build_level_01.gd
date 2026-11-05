@@ -105,7 +105,7 @@ func _run() -> void:
 	sw_pad.texture = load("res://assets/mechanisms/switch_pad.png")
 	sw_pad.position = floor_layer.map_to_local(SWITCH_CELL)
 	decals.add_child(sw_pad)
-	switch.bind_pad(sw_pad, sw_pad.position)
+	switch.bind_pad(sw_pad)
 
 	var device: Area2D = (load("res://scenes/mechanisms/TimeRecorderDevice.tscn") as PackedScene).instantiate()
 	device.name = "TimeRecorderDevice"
@@ -205,7 +205,7 @@ func _add_wall_colliders(level: Node2D, floor_layer: TileMapLayer, cells: Array[
 
 
 ## 顶点/角部封堵塞(_add_wall_colliders 调用)
-func _add_plug(body: StaticBody2D, pos: Vector2, radius := 10.0) -> void:
+func _add_plug(body: StaticBody2D, pos: Vector2, radius := 14.0) -> void:
 	var plug := CircleShape2D.new()
 	plug.radius = radius
 	var cs := CollisionShape2D.new()

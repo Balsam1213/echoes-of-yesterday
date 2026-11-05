@@ -7,7 +7,7 @@ const ROOM_H := 10
 const DOOR_CELL := Vector2i(7, 1)
 const SWITCH_A_CELL := Vector2i(2, 6)
 const SWITCH_B_CELL := Vector2i(11, 4)
-const LOCK_CELL := Vector2i(5, 2)
+const LOCK_CELL := Vector2i(6, 3)
 const SPAWN_CELL := Vector2i(7, 8)
 const EXIT_CELL := Vector2i(7, 0)
 static var FOOTPRINT := PackedVector2Array([Vector2(0, -16), Vector2(32, 0), Vector2(0, 16), Vector2(-32, 0)])
@@ -86,7 +86,7 @@ func _run() -> void:
 	sw_a_pad.texture = load("res://assets/mechanisms/switch_pad.png")
 	sw_a_pad.position = floor_layer.map_to_local(SWITCH_A_CELL)
 	decals.add_child(sw_a_pad)
-	sw_a.bind_pad(sw_a_pad, sw_a_pad.position)
+	sw_a.bind_pad(sw_a_pad)
 
 	var sw_b: Area2D = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
 	sw_b.name = "SwitchB"
@@ -99,7 +99,7 @@ func _run() -> void:
 	sw_b_pad.texture = load("res://assets/mechanisms/switch_pad.png")
 	sw_b_pad.position = floor_layer.map_to_local(SWITCH_B_CELL)
 	decals.add_child(sw_b_pad)
-	sw_b.bind_pad(sw_b_pad, sw_b_pad.position)
+	sw_b.bind_pad(sw_b_pad)
 
 	var lock: Area2D = (load("res://scenes/mechanisms/TimeLockSwitch.tscn") as PackedScene).instantiate()
 	lock.name = "TimeLock"
@@ -112,7 +112,7 @@ func _run() -> void:
 	lock_pad.texture = load("res://assets/mechanisms/switch_pad.png")
 	lock_pad.position = floor_layer.map_to_local(LOCK_CELL)
 	decals.add_child(lock_pad)
-	lock.bind_pad(lock_pad, lock_pad.position)
+	lock.bind_pad(lock_pad)
 
 	var door: StaticBody2D = (load("res://scenes/mechanisms/SecurityDoor.tscn") as PackedScene).instantiate()
 	door.name = "SecurityDoor"
@@ -219,7 +219,7 @@ func _add_wall_colliders(level: Node2D, floor_layer: TileMapLayer, cells: Array[
 
 
 ## 顶点/角部封堵塞(_add_wall_colliders 调用)
-func _add_plug(body: StaticBody2D, pos: Vector2, radius := 10.0) -> void:
+func _add_plug(body: StaticBody2D, pos: Vector2, radius := 14.0) -> void:
 	var plug := CircleShape2D.new()
 	plug.radius = radius
 	var cs := CollisionShape2D.new()
