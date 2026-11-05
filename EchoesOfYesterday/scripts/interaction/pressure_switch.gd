@@ -6,7 +6,7 @@ extends Area2D
 signal switch_activated
 signal switch_deactivated
 
-const COLOR_OFF := Color(0.42, 0.45, 0.5, 1.0)     # 未激活:灰(docs/04 §2)
+const COLOR_OFF := Color(0.62, 0.66, 0.72, 1.0)     # 未激活:亮灰(深色地板上清晰可辨)
 const COLOR_ON := Color(0.957, 0.827, 0.369, 1.0)  # 激活:#F4D35E 明亮黄
 
 var _bodies_inside: Array[Node2D] = []
