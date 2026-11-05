@@ -3,6 +3,15 @@ extends RefCounted
 ## 面向玩家的全部文案唯一来源(docs/05 §6);禁止在 UI/关卡代码中散落硬编码文案。
 
 const LEVEL_TITLE := "第一章 · 第1关 第一次回声"
+
+## 关卡标题按关卡编号选择(HUD 经 level_started 更新)
+static func level_title(level_id: int) -> String:
+	return [
+		"第一章 · 第1关 第一次回声",
+		"第一章 · 第2关 双重行动",
+		"第一章 · 第3关 不同的路径",
+	][clampi(level_id - 1, 0, 2)]
+
 const T01_KEYS := "WASD 移动 · R 记录 · 空格 回声 · X 删除回声 · Backspace 重置 · Esc 暂停"
 const T02_CANNOT_PASS := "你无法一边踩住开关,一边穿过安全门。"
 const T03_DEVICE := "检测到时间记录设备。该设备能够记录并重现你的行动。按下 R,开始记录。"

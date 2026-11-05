@@ -63,6 +63,7 @@ func _run() -> void:
 	_sw_b = scene.get_node("YSorted/SwitchB")
 	_door = scene.get_node("YSorted/SecurityDoor")
 	_mgr = scene.get_node("EchoManager")
+	print("title=", scene.get_node("UI/HUD/LevelLabel").text)
 	root.get_node("GameEvents").notify_requested.connect(func(t: String) -> void: print("NOTIFY: ", t))
 	root.get_node("GameEvents").level_completed.connect(func(id: int) -> void: print("LEVEL_COMPLETED id=", id))
 	_state("spawn")

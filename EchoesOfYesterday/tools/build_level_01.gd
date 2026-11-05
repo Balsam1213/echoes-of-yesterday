@@ -55,7 +55,7 @@ func _run() -> void:
 	for x in range(1, ROOM_W - 1):
 		if Vector2i(x, 2) != DOOR_CELL:
 			wall_cells.append(Vector2i(x, 2))
-	for x in range(5, 8):
+	for x in range(4, 9):
 		wall_cells.append(Vector2i(x, -1))
 	_add_wall_colliders(level, floor_layer, wall_cells)
 

@@ -24,6 +24,7 @@ func _ready() -> void:
 	GameEvents.level_reset_requested.connect(_on_level_reset_requested)
 	_on_ready()
 	_state = State.PLAY
+	GameEvents.level_started.emit(_level_id())
 
 
 func _physics_process(_delta: float) -> void:

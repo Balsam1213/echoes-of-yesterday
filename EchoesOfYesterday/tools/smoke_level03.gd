@@ -82,6 +82,7 @@ func _run() -> void:
 	_lock = scene.get_node("YSorted/TimeLock")
 	_door = scene.get_node("YSorted/SecurityDoor")
 	_mgr = scene.get_node("EchoManager")
+	print("title=", scene.get_node("UI/HUD/LevelLabel").text)
 	_pos_a = scene.get_node("YSorted/SwitchA").position
 	_pos_b = scene.get_node("YSorted/SwitchB").position
 	_pos_c = scene.get_node("YSorted/TimeLock").position

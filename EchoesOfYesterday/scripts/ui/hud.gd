@@ -38,6 +38,7 @@ func _ready() -> void:
 	GameEvents.notify_requested.connect(show_hint)
 	GameEvents.echo_playback_started.connect(_on_playback_started)
 	GameEvents.echo_playback_stopped.connect(_on_playback_stopped)
+	GameEvents.level_started.connect(_on_level_started)
 	GameEvents.level_completed.connect(_on_level_completed)
 
 
@@ -118,6 +119,10 @@ func _on_playback_stopped() -> void:
 	_playback_total = 0.0
 	_timeline.value = 0.0
 	_set_timeline_state("idle")
+
+
+func _on_level_started(level_id: int) -> void:
+	_level_label.text = UIText.level_title(level_id)
 
 
 func _on_level_completed(level_id: int) -> void:
