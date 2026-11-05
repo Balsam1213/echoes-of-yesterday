@@ -39,7 +39,6 @@ func _ready() -> void:
 	GameEvents.echo_playback_started.connect(_on_playback_started)
 	GameEvents.echo_playback_stopped.connect(_on_playback_stopped)
 	GameEvents.level_completed.connect(_on_level_completed)
-	GameEvents.restart_requested.connect(_on_restart)
 
 
 func _process(delta: float) -> void:
@@ -71,6 +70,7 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		_complete = false
+		_complete_overlay.visible = false  # 章节末关无场景切换,必须显式隐藏结算界面
 		GameEvents.advance_requested.emit()
 
 
@@ -127,12 +127,3 @@ func _on_level_completed(level_id: int) -> void:
 	%CompleteTitle.text = UIText.complete_title(level_id)
 	%ReplayHint.text = UIText.complete_hint(level_id)
 	_complete_overlay.visible = true
-
-
-func _on_restart() -> void:
-	_complete = false
-	_complete_overlay.visible = false
-	_hint_label.visible = false
-	_echo_label.text = UIText.echo_count_text(0)
-	_timeline.value = 0.0
-	_set_timeline_state("idle")

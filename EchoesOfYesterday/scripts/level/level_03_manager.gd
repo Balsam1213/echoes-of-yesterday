@@ -36,13 +36,19 @@ func _on_reset_extra() -> void:
 	_update_door()
 
 
-## 三条件 AND:A + B + 时间锁全激活才开门;三灯随各自状态;
-## 双灯亮而门不开时提示最后一道锁由时间锁决定(T-32,教学)
+## 三条件 AND:A + B + 时间锁窗口全开才开门;三灯随各自状态;
+## 双灯亮而门不开时提示最后窗口由时间锁决定(T-32,教学)
 func _update_door() -> void:
-	var states := [_sw_a.is_active(), _sw_b.is_active(), _lock.is_active()]
-	_door.set_open(states[0] and states[1] and states[2])
+	var a := _sw_a.is_active()
+	var b := _sw_b.is_active()
+	if a and b:
+		_lock.arm()   # 双闸咬合瞬间武装/启动时间锁(docs/12:触发改在第二开关)
+	else:
+		_lock.disarm()
+	var c := _lock.is_active()
+	_door.set_open(a and b and c)
 	for i in 3:
-		_lights[i].modulate = LIGHT_ON if states[i] else LIGHT_OFF
-	if _state == State.PLAY and states[0] and states[1] and not states[2] and not _hint32_shown:
+		_lights[i].modulate = LIGHT_ON if [a, b, c][i] else LIGHT_OFF
+	if _state == State.PLAY and a and b and not c and not _hint32_shown:
 		_hint32_shown = true
 		GameEvents.notify_requested.emit(UIText.T32_LAST_LOCK)

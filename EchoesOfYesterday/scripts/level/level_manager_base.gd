@@ -17,6 +17,7 @@ var _spawn_position := Vector2.ZERO
 
 
 func _ready() -> void:
+	get_tree().paused = false  # 防御:编辑器调试器暂停残留会让关卡以冻结态启动(黑屏/相机悬空)
 	_spawn_position = _player.global_position
 	_exit.player_entered.connect(_on_exit_entered)
 	GameEvents.advance_requested.connect(_on_advance_requested)
