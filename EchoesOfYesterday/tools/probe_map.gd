@@ -97,6 +97,7 @@ func _probe(path: String) -> void:
 					outside += 1
 
 	print("== %s ==" % path.get_file())
+	print("  总可通行采样: ", walkable.size())
 	print("  可达采样 %d,其中房间外(深≥12px) %d;泄漏入口 %d 处" % [reachable.size(), outside, crossings.size()])
 	if not crossings.is_empty():
 		_fails += 1

@@ -209,13 +209,23 @@ func _add_wall_colliders(level: Node2D, floor_layer: TileMapLayer, cells: Array[
 	var c11: Vector2 = floor_layer.map_to_local(used.position + used.size - Vector2i(1, 1))
 	var c01: Vector2 = floor_layer.map_to_local(used.position + Vector2i(0, used.size.y - 1))
 	for v: Vector2 in [c00 + Vector2(0, -16), c10 + Vector2(32, 0), c11 + Vector2(0, 16), c01 + Vector2(-32, 0)]:
-		var plug := CircleShape2D.new()
-		plug.radius = 14.0
-		var pcs := CollisionShape2D.new()
-		pcs.shape = plug
-		pcs.position = v
-		body.add_child(pcs)
+		_add_plug(body, v, 12.0)
+	for x in range(used.position.x, used.end.x):
+		_add_plug(body, floor_layer.map_to_local(Vector2i(x, used.position.y)) + Vector2(32, 0))
+		_add_plug(body, floor_layer.map_to_local(Vector2i(x, used.end.y - 1)) + Vector2(-32, 0))
+	for y in range(used.position.y, used.end.y):
+		_add_plug(body, floor_layer.map_to_local(Vector2i(used.end.x - 1, y)) + Vector2(0, 16))
+		_add_plug(body, floor_layer.map_to_local(Vector2i(used.position.x, y)) + Vector2(0, -16))
 
+
+## 顶点/角部封堵塞(_add_wall_colliders 调用)
+func _add_plug(body: StaticBody2D, pos: Vector2, radius := 10.0) -> void:
+	var plug := CircleShape2D.new()
+	plug.radius = radius
+	var cs := CollisionShape2D.new()
+	cs.shape = plug
+	cs.position = pos
+	body.add_child(cs)
 
 func _camera_limits(floor_layer: TileMapLayer) -> Rect2i:
 	var p_top := floor_layer.map_to_local(Vector2i(0, 0))
