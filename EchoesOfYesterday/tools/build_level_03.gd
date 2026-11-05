@@ -50,7 +50,8 @@ func _run() -> void:
 				wall_cells.append(Vector2i(x, y))
 	for cell: Vector2i in [Vector2i(6, 1), Vector2i(8, 1), Vector2i(9, 5), Vector2i(9, 6), Vector2i(5, 4)]:
 		wall_cells.append(cell)
-	wall_cells.append(EXIT_CELL + Vector2i(0, -1))
+	for dx in [-1, 0, 1]:
+		wall_cells.append(EXIT_CELL + Vector2i(dx, -1))
 	_add_wall_colliders(level, floor_layer, wall_cells)
 
 	var ysorted := Node2D.new()

@@ -52,7 +52,8 @@ func _run() -> void:
 	for x in range(1, ROOM_W - 1):
 		if Vector2i(x, 2) != DOOR_CELL:
 			wall_cells.append(Vector2i(x, 2))
-	wall_cells.append(EXIT_CELL + Vector2i(0, -1))
+	for dx in [-1, 0, 1]:
+		wall_cells.append(EXIT_CELL + Vector2i(dx, -1))
 	_add_wall_colliders(level, floor_layer, wall_cells)
 
 	var ysorted := Node2D.new()

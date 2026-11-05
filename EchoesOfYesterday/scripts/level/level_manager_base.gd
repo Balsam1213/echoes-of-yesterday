@@ -19,7 +19,8 @@ var _spawn_position := Vector2.ZERO
 func _ready() -> void:
 	_spawn_position = _player.global_position
 	_exit.player_entered.connect(_on_exit_entered)
-	GameEvents.restart_requested.connect(_on_restart_requested)
+	GameEvents.advance_requested.connect(_on_advance_requested)
+	GameEvents.level_reset_requested.connect(_on_level_reset_requested)
 	_on_ready()
 	_state = State.PLAY
 
@@ -64,11 +65,18 @@ func _on_exit_entered() -> void:
 	SaveManager.mark_level_completed(_level_id())
 
 
-func _on_restart_requested() -> void:
-	## 完成界面任意键(HUD 延迟 1.2s 放行)/ 暂停菜单"重新开始本关" 共用入口
+func _on_advance_requested() -> void:
+	## 完成界面任意键:重置并推进到下一关(末关 next_scene 为空 → 原地重玩)
 	reset_room()
 	get_tree().paused = false
 	if next_scene != "":
 		get_tree().change_scene_to_file(next_scene)
 	else:
 		_state = State.PLAY
+
+
+func _on_level_reset_requested() -> void:
+	## 暂停菜单"重新开始本关":仅重置当前关,不推进
+	reset_room()
+	get_tree().paused = false
+	_state = State.PLAY

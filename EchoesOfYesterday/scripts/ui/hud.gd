@@ -71,7 +71,7 @@ func _input(event: InputEvent) -> void:
 		return
 	if event is InputEventKey and event.pressed and not event.echo:
 		_complete = false
-		GameEvents.restart_requested.emit()
+		GameEvents.advance_requested.emit()
 
 
 func _set_timeline_state(state: String) -> void:

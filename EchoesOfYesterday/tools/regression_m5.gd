@@ -102,6 +102,29 @@ func _run() -> void:
 	await _frames(3)
 	_check("TC-21b", not paused)
 
+	# TC-47:出口开口密封(门关闭时,闭环走位不可绕行/穿越抵达出口区,防跳关)
+	var leak := {"completed": false, "arrived": false}
+	root.get_node("GameEvents").level_completed.connect(func(_id: int) -> void: leak.completed = true)
+	var exit_pos: Vector2 = scene.get_node("YSorted/ExitArea").position
+	for i in 600:
+		if leak.completed or (exit_pos - _player.global_position).length() <= 24.0:
+			leak.arrived = true
+			break
+		var d: Vector2 = exit_pos - _player.global_position
+		Input.action_press("move_right" if d.x > 0 else "move_left")
+		Input.action_press("move_down" if d.y > 0 else "move_up")
+		await physics_frame
+		Input.action_release("move_right")
+		Input.action_release("move_left")
+		Input.action_release("move_down")
+		Input.action_release("move_up")
+	Input.action_release("move_right")
+	Input.action_release("move_left")
+	Input.action_release("move_down")
+	Input.action_release("move_up")
+	_check("TC-47", not leak.completed and not leak.arrived,
+		"pos=%s dist=%.0f" % [_player.global_position, _player.global_position.distance_to(exit_pos)])
+
 	print("REGRESSION RESULT: %s (%d fails)" % ["ALL PASS" if _fails.is_empty() else "FAILURES", _fails.size()])
 	quit()
 

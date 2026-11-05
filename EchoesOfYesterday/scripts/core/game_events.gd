@@ -10,5 +10,6 @@ signal echo_count_changed(count: int, cap: int)
 signal echo_playback_started(duration: float)
 signal echo_playback_stopped
 signal notify_requested(text: String)  # 面向玩家的提示(HUD 订阅,如 T-06 超限提示)
-signal level_completed(level_id: int)
-signal restart_requested  # 通关界面按任意键重玩(HUD 发出,关卡管理器执行重置)
+signal level_completed(id: int)
+signal advance_requested  # 完成界面按任意键:重置并进入下一关(末关=重玩)
+signal level_reset_requested  # 暂停菜单"重新开始本关":仅重置当前关,不推进

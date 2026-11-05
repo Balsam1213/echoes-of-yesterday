@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3]
+[gd_scene load_steps=5 format=3]
 
 [ext_resource type="Script" path="res://scripts/interaction/time_lock_switch.gd" id="1"]
 [ext_resource type="Texture2D" path="res://assets/mechanisms/switch_pad.png" id="2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_zone"]
 size = Vector2(44, 20)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_proximity"]
+radius = 64.0
 
 [node name="TimeLockSwitch" type="Area2D"]
 collision_layer = 8
@@ -17,3 +20,11 @@ shape = SubResource("RectangleShape2D_zone")
 [node name="Pad" type="Sprite2D" parent="."]
 unique_name_in_owner = true
 texture = ExtResource("2")
+
+[node name="Proximity" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 2
+
+[node name="ProximityShape" type="CollisionShape2D" parent="Proximity"]
+shape = SubResource("CircleShape2D_proximity")

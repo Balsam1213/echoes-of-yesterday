@@ -47,7 +47,7 @@ Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回�
 ## 接口速查(简单任务够用;涉及系统内部先读对应分册)
 
 ### Autoload
-- `GameEvents`(`scripts/core/game_events.gd`):`recording_started` / `recording_stopped(duration)` / `echo_spawned(id)` / `echo_deleted(id)` / `echo_count_changed(count, cap)` / `echo_playback_started(duration)` / `echo_playback_stopped` / `notify_requested(text)` / `level_completed(id)` / `restart_requested`
+- `GameEvents`(`scripts/core/game_events.gd`):`recording_started` / `recording_stopped(duration)` / `echo_spawned(id)` / `echo_deleted(id)` / `echo_count_changed(count, cap)` / `echo_playback_started(duration)` / `echo_playback_stopped` / `notify_requested(text)` / `level_completed(id)` / `advance_requested` / `level_reset_requested`
 - `SaveManager`(`scripts/save/save_manager.gd`):`mark_level_completed(id)` / `is_level_unlocked(id)`;存档 `user://save.json`
 
 ### 碰撞层(位值)与分组

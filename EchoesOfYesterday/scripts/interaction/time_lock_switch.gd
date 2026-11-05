@@ -11,6 +11,21 @@ var _counting := false
 var _remaining := 0.0
 var _t17_sent := false
 var _t15_sent := false
+var _hint31_shown := false
+
+@onready var _proximity: Area2D = %Proximity
+
+
+func _ready() -> void:
+	super._ready()
+	_proximity.body_entered.connect(_on_proximity_entered)
+
+
+func _on_proximity_entered(body: Node2D) -> void:
+	## 首次靠近即教学(T-31):时间锁的规则必须在踩下去之前讲清楚
+	if body.is_in_group("player") and not _hint31_shown:
+		_hint31_shown = true
+		GameEvents.notify_requested.emit(UIText.T31_LOCK_HINT)
 
 
 func _physics_process(delta: float) -> void:
@@ -28,12 +43,13 @@ func _physics_process(delta: float) -> void:
 
 
 func force_reset() -> void:
-	## 关卡重置:清倒计时、清触发清单、重新武装 T-15(docs/12 E-35)
+	## 关卡重置:清倒计时、清触发清单、重新武装 T-15/T-31(docs/12 E-35)
 	super()
 	_counting = false
 	_remaining = 0.0
 	_t17_sent = false
 	_t15_sent = false
+	_hint31_shown = false
 
 
 func _on_body_entered(body: Node2D) -> void:

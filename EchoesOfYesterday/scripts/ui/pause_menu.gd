@@ -28,7 +28,7 @@ func _toggle() -> void:
 func _on_restart() -> void:
 	get_tree().paused = false
 	visible = false
-	GameEvents.restart_requested.emit()
+	GameEvents.level_reset_requested.emit()
 
 
 func _on_quit() -> void:
