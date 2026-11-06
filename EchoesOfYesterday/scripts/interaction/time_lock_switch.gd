@@ -7,6 +7,9 @@ extends PressureSwitch
 
 @export var hold_seconds := 10.0
 
+## 首次靠近的教学文案(L3=T-31;L6 构建脚本覆写为 T-61,docs/16 §7)
+var proximity_hint_text: String = UIText.T31_LOCK_HINT
+
 const BLINK_FROM := 3.0
 
 var _armed := false
@@ -26,10 +29,10 @@ func _ready() -> void:
 
 
 func _on_proximity_entered(body: Node2D) -> void:
-	## 首次靠近即教学(T-31):规则必须在踩下去之前讲清楚
+	## 首次靠近即教学:规则必须在踩下去之前讲清楚
 	if body.is_in_group("player") and not _hint31_shown:
 		_hint31_shown = true
-		GameEvents.notify_requested.emit(UIText.T31_LOCK_HINT)
+		GameEvents.notify_requested.emit(proximity_hint_text)
 
 
 func _on_body_entered(body: Node2D) -> void:
@@ -46,6 +49,11 @@ func _on_body_exited(body: Node2D) -> void:
 ## 时间锁"激活" = 窗口开启中(与是否有人踩无关,E-31);门条件据此判定
 func is_active() -> bool:
 	return _counting
+
+
+## 是否有实体站在板上(L6 序列门乱序反馈用,docs/16 §9 E-61)
+func has_visitor() -> bool:
+	return not _bodies_inside.is_empty()
 
 
 ## 关卡层调用:A+B 咬合时武装;若此刻已有人踩住则立即开始倒计时

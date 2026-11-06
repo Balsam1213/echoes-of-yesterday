@@ -6,6 +6,10 @@ extends CharacterBody2D
 ## 因此输入轮询与状态更新必须保持在 _physics_process(60Hz)内。
 
 const INTERACT_DURATION := 0.4  # 交互动作持续时间(秒)
+const INTERACT_RANGE := 56.0    # E 交互作用半径(与机关 proximity 一致,docs/15 §4)
+
+## 有效交互事件(docs/15 §4):E 命中交互物时发出,TimeRecorder 据此写入记录帧 events 字段
+signal interacted(target: Node2D)
 
 @export var move_speed: float = 140.0
 ## 关卡边界(像素,世界坐标);size 为 ZERO 表示不限制。由关卡场景或构建工具设置。
@@ -42,6 +46,7 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("interact"):
 		_interact_timer = INTERACT_DURATION
+		_try_interact()
 
 	_update_anim_state(input_dir)
 	_sprite.play(anim_state)
@@ -55,6 +60,24 @@ func _update_anim_state(input_dir: Vector2) -> void:
 		anim_state = "walk"
 	else:
 		anim_state = "idle"
+
+
+## E 交互:命中交互范围内最近的交互物(interactable 组,须实现 toggle());
+## 未命中则只播交互动画、不发事件(E-56 空挥)。交互物真实状态在本帧改变(E-57)。
+func _try_interact() -> void:
+	var best: Node2D = null
+	var best_dist := INTERACT_RANGE
+	for node in get_tree().get_nodes_in_group("interactable"):
+		var n := node as Node2D
+		if n == null:
+			continue
+		var dist := global_position.distance_to(n.global_position)
+		if dist < best_dist:
+			best_dist = dist
+			best = n
+	if best != null and best.has_method("toggle"):
+		best.call("toggle")
+		interacted.emit(best)
 
 
 ## 关卡重置:回出生点并复位全部运动/动画状态(docs/02 §8.2 第 3 步)

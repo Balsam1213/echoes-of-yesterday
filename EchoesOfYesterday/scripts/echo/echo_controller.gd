@@ -40,10 +40,24 @@ func _physics_process(_delta: float) -> void:
 	var f: Dictionary = recording.frames[frame_index]
 	global_position = f["pos"]
 	_sprite.play(f["anim"])
+	_replay_events(f)
 	if debug_trajectory:
 		var err: float = global_position.distance_to(f["pos"])
 		_max_error = maxf(_max_error, err)
 	frame_index += 1
+
+
+## 交互事件重放(docs/15 §4,E-52):同帧、同目标、同效果——回放一致性核心口径之一。
+## 目标按记录时相对关卡根的路径解析;缺失则跳过并告警,不中断回放(旧记录 events 为空,天然兼容)。
+func _replay_events(f: Dictionary) -> void:
+	var events: Array = f.get("events", [])
+	for ev in events:
+		var target_path := str(ev.get("target", ""))
+		var target := get_tree().current_scene.get_node_or_null(NodePath(target_path))
+		if target != null and target.has_method("toggle"):
+			target.call("toggle")
+		else:
+			push_warning("echo %d: interact target missing: %s" % [echo_id, target_path])
 
 
 func _finish() -> void:

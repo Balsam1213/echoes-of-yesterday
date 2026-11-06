@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3]
+
+[ext_resource type="Script" path="res://scripts/interaction/energy_core.gd" id="1"]
+[ext_resource type="Texture2D" path="res://assets/environment/test_block.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/mechanisms/light_dot.png" id="3"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_proximity"]
+radius = 56.0
+
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_foot"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="EnergyCore" type="Area2D"]
+collision_layer = 8
+collision_mask = 0
+script = ExtResource("1")
+
+[node name="Proximity" type="Area2D" parent="."]
+unique_name_in_owner = true
+collision_layer = 0
+collision_mask = 2
+
+[node name="ProximityShape" type="CollisionShape2D" parent="Proximity"]
+shape = SubResource("CircleShape2D_proximity")
+
+[node name="Body" type="Sprite2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(0, -24)
+texture = ExtResource("2")
+
+[node name="CoreLight" type="Sprite2D" parent="Body"]
+unique_name_in_owner = true
+position = Vector2(14, -2)
+texture = ExtResource("3")
+
+[node name="Solid" type="StaticBody2D" parent="."]
+collision_layer = 1
+collision_mask = 0
+
+[node name="SolidShape" type="CollisionShape2D" parent="Solid"]
+shape = SubResource("ConvexPolygonShape2D_foot")

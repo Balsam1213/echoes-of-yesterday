@@ -9,10 +9,12 @@ var is_recording := false
 
 var _buffer: EchoRecording = null
 var _player: PlayerController
+var _pending_events: Array = []  # 本帧待写入的交互事件(Player.interacted → 采样帧落地,docs/15 §4)
 
 
 func _ready() -> void:
 	_player = get_parent() as PlayerController
+	_player.interacted.connect(_on_player_interacted)
 
 
 func _physics_process(_delta: float) -> void:
@@ -31,6 +33,7 @@ func discard_buffer() -> void:
 	if is_recording:
 		is_recording = false
 		_buffer = null
+		_pending_events = []
 
 
 func clear_all() -> void:
@@ -38,11 +41,13 @@ func clear_all() -> void:
 	is_recording = false
 	_buffer = null
 	recording = null
+	_pending_events = []
 
 
 func _start() -> void:
 	_buffer = EchoRecording.new()
 	is_recording = true
+	_pending_events = []
 	GameEvents.recording_started.emit()
 
 
@@ -50,18 +55,30 @@ func _stop() -> void:
 	is_recording = false
 	recording = _buffer
 	_buffer = null
+	_pending_events = []
 	GameEvents.recording_stopped.emit(recording.duration())
+
+
+func _on_player_interacted(target: Node2D) -> void:
+	## 有效交互事件(docs/02 §5.2 events 字段,L5 起填充):存相对关卡根的节点路径,
+	## 回声重放时经 current_scene 解析(echo_controller._replay_events)
+	if not is_recording:
+		return
+	var scene := _player.get_tree().current_scene
+	var target_path := str(target.get_path()) if scene == null else str(scene.get_path_to(target))
+	_pending_events.append({"type": "interact", "target": target_path})
 
 
 func _sample() -> void:
 	if _buffer.frames.size() >= EchoRecording.MAX_FRAMES:
 		_stop()  # 满 30 秒自动结束(E-03)
 		return
-	# TODO(recording): 交互事件由 InteractionManager 在 M4+ 填充(02 §5.2 events 字段)
+	# 交互事件:PlayerController 在本物理帧触发的 interacted 先入队,随本帧采样一并落地
 	_buffer.frames.append({
 		"t": _buffer.frames.size(),
 		"pos": _player.global_position,
 		"dir": _player.direction,
 		"anim": _player.anim_state,
-		"events": [],
+		"events": _pending_events,
 	})
+	_pending_events = []

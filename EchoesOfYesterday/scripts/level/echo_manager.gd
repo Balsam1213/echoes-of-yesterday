@@ -80,10 +80,32 @@ func _delete_latest() -> void:
 	echo.queue_free()
 
 
+## 干扰场消散(L4,docs/14 E-42):与 X 删除同路径的正式注销——计数、信号、残影同步。
+## 回声当帧停止回放与触发(E-41),本体做 0.3s 碎裂渐隐后释放。
+func dissolve(echo: Node2D) -> void:
+	var ec := echo as EchoController
+	if ec == null or not _echoes.has(ec):
+		return  # 非回声 / 已注销(重复信号)幂等返回
+	_echoes.erase(ec)
+	ec.playing = false
+	ec.set_physics_process(false)
+	ec.remove_from_group("echo_trigger")  # 当帧失去机关触发能力(E-41)
+	_remove_debug_line(ec.echo_id)
+	GameEvents.echo_deleted.emit(ec.echo_id)
+	GameEvents.echo_count_changed.emit(_echoes.size(), max_echoes)
+	var tween := ec.create_tween()
+	tween.set_parallel(true)
+	tween.tween_property(ec, "modulate:a", 0.0, 0.3)
+	tween.tween_property(ec, "scale", Vector2(1.4, 1.4), 0.3)
+	tween.chain().tween_callback(ec.queue_free)
+
+
 func _on_playback_finished(echo: EchoController) -> void:
-	_remove_debug_line(echo.echo_id)  # 回放结束,轨迹比对完成,调试线即时移除
+	## 轨迹残影(docs/13 支柱 4):回放结束不再删除轨迹线,降透明度保留供玩家复盘;
+	## 删除/消散/重置时才清理。回声本体停留在末帧,继续保留机关触发能力(docs/02 §6)
+	if _debug_lines.has(echo.echo_id):
+		(_debug_lines[echo.echo_id] as Line2D).modulate.a = 0.25
 	GameEvents.echo_playback_stopped.emit()
-	# 回声本体停留在末帧,继续保留机关触发能力(docs/02 §6)
 
 
 ## 轨迹调试线(T3.5):画在房间根(世界空间),与记录轨迹逐点重合;禁止挂到回声下(会随回声漂移)
