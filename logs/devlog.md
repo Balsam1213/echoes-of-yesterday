@@ -415,3 +415,11 @@
 - 编号自查无冲突:T-40~63(现有至 T-32)、E-41~69(现有至 E-36)、TC-48~85(docs/08 预留起点即 TC-48)。
 
 **下一步**:用户评审 docs/13—16 → 定稿后进入实现(建议顺序:新机关 4 件(InterferenceField/PulsePad/EnergyCore/ToggleBarrier)+ events 链 → L4 构建+冒烟 → L5 → L6 → 三章连玩回归 + docs/08 基线纳入 TC-48~85 → README/changelog 同步)。
+
+---
+
+## 2026-11-07 | 第二章设计评审通过,定稿并进入实现
+
+- 用户评审通过 docs/13—16 → 四份文档状态置「定稿」;
+- 实现顺序(按 docs/13 §5):①新机关 4 件(InterferenceField/PulsePad/EnergyCore/ToggleBarrier)+ events 采集/重放链 + EchoManager 消散注销与轨迹残影 + UIText 扩展;②L4 构建+冒烟;③L5;④L6 与 L3→L4 推进链;⑤回归(docs/08 纳入 TC-48~85)+ README/changelog;
+- 红线提醒:改核心机制(time_recorder/echo_controller/echo_manager/player_controller)后必跑 regression_m5 全绿。
