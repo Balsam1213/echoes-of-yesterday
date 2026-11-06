@@ -89,6 +89,8 @@ func _run() -> void:
 	_pos_exit = scene.get_node("YSorted/ExitArea").position
 	root.get_node("GameEvents").notify_requested.connect(func(t: String) -> void: print("NOTIFY: ", t))
 	root.get_node("GameEvents").level_completed.connect(func(id: int) -> void: print("LEVEL_COMPLETED id=", id))
+	root.get_node("GameEvents").advance_requested.connect(func() -> void: print("ADVANCE_REQUESTED"))
+	print("next_scene=", scene.get("next_scene"))
 	_state("spawn")
 
 	# 1) A 路:走西直路到开关 A → 记录站立 → 回声 1 踩 A
@@ -133,8 +135,16 @@ func _run() -> void:
 	_state("complete")
 	print("save=", FileAccess.get_file_as_string("user://save.json"))
 
-	# 6) 按任意键重玩(章节末关)
+	# 6) 按任意键继续(第二章开放后:L1—L3 通关推进至 L4,docs/13 §1)
+	# 等过完成界面 1.2s 静置保护(COMPLETE_INPUT_DELAY=72 帧)再按键
+	await _frames(80)
 	await _tap_key(KEY_E)
 	await _frames(20)
-	_state("after_replay")
+	var nxt := String(current_scene.name) if current_scene != null else "<null>"
+	print("after_key current_scene=", nxt)
+	if nxt != "Level_04":
+		print("FAIL: expected advance to Level_04, got ", nxt)
+		quit(1)
+		return
+	print("PASS advance_l4: chapter2 chain ok")
 	quit()

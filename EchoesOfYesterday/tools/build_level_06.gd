@@ -106,12 +106,10 @@ func _run() -> void:
 	ysorted.get_parent().get_node("Decals").add_child(_make_pad(floor_layer, SWITCH_B_CELL, "SwitchBPad"))
 	sw_b.bind_pad(ysorted.get_parent().get_node("Decals/SwitchBPad"))
 
-	# 时间锁 C(复用 L3 场景;靠近文案覆写为 T-61,docs/16 §7)
+	# 时间锁 C(复用 L3 场景;靠近文案由 Level06Manager 覆写为 T-61,docs/16 §7)
 	var lock: Area2D = (load("res://scenes/mechanisms/TimeLockSwitch.tscn") as PackedScene).instantiate()
 	lock.name = "TimeLock"
 	lock.unique_name_in_owner = true
-	var uitext := load("res://scripts/ui/ui_text.gd")
-	lock.set("proximity_hint_text", uitext.T61_LOCK_HINT)
 	lock.position = floor_layer.map_to_local(LOCK_CELL)
 	ysorted.add_child(lock)
 	ysorted.get_parent().get_node("Decals").add_child(_make_pad(floor_layer, LOCK_CELL, "TimeLockPad"))
@@ -146,10 +144,20 @@ func _run() -> void:
 		light.position = door_pos + Vector2(-54 + 36 * i, -30)
 		ysorted.add_child(light)
 
-	# 出口触发区
-	var exit: Area2D = (load("res://scenes/mechanisms/ExitArea.tscn") as PackedScene).instantiate()
+	# 出口触发区(手搭:单格 44×20,防 128×32 泄漏北走廊 y1 主干道;
+	# 不改 ExitArea.tscn 实例——实例内部子节点的修改 pack() 不会记录)
+	var exit := Area2D.new()
 	exit.name = "ExitArea"
 	exit.unique_name_in_owner = true
+	exit.collision_layer = 8
+	exit.collision_mask = 2
+	exit.set_script(load("res://scripts/interaction/exit_area.gd"))
+	var exit_zone := RectangleShape2D.new()
+	exit_zone.size = Vector2(44, 20)
+	var exit_cs := CollisionShape2D.new()
+	exit_cs.name = "Zone"
+	exit_cs.shape = exit_zone
+	exit.add_child(exit_cs)
 	exit.position = floor_layer.map_to_local(EXIT_CELL)
 	ysorted.add_child(exit)
 

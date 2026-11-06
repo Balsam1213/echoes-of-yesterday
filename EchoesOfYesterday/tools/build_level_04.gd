@@ -136,10 +136,19 @@ func _run() -> void:
 		light.position = door_pos + Vector2(-36 + 36 * i, -30)
 		ysorted.add_child(light)
 
-	# 出口触发区
-	var exit: Area2D = (load("res://scenes/mechanisms/ExitArea.tscn") as PackedScene).instantiate()
+	# 出口触发区(手搭:单格 44×20,防泄漏邻格;实例内部子节点的修改 pack() 不记录)
+	var exit := Area2D.new()
 	exit.name = "ExitArea"
 	exit.unique_name_in_owner = true
+	exit.collision_layer = 8
+	exit.collision_mask = 2
+	exit.set_script(load("res://scripts/interaction/exit_area.gd"))
+	var exit_zone := RectangleShape2D.new()
+	exit_zone.size = Vector2(44, 20)
+	var exit_cs := CollisionShape2D.new()
+	exit_cs.name = "Zone"
+	exit_cs.shape = exit_zone
+	exit.add_child(exit_cs)
 	exit.position = floor_layer.map_to_local(EXIT_CELL)
 	ysorted.add_child(exit)
 

@@ -10,7 +10,11 @@ signal echo_dissolved(echo: Node2D)
 signal player_entered(body: Node2D)  # 玩家踏入(免疫伤害,仅教学预警钩子,T-41)
 
 const FIELD_COLOR := Color(0.851, 0.365, 0.365, 0.34)  # #D95D5D 半透明覆格
-static var FOOTPRINT := PackedVector2Array([Vector2(0, -16), Vector2(32, 0), Vector2(0, 16), Vector2(-32, 0)])
+## 判定圈半径(格中心):等距车道与邻格场心的最小间隙 ~28.6px(回声圆心 reach ≈19px),
+## r8 留 ≥11px 确定裕量——贴行车道绝不误伤;穿越格心的回声必触发。
+## 视觉菱形 ±12 同步缩小,诚实映射"危险核心"(docs/14 E-41 判定口径)
+const TRIGGER_RADIUS := 8.0
+static var FOOTPRINT := PackedVector2Array([Vector2(0, -12), Vector2(12, 0), Vector2(0, 12), Vector2(-12, 0)])
 
 var _visuals: Array[Polygon2D] = []
 
@@ -20,10 +24,10 @@ func _ready() -> void:
 	body_entered.connect(_on_body_entered)
 
 
-## 由构建脚本调用:一格干扰场(菱形判定区 + 地面暗红覆格,纯渲染不走 Y-sort)
+## 由构建脚本调用:一格干扰场(格心判定圆 + 地面暗红覆格,纯渲染不走 Y-sort)
 func add_cell(world_pos: Vector2) -> void:
-	var shape := ConvexPolygonShape2D.new()
-	shape.points = FOOTPRINT
+	var shape := CircleShape2D.new()
+	shape.radius = TRIGGER_RADIUS
 	var cs := CollisionShape2D.new()
 	cs.shape = shape
 	cs.position = world_pos

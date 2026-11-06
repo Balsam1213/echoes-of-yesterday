@@ -423,3 +423,29 @@
 - 用户评审通过 docs/13—16 → 四份文档状态置「定稿」;
 - 实现顺序(按 docs/13 §5):①新机关 4 件(InterferenceField/PulsePad/EnergyCore/ToggleBarrier)+ events 采集/重放链 + EchoManager 消散注销与轨迹残影 + UIText 扩展;②L4 构建+冒烟;③L5;④L6 与 L3→L4 推进链;⑤回归(docs/08 纳入 TC-48~85)+ README/changelog;
 - 红线提醒:改核心机制(time_recorder/echo_controller/echo_manager/player_controller)后必跑 regression_m5 全绿。
+
+---
+
+## 2026-11-07 | 第二章(第 4—6 关)实现交付:全量回归七套件全绿
+
+**完成**:
+- 新机关 4 件:`interference_field.gd`(格心判定圆 r8 + 暗红脉动覆格,echo 消散信号)、`pulse_pad.gd`(extends PressureSwitch,0.5s 固定窗)、`energy_core.gd`(E 交互 toggle + auto_off_seconds)、`toggle_barrier.gd`(升降桥,升起防夹);
+- events 链(预留字段首次启用):`player_controller.interacted` → `time_recorder` 帧写入(相对关卡根的 target 路径)→ `echo_controller._replay_events` 同帧重执行 toggle;旧记录 events 为空天然兼容;
+- `echo_manager.dissolve(echo)`(与 X 删除同路径的正式注销 + 碎裂渐隐)+ 轨迹残影(回放结束保留淡线);
+- L4/L5/L6 三关场景(16×12/16×12/18×14)+ 管理器(同振窗/核心联动/序列门)+ `build_level_04/05/06.gd`;
+- L3→L4 推进链(Level_03.tscn next_scene)+ smoke_level03 尾部断言升级为「推进到 L4」;
+- `regression_m6.gd`(TC-48a/b/c、TC-49、TC-61a—d、E-54a/b、E-55、E-59a/b)+ `smoke_level04/05/06.gd`;
+- docs/08 基线纳入 TC-48~85;docs/13—16 状态「已交付」(v1.1 实现修订);README/changelog 同步;移除误入库冒烟截图并加 .gitignore 规则。
+
+**问题与决定(全部当场闭环)**:
+1. **干扰场判定区从整格菱形三收敛至格心圆 r8**:整格脚印菱形会误杀贴行邻格的回声(邻格中心距仅 32px、碰撞圆 reach 26px);r20/r16 仍被闭环走位噪声(±5px)戳穿(车道最小间隙 28.6px)——r8 留 ≥11px 裕量,穿越格心必触发,视觉菱形 ±12 诚实映射。**教训:等距竖向邻格 (x,y±1) 世界距离只有 32px,任何格心判定区半径都要按这个口径算**;
+2. **冒烟走位必须逐格中心链**:闭环 _walk_to 双轴输入走屏幕 45° 对角,会把设计的等距 lane"切角"斜穿判定区——新增 `_cell_chain` 逐格走位(相邻格心方向恰为等距轴);
+3. **ExitArea 128×32 触发区对单格出口横向泄漏两格**:L6 北走廊 y1 主干道被罩进出口区,录制途中即"通关";L2/L3 未触发纯属路线幸运。修复 = L4—L6 构建时手搭 44×20 单格出口区。**教训:实例化场景内部子节点的属性修改 pack() 不会记录**(editable children 陷阱)——改用构建脚本手搭节点;
+4. **.tscn 根节点的脚本变量属性必须排在 `script = ...` 行之后**:顺序颠倒时属性赋在挂脚本前的裸节点上被静默丢弃(L3 next_scene 初版失效根因);
+5. **持续型核心的"录制中拨动 + 回声重放再拨动"互相抵消**(E-55 历史重演的必然推论)——L5 靠 8s 自动失效天然化解;L6 标准解修订为玩家亲自拨核(docs/16 v1.1),回声途中拨核能力保留;
+6. **游戏只保留最近一条记录** → 多回声关卡冒烟必须"录一条发一条"(L3 先例),回声在 spawn 时快照记录引用;
+7. ToggleBarrier 参数名遮蔽信号(`raised`)、L6 时间锁靠近文案覆写走关卡层(实例属性打包陷阱同 3)。
+
+**验证**:regression_m5 ALL PASS;regression_m6 ALL PASS(14 断言);smoke_screenshot(L1→L2)、smoke_level02(L2→L3)、smoke_level03(L3→**L4**)、smoke_level04/05/06 全绿;六关推进链 + 存档 unlocked 1—6 正常;日志无 SCRIPT ERROR / Error calling from signal。
+
+**下一步**:用户人工验收第二章(首通时长硬指标 L4≥4 分/L5≥5 分/L6≥6 分、60FPS、手感);可选:Windows 独立运行包导出 + tag `chapter2-v0.1` Release、正式美术/音效、第三章(第 7—8 关)设计。

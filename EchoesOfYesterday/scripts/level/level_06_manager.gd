@@ -31,6 +31,7 @@ func _level_id() -> int:
 
 
 func _on_ready() -> void:
+	_lock.proximity_hint_text = UIText.T61_LOCK_HINT  # L6 时间锁靠近文案覆写(docs/16 §7)
 	_sw_a.switch_activated.connect(_update_door)
 	_sw_a.switch_deactivated.connect(_update_door)
 	_sw_b.switch_activated.connect(_on_b_activated)
