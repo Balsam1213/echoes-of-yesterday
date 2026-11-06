@@ -1,28 +1,25 @@
-# EchoesOfYesterday — Godot 工程目录
+# EchoesOfYesterday —— Godot 工程说明
 
-本目录是 **Godot 4.x 工程根目录**(docs/02 §2.1)。
+《昨日回声 Echoes of Yesterday》Godot 4.x 工程根目录。
+当前状态:**第一章(第 1—3 关)已交付**(tag `chapter1-v0.2`)。
 
-> 当前状态:目录骨架已就位,`project.godot` **尚未创建**——它将在里程碑 M0 的任务 T0.2 中由 Godot 编辑器新建工程时生成(docs/06 §2 M0)。届时在本目录执行:新建工程 → 配置视口 640×360 → 配置输入映射(docs/03 §5)→ 命名碰撞层(docs/02 §4)。
+## 快速开始
 
-## 目录用途(规范见 docs/03 §1)
+1. 用 Godot 4.3+(建议 4.7.2)打开本目录的 `project.godot`;
+2. F5 运行——主场景为第一关 `scenes/levels/Level_01.tscn`;
+3. 通关第 1 关后自动进入第 2、3 关(进度存于 `user://save.json`)。
 
-```
-scenes/
-  main/        入口场景(Demo 阶段主场景直指 Level_01,可为空)
-  player/      Player.tscn
-  echo/        Echo.tscn
-  levels/      Level_01.tscn 等关卡主场景
-  mechanisms/  PressureSwitch / SecurityDoor / TimeRecorderDevice / ExitArea
-  ui/          UI.tscn(HUD、暂停、通关)
-  dev/         临时验证场景(dev_ 前缀,M5 前清理)
-scripts/
-  player/ echo/ recording/ interaction/ level/ save/   (与 scenes 同构)
-assets/
-  characters/ environment/ mechanisms/ ui/ audio/ effects/
-data/
-  levels/      关卡配置预留(JSON)
-  settings/
-```
+## 目录速览
 
-- 空目录以 `.gitkeep` 占位,放入实际文件后可删除。
-- 场景与脚本同目录同构;命名规范见 docs/03 §2。
+| 目录 | 内容 |
+| --- | --- |
+| `scenes/levels/` | Level_01/02/03(三章关卡) |
+| `scenes/{player,echo,mechanisms,ui}/` | 玩家、回声、机关、UI 场景 |
+| `scripts/` | 与 scenes 同构;`core/`=autoload(GameEvents/SaveManager) |
+| `assets/` | 占位素材(正式美术待替换) |
+| `tools/` | 构建与测试脚本(关卡构建/冒烟/回归/泄漏探针) |
+| `export_presets.cfg` | Windows 导出配置(嵌入 PCK 单文件) |
+
+## 开发规范
+
+项目专属技能 `.agents/skills/echoes-of-yesterday-dev/`(仓库根)与 `docs/00—12` 文档体系——改代码前必读。

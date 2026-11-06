@@ -2,7 +2,7 @@
 
 > 以「时间记录与自我协作」为核心机制的 2.5D 等距像素风解谜游戏 · Windows PC · Godot 4.x + GDScript
 
-## 当前阶段:第一关 Demo v0.1 已定版 ✓
+## 当前阶段:第一章 v0.2 已交付 ✓(第 1—3 关)
 
 > **AI/开发者规范入口**:`.agents/skills/echoes-of-yesterday-dev/`(项目专属技能:架构约定、接口契约、等距规则、测试要求;SKILL.md + references/ 九分册)。
 
