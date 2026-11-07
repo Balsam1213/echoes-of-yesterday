@@ -208,14 +208,15 @@ func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, decals: Node2D, 
 	cs.shape = shape
 	zone.add_child(cs)
 	zone.position = center
-	zone.setup_visual(center, size)
 	level.add_child(zone)
-	# 出生点标记:淡青圆点贴花,方便玩家辨认记录起点(用户验收)
+	# 出生点标记:淡青圆点贴花,方便玩家辨认记录起点(用户验收);
+	# z_index 置顶——出生点紧邻南侧墙体精灵,不置顶会被遮挡(L4 返修)
 	var marker := Sprite2D.new()
 	marker.name = "SpawnMarker"
 	marker.texture = load("res://assets/mechanisms/light_dot.png")
 	marker.scale = Vector2(3, 3)
 	marker.modulate = Color(0.271, 0.851, 0.949, 0.6)
+	marker.z_index = 1
 	marker.position = floor_layer.map_to_local(spawn_cell)
 	decals.add_child(marker)
 
