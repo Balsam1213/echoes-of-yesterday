@@ -46,20 +46,21 @@ func _run() -> void:
 			floor_layer.set_cell(Vector2i(x, y), 0, Vector2i.ZERO)
 	level.add_child(floor_layer)
 
-	var decals := Node2D.new()
-	decals.name = "Decals"
-	level.add_child(decals)
-
-	# 初始记录区(西南角,docs/17 §5.1;核心舱在东北——回声从记录区出发走全程,R3)
-	_add_record_zone(level, floor_layer, decals, Vector2i(1, 9), Vector2i(5, 12), SPAWN_CELL)
-
 	# 悖论之海 P1(docs/19 §3):x6..11, y3..8(36 格,单实例承载)
+	# 注意:必须在 Decals **之前**加入——覆层是「地面着色」,贴花画在其上(返修 2026-11-08,同 L7)
 	var field: Area2D = (load("res://scenes/mechanisms/ParadoxField.tscn") as PackedScene).instantiate()
 	field.name = "FieldSea"
 	field.unique_name_in_owner = true
 	level.add_child(field)
 	for cell: Vector2i in _rect_cells(Vector2i(6, 3), Vector2i(11, 8)):
 		field.add_cell(floor_layer.map_to_local(cell))
+
+	var decals := Node2D.new()
+	decals.name = "Decals"
+	level.add_child(decals)
+
+	# 初始记录区(西南角,docs/17 §5.1;核心舱在东北——回声从记录区出发走全程,R3)
+	_add_record_zone(level, floor_layer, decals, Vector2i(1, 9), Vector2i(5, 12), SPAWN_CELL)
 
 	# 墙体:周界完整(出口 (15,1) 为内部格,背后 y0 周界兜底)+ 内部密封块
 	var wall_cells := _wall_cells()

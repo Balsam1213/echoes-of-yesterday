@@ -12,11 +12,11 @@ description: >
 # 《昨日回声》开发规范(echoes-of-yesterday-dev)
 
 Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回放(空格)→ 自我协作**。
-当前进度:**第一、二章(第 1—6 关)已交付**(tag `chapter1-v0.2` / `chapter2-v0.1`,Windows 运行包 v0.3)。
-第一章(第 1—3 关):回声上限 1/2/3、压力开关/安全门/时间锁;第二章(第 4—6 关):干扰场/脉冲板/能量核心/联动桥/序列门 + 初始记录区 + 关卡选择菜单。
-仓库布局:`docs/`(上位文档 00—16)、`logs/`(devlog/changelog/issues)、`EchoesOfYesterday/`(Godot 工程)、`tools/`(构建与测试脚本)。
+当前进度:**第一~三章(第 1—8 关)已实现交付**(tag `chapter1-v0.2` / `chapter2-v0.1`;第三章待发布运行包)。
+第一章(第 1—3 关):回声上限 1/2/3、压力开关/安全门/时间锁;第二章(第 4—6 关):干扰场/脉冲板/能量核心/联动桥/序列门 + 初始记录区 + 关卡选择菜单;第三章(第 7—8 关,docs/17—19):悖论区/相位门 + 时空在场调度(全游戏 8 关收官)。
+仓库布局:`docs/`(上位文档 00—19)、`logs/`(devlog/changelog/issues)、`EchoesOfYesterday/`(Godot 工程)、`tools/`(构建与测试脚本)。
 
-本技能是**操作入口**;`docs/00—16` 是上位文档,冲突时以 docs 为准(docs/00 §2.4)。
+本技能是**操作入口**;`docs/00—19` 是上位文档,冲突时以 docs 为准(docs/00 §2.4)。
 
 ## 硬规则(每条都有一次返修教训,违反即返修)
 
@@ -34,6 +34,8 @@ Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回�
 12. **干扰场判定圈 = 格心圆 r8**(视觉全格覆格):等距竖向邻格 (x,y±1) 世界距离仅 32px,回声圆心距邻格场心最近 26px——任何格心判定半径都按此口径算,贴行车道(r8 裕量 ≥11px)绝不误伤。
 13. **出口门必须正对出口且不占回声必经渡口**(L6 返修:门挪开一格即被绕过);动门位前先验证回声跨区连通性。
 14. **冒烟铁律**:推进链必须断言到 `current_scene` 变化;长路线录制**持键连续走位**(逐帧 press/release 速度减半,会超 30s 记录上限),轴向死区 4px 防顶墙;常规走位用**逐格中心链**(相邻格心方向恰为等距轴,屏幕 45° 对角会切角穿判定区);`.tscn` 根节点脚本变量属性排在 `script = ...` 行**之后**。
+15. **危害/悖论覆层先于 Decals 注入**(Floor → 覆层 → Decals → YSorted):覆层是「地面着色」,开关底座/出生标记等贴花恒在其上——反序会把区内的开关完全盖住(L7 返修:P1 内 S2 不可见)。
+16. **测试脚本对 `user://save.json` 备份/还原**(开跑备份 → 隔离断言 → 收尾还原):测试直接写存档会污染开发机——「第八关未玩先解锁、第一关反而灰置」即源于此;菜单另有保底:**第一关恒可选**。
 
 ## 模块索引(按需读分册,不要全读)
 
@@ -44,8 +46,8 @@ Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回�
 | 玩家移动/动画/重置/记录区标志 | [references/player.md](references/player.md) | 移动、碰撞、动画三态、reset_to、in_recording_zone、E 交互 |
 | 时间记录 | [references/recording.md](references/recording.md) | 60Hz 采样、帧结构(含 events)、30s 上限、记录区门控、完成回原位 |
 | 回声生成/回放/消散/残影 | [references/echo.md](references/echo.md) | 逐帧回放、末帧停留、上限 3、X 删除、events 重放、干扰消散、轨迹残影 |
-| 机关(9 件) | [references/mechanisms.md](references/mechanisms.md) | 契约 + 压力开关/安全门/装置/出口/时间锁/干扰场/脉冲板/能量核心/联动屏障/记录区 |
-| 关卡组装/重置/通关/推进 | [references/levels.md](references/levels.md) | build 脚本模式、状态机、重置四步、教学提示链、L4—L6 要点、关卡选择菜单 |
+| 机关(12 件) | [references/mechanisms.md](references/mechanisms.md) | 契约 + 压力开关/安全门/装置/出口/时间锁/干扰场/脉冲板/能量核心/联动屏障/记录区/悖论区/相位门 |
+| 关卡组装/重置/通关/推进 | [references/levels.md](references/levels.md) | build 脚本模式、状态机、重置四步、教学提示链、L4—L8 要点、关卡选择菜单 |
 | 测试 | [references/testing.md](references/testing.md) | 回归/冒烟工具、何时必跑、断言写法、走位助手 |
 | 命名、GDScript 风格、提交 | [references/code-style.md](references/code-style.md) | 代码规范、禁则、文档联动 |
 
@@ -69,9 +71,9 @@ Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回�
 - 玩家 `PlayerController`(CharacterBody2D 层2 掩码1,r6 圆,速度 140):字段 `position / direction / anim_state(idle|walk|interact)` 是记录采样来源;公开 `recorder`(TimeRecorder)、`reset_to(pos)`、`in_recording_zone`(记录区标志,默认 true)、`interacted(target)` 信号(E 交互)
 - 记录 `TimeRecorder`(Player 子节点 `%TimeRecorder`):`recording`(最近已完成记录)、`is_recording`、`clear_all()` / `discard_buffer()`;**起录门控**(区外按 R 提示不开始)、**完成回原位**;帧结构 `{t, pos, dir, anim, events}`,events 记录 `{type:"interact", target:NodePath}`
 - 回声 `EchoController`(层3,逐帧赋位回放、末帧停留、**events 帧重执行 target.toggle()**)+ `EchoManager`(`max_echoes` 逐关配置、`dissolve(echo)` 干扰消散注销、轨迹残影)
-- 机关:PressureSwitch / SecurityDoor / TimeRecorderDevice / ExitArea / TimeLockSwitch(倒计时,靠近文案可覆写) / **InterferenceField**(干扰场,格心判定圆 r8) / **PulsePad**(瞬踩 0.5s 固定窗) / **EnergyCore**(E 交互 toggle,auto_off_seconds) / **ToggleBarrier**(升降桥,升起防夹) / **RecordingZone**(初始记录区)——契约见 [references/mechanisms.md](references/mechanisms.md)
-- 关卡:`LevelManagerBase` 基类(`next_scene` 推进链/状态机/重置四步;next_scene 为空=章末→任意键打开关卡选择)→ `Level01/02/03/04/05/06Manager`;构建脚本 `tools/build_level_01..06.gd`;菜单 `scenes/ui/LevelSelect.tscn`
-- 文案:`UIText`(`scripts/ui/ui_text.gd` 静态常量,T-01~T-63 与界面文案)
+- 机关:PressureSwitch / SecurityDoor / TimeRecorderDevice / ExitArea / TimeLockSwitch(倒计时,靠近文案可覆写) / **InterferenceField**(干扰场,格心判定圆 r8) / **PulsePad**(瞬踩 0.5s 固定窗) / **EnergyCore**(E 交互 toggle,auto_off_seconds) / **ToggleBarrier**(升降桥,升起防夹) / **RecordingZone**(初始记录区) / **ParadoxField**(悖论区,玩家∧回声同场→区内回声全消散,E-71) / **PhaseGate**(相位门,set_phased 双态,实体止步回声恒穿,E-75/76)——契约见 [references/mechanisms.md](references/mechanisms.md)
+- 关卡:`LevelManagerBase` 基类(`next_scene` 推进链/状态机/重置四步;next_scene 为空=章末→任意键打开关卡选择)→ `Level01…08Manager`;构建脚本 `tools/build_level_01..08.gd`;菜单 `scenes/ui/LevelSelect.tscn`(第一关恒可选)
+- 文案:`UIText`(`scripts/ui/ui_text.gd` 静态常量,T-01~T-89 与界面文案)
 
 ## 四大工作流
 
@@ -82,12 +84,15 @@ Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回�
 ```
 godot --path EchoesOfYesterday -s tools/regression_m5.gd     # TC-09/16/17/18/19/20/21/47(约 40s)
 godot --path EchoesOfYesterday -s tools/regression_m6.gd     # 第二章机关:TC-48/49/61、E-54/55/59(约 60s)
+godot --path EchoesOfYesterday -s tools/regression_m7.gd     # 第三章机关:悖论双向消散/多回声/相位门/断电窗(约 90s)
 godot --path EchoesOfYesterday -s tools/smoke_screenshot.gd  # L1 全流程通关 + 截图
 godot --path EchoesOfYesterday -s tools/smoke_level02.gd     # L2 全流程 + 推进
 godot --path EchoesOfYesterday -s tools/smoke_level03.gd     # L3 全流程(时间锁)+ 推进 L4
 godot --path EchoesOfYesterday -s tools/smoke_level04.gd     # L4 全流程(干扰/同振)+ 推进 L5
 godot --path EchoesOfYesterday -s tools/smoke_level05.gd     # L5 全流程(events/时序)+ 推进 L6
-godot --path EchoesOfYesterday -s tools/smoke_level06.gd     # L6 全流程(序列/冲刺)+ 菜单断言
+godot --path EchoesOfYesterday -s tools/smoke_level06.gd     # L6 全流程(序列/冲刺)+ 推进 L7
+godot --path EchoesOfYesterday -s tools/smoke_level07.gd     # L7 全流程(相位门/悖论/北侧发射)+ 推进 L8
+godot --path EchoesOfYesterday -s tools/smoke_level08.gd     # L8 全流程(断电窗冲刺)+ 章末菜单断言
 ```
 
 **发布运行包** → 更新 `export_presets.cfg` 版本/描述 → `godot --headless --path . --export-release "Windows Desktop" "../build/EchoesOfYesterday.exe"` → 启动冒烟(`--headless --quit-after 180`)→ 打 zip(exe + 操作说明)→ 更新 `build/操作说明.txt`。注意:exe 未签名,SmartScreen 提示属正常(操作说明已附放行指引)。

@@ -13,6 +13,10 @@
 - 自动化基线扩展:`tools/regression_m7.gd`(19 项断言)+ `tools/smoke_level07/08.gd`(全流程通关 + 推进链)
 - 文档:docs/17—19(第三章规划 + 两关设计,决策来源对照表 + 偏离登记 D-03);docs/08 基线纳入 TC-86~113
 
+### Fixed
+- 关卡选择菜单:**第一关恒可选**(全新存档时菜单不再全灰);修复测试存档污染导致的"第八关未玩先解锁"(冒烟脚本改为备份/还原真实存档)
+- 第七关:P1 内 S2 开关底座被悖论区紫色覆层遮挡不可见——覆层移至贴花层之下(地面着色),开关清晰可见
+
 ### Verified
 - 全量回归九套件全绿:regression_m5 / regression_m6 / regression_m7 ALL PASS + 七关冒烟(smoke_screenshot/level02..08);L1→…→L8→LevelSelect 全链按键推进断言通过;日志无 SCRIPT ERROR 与 Error calling from signal
 - 待人工:第三章首通时长硬指标(L7≥5 分 / L8≥7 分,docs/17 §7)、60FPS 实测、悖论区紫色视觉定稿

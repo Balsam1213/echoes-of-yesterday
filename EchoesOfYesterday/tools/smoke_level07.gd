@@ -121,6 +121,9 @@ func _notify_seen(key: String) -> bool:
 
 
 func _run() -> void:
+	var save_backup := ""
+	if FileAccess.file_exists("user://save.json"):
+		save_backup = FileAccess.get_file_as_string("user://save.json")  # 备份真实存档,收尾还原(防测试污染开发机,返修 2026-11-08)
 	DirAccess.remove_absolute("user://save.json")  # 存档隔离:通关断言只认本轮
 	var scene: Node = (load("res://scenes/levels/Level_07.tscn") as PackedScene).instantiate()
 	root.add_child(scene)
@@ -295,6 +298,10 @@ func _run() -> void:
 		quit(1)
 		return
 	print("PASS advance_l8: L7 -> L8")
+	if save_backup != "":
+		var fb := FileAccess.open("user://save.json", FileAccess.WRITE)
+		fb.store_string(save_backup)
+		fb.close()
 	quit()
 
 

@@ -46,14 +46,9 @@ func _run() -> void:
 			floor_layer.set_cell(Vector2i(x, y), 0, Vector2i.ZERO)
 	level.add_child(floor_layer)
 
-	var decals := Node2D.new()
-	decals.name = "Decals"
-	level.add_child(decals)
-
-	# 初始记录区(南区西段,docs/17 §5.1:记录只能在此开始;R5:悖论区不覆盖记录区)
-	_add_record_zone(level, floor_layer, decals, Vector2i(1, 8), Vector2i(3, 10), SPAWN_CELL)
-
 	# 悖论区 ×2(docs/18 §3):P2 教学凹室(主路径外)/ P1 主区(横贯回廊 6 格)
+	# 注意:必须在 Decals **之前**加入——覆层是「地面着色」,开关底座/出生标记等
+	# 贴花要画在其上(返修 2026-11-08:P1 内 S2 底座曾被紫覆层盖住看不见)
 	var field_defs := {
 		"FieldSandbox": [Vector2i(6, 8), Vector2i(7, 8)],
 		"FieldMain": _rect_cells(Vector2i(8, 5), Vector2i(9, 7)),
@@ -65,6 +60,13 @@ func _run() -> void:
 		level.add_child(field)
 		for cell: Vector2i in field_defs[fname]:
 			field.add_cell(floor_layer.map_to_local(cell))
+
+	var decals := Node2D.new()
+	decals.name = "Decals"
+	level.add_child(decals)
+
+	# 初始记录区(南区西段,docs/17 §5.1:记录只能在此开始;R5:悖论区不覆盖记录区)
+	_add_record_zone(level, floor_layer, decals, Vector2i(1, 8), Vector2i(3, 10), SPAWN_CELL)
 
 	# 墙体:周界完整(出口 (8,1) 为内部格,背后 y0 周界兜底)+ 内部密封块
 	var wall_cells := _wall_cells()

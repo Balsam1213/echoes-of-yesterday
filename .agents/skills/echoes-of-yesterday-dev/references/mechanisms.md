@@ -29,8 +29,10 @@
 | **EnergyCore**(L5) | `EnergyCore.tscn` | `toggle()` / `set_on(bool)` / `is_on`、`core_toggled(on)`、`player_nearby`、`force_reset()`;入 `interactable` 组 | E 交互 toggle(PlayerController 采样 + 回声 events 重放调用,**同效**);`auto_off_seconds`(0=持续,>0 到期自动回 OFF);proximity 仅发 player_nearby(教学提示归关卡层) |
 | **ToggleBarrier**(L5) | `ToggleBarrier.tscn` | `set_raised(bool)` / `is_raised`、`has_echo_on()`、`force_reset()` | 升降桥/墙:升起=脚印阻挡;**升起前格内有 echo_trigger 实体则延迟**(防夹,E-59);回声不与当下环境解算(可穿,E-51) |
 | **RecordingZone**(L4—L6) | `RecordingZone.tscn` | 无接口(mask=2,自动维护 `PlayerController.in_recording_zone`) | 初始记录区:记录只能从区内开始(docs/13 §5.1);L1—L3 无区域默认不受限 |
+| **ParadoxField**(L7) | `ParadoxField.tscn` | `add_cell(world_pos)`(构建脚本逐格注入)、`paradox_triggered(echo)` / `player_entered(body)`、`force_reset()` | 玩家 ∧ 回声**同区重叠**→区内全部回声消散(分组识别 player/echo,不判型);玩家无伤(温和失败);**整格菱形判定**(非格心圆);回声彼此同场不触发(E-73);紫覆格脉动 + 触发闪白;**覆层节点须在 Decals 之前加入**(硬规则 15) |
+| **PhaseGate**(L7) | `PhaseGate.tscn` | `set_phased(bool)` / `is_phased()`、`phase_dropped`、`player_nearby`、`force_reset()` | StaticBody2D + 脚印菱形 Blocker(落下=disabled,SecurityDoor 语义);**回声恒穿**(逐帧赋位回放无视环境,无需新碰撞层,E-75);机关本体无智能——联动由关卡层订阅 `core_toggled` 驱动(L5 接线先例);紫半透明立方体贴图与实体墙区分 |
 
-**L5 事件链注意**:录制中的 E 交互**真实生效**(E-57)且写入当前帧 `events`;回声重放该帧时再次 `toggle()`——持续型核心会被"录制拨动+重放再拨动"抵消(E-55 历史重演),谜题设计须规避(L5 用 auto_off 化解,L6 标准解由玩家亲自拨)。
+**L5 事件链注意**:录制中的 E 交互**真实生效**(E-57)且写入当前帧 `events`;回声重放该帧时再次 `toggle()`——持续型核心会被"录制拨动+重放再拨动"抵消(E-55 历史重演),谜题设计须规避(L5 用 auto_off 化解,L6/L8 标准解由玩家亲自拨,L8 回声路线不含 events)。**EnergyCore 初始 ON** 由关卡管理器 `_on_ready` 驱动 `set_on(true)`(pack 不存运行态,重置后在 `_on_reset_extra` 复驱);**TimeLockSwitch 自由使用须常 arm()**(重置后重新武装,L8)。
 
 ## 操作示例:新增"第二个压力开关"
 

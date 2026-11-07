@@ -20,7 +20,7 @@ func _ready() -> void:
 func _build_buttons() -> void:
 	for id in range(1, MAX_LEVEL + 1):
 		var btn := Button.new()
-		var unlocked := SaveManager.is_level_unlocked(id)
+		var unlocked := id == 1 or SaveManager.is_level_unlocked(id)  # 第一关恒可选:游戏本就始于第一关,全新存档时菜单不能全灰(返修 2026-11-08)
 		btn.text = UIText.level_title(id) + ("(未通关)" if not unlocked else "")
 		btn.disabled = not unlocked
 		btn.pressed.connect(_on_level_pressed.bind(id))
