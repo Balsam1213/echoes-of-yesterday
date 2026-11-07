@@ -1,5 +1,6 @@
 extends SceneTree
-## Level_05 冒烟:能量核心 + events 采集/重放 + 桥联动 + 双回声时序编排全流程(docs/15)。
+## Level_05 冒烟:能量核心 + events 采集/重放 + 桥联动 + 双回声时序编排 + 推进 L6
+## (docs/15 + docs/13 §5.1 记录区:R1/R2 均自初始记录区(前厅)起录,停止回原位)。
 ## 运行:godot --path . -s tools/smoke_level05.gd
 
 var _player: Node2D
@@ -109,27 +110,25 @@ func _run() -> void:
 		return
 	print("PASS core1_on: bridge lowered")
 
-	# 2) 过桥进机房
-	await _walk_cells(Vector2i(3, 5), Vector2i(7, 1))
-	await _walk_cells(Vector2i(7, 1), Vector2i(9, 1))
-	await _walk_cells(Vector2i(9, 1), Vector2i(9, 8))
-	_state("in_machine_room")
-
-	# 3) 录 R1:机房西侧 → 过桥 → 前厅 → 停 A(TC-62)
+	# 2) R1(自记录区):前厅 → 停 A;停止回原位 → 发射回声 1(TC-62)
 	await _tap("record_toggle")
-	await _walk_cells(Vector2i(9, 8), Vector2i(9, 1))
-	await _walk_cells(Vector2i(9, 1), Vector2i(2, 1))
-	await _walk_cells(Vector2i(2, 1), Vector2i(2, 2))
+	await _walk_cells(Vector2i(3, 5), Vector2i(2, 2))
 	await _frames(8)
 	await _tap("record_toggle")
-	await _tap("play_echo")  # 回声 1 先发(慢:过桥 + 走前厅)
+	if _player.global_position.distance_to(_cw(3, 5)) > 40.0:
+		print("FAIL: player did not return to record start")
+		quit(1)
+		return
+	print("PASS return_to_start")
+	await _tap("play_echo")
 	_state("echo1_launched")
 
-	# 4) 回前厅方向?不——玩家折返机房(桥仍降),录 R2:北上 → 绕 F1 北缺口 → 南下 → E 拨核心 2 → 折返
-	await _walk_cells(Vector2i(2, 2), Vector2i(2, 1))
-	await _walk_cells(Vector2i(2, 1), Vector2i(9, 1))
-	await _walk_cells(Vector2i(9, 1), Vector2i(9, 8))
+	# 3) R2(自记录区):过桥 → 北上 → 绕 F1 北缺口 → 南下 → E 拨核心 2 → 折返(TC-61)
 	await _tap("record_toggle")
+	await _walk_cells(Vector2i(3, 5), Vector2i(7, 5))
+	await _walk_cells(Vector2i(7, 5), Vector2i(7, 1))
+	await _walk_cells(Vector2i(7, 1), Vector2i(9, 1))
+	await _walk_cells(Vector2i(9, 1), Vector2i(9, 8))
 	await _walk_cells(Vector2i(9, 8), Vector2i(9, 2))
 	await _walk_cells(Vector2i(9, 2), Vector2i(13, 2))
 	await _walk_cells(Vector2i(13, 2), Vector2i(13, 8))
@@ -148,9 +147,8 @@ func _run() -> void:
 		quit(1)
 		return
 	print("PASS r2_event: 1 interact recorded")
-	_state("r2_recorded")
 
-	# 5) 等 A 就位 → 发射回声 2 → 途中 E 拨核心 2 → 窗口开启 → 门开(TC-61/63)
+	# 4) 等 A 就位 → 发射回声 2(途中 E 拨核心 2)→ 玩家赶往门侧 → 窗口开门(TC-61/63)
 	for i in 600:
 		if _sw_a.is_active():
 			break
@@ -161,19 +159,51 @@ func _run() -> void:
 		return
 	print("PASS echo1_a: A held")
 	await _tap("play_echo")
-	await _frames(320)  # 回声 2 途中(约 220 帧处拨核)
-	_state("echo2_mid")
+	await _walk_cells(Vector2i(3, 5), Vector2i(7, 5))
+	await _walk_cells(Vector2i(7, 5), Vector2i(7, 1))
+	await _walk_cells(Vector2i(7, 1), Vector2i(9, 1))
+	await _walk_cells(Vector2i(9, 1), Vector2i(13, 1))
+	await _walk_cells(Vector2i(13, 1), Vector2i(13, 2))
+	for i in 600:
+		if _core2.get("is_on") and _door.is_open():
+			break
+		await physics_frame
+	_state("echo2_window")
 	if not _core2.get("is_on") or not _door.is_open():
 		print("FAIL: core2 not on or door closed after echo2 event")
 		quit(1)
 		return
 	print("PASS sync: core2 on, door open")
 
-	# 6) 8s 窗口内冲门(TC-69)
-	await _walk_cells(Vector2i(12, 9), Vector2i(12, 2))
-	await _walk_cells(Vector2i(12, 2), Vector2i(13, 2))
+	# 5) 8s 窗口内冲门(TC-69)
 	await _walk_to(_pos_exit, 20.0)
 	await _frames(12)
 	_state("complete")
 	print("save=", FileAccess.get_file_as_string("user://save.json"))
+
+	# 6) 通关推进 L6
+	await _frames(80)
+	await _tap_key(KEY_E)
+	await _frames(20)
+	var nxt := String(current_scene.name) if current_scene != null else "<null>"
+	print("after_key current_scene=", nxt)
+	if nxt != "Level_06":
+		print("FAIL: expected advance to Level_06, got ", nxt)
+		quit(1)
+		return
+	print("PASS advance_l6: chapter chain ok")
 	quit()
+
+
+func _tap_key(keycode: Key) -> void:
+	var ev := InputEventKey.new()
+	ev.keycode = keycode
+	ev.physical_keycode = keycode
+	ev.pressed = true
+	Input.parse_input_event(ev)
+	await _frames(2)
+	var up := InputEventKey.new()
+	up.keycode = keycode
+	up.physical_keycode = keycode
+	up.pressed = false
+	Input.parse_input_event(up)

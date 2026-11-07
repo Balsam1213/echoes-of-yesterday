@@ -14,8 +14,14 @@
 - L3→L4 推进链接通(第 1—6 关连续推进);自动化基线扩展:`tools/regression_m6.gd`(14 项断言)+ `tools/smoke_level04/05/06.gd`
 - 文档:docs/13—16(第二章规划 + 三关设计,docx 蒸馏对照表 + 偏离登记 D-02);docs/08 基线纳入 TC-48~85
 
+### Fixed
+- 第 4/5 关过关后不推进下一关(构建脚本漏设 next_scene);各关冒烟补按键推进断言
+- 干扰区视觉改为全格暗红覆格(判定圈仍为格心圆 r8,贴行车道绝不误伤);脉冲板改青色系与压力开关区分
+- 新增**初始记录区机制**(用户验收定稿):记录只能从初始区开始、完成回原位、回声一律从初始区出发——杜绝"远端起录"跳过回声旅程
+- 第 6 关地图修复:F0 缩窄露 x1 窄道(x0 是周界墙)、出口门移 (9,2) 让北走廊畅通(记录区机制引入后的连带不可解问题)
+
 ### Verified
-- 全量回归全绿:regression_m5(ALL PASS)+ regression_m6(ALL PASS)+ 六关冒烟(smoke_screenshot/level02/03/04/05/06);L1→L2→L3→L4 推进链断言通过;日志无 SCRIPT ERROR
+- 全量回归全绿:regression_m5(ALL PASS)+ regression_m6(ALL PASS)+ 六关冒烟(smoke_screenshot/level02/03/04/05/06);L1→L2→…→L6 全链按键推进断言通过;日志无 SCRIPT ERROR
 - 待人工:第二章首通时长硬指标(L4≥4 分/L5≥5 分/L6≥6 分)、60FPS 实测
 
 ## [chapter1-v0.2] - 2026-11-06 · 第一章完整交付(第 1—3 关 + Windows 独立运行包)

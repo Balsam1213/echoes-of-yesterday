@@ -22,6 +22,7 @@ func _run() -> void:
 	var level := Node2D.new()
 	level.name = "Level_04"
 	level.set_script(load("res://scripts/level/level_04_manager.gd"))
+	level.next_scene = "res://scenes/levels/Level_05.tscn"
 
 	var tile_set := TileSet.new()
 	tile_set.tile_shape = TileSet.TILE_SHAPE_ISOMETRIC
@@ -45,6 +46,9 @@ func _run() -> void:
 	var decals := Node2D.new()
 	decals.name = "Decals"
 	level.add_child(decals)
+
+	# 初始记录区(西南角,docs/13 §5.1:记录只能在此开始)
+	_add_record_zone(level, floor_layer, Vector2i(0, 9), Vector2i(3, 11))
 
 	# 干扰场(恒定危害区;置于 Decals 之后、YSorted 之前:覆格在角色之下)
 	var field_main: Area2D = (load("res://scenes/mechanisms/InterferenceField.tscn") as PackedScene).instantiate()
@@ -185,6 +189,24 @@ func _run() -> void:
 	err = ResourceSaver.save(packed, "res://scenes/levels/Level_04.tscn")
 	print("Level_04.tscn saved, err=", err)
 	quit()
+
+
+## 初始记录区:覆盖格位矩形 [from..to] 的世界包围盒(含各格菱形外沿)
+func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, from: Vector2i, to: Vector2i) -> void:
+	var zone: Area2D = (load("res://scenes/mechanisms/RecordingZone.tscn") as PackedScene).instantiate()
+	zone.name = "RecordingZone"
+	zone.unique_name_in_owner = true
+	var min_cx := (minf(from.x, to.x) - maxf(from.y, to.y)) * 32 + 32
+	var max_cx := (maxf(from.x, to.x) - minf(from.y, to.y)) * 32 + 32
+	var min_cy := (minf(from.x, to.x) + minf(from.y, to.y)) * 16 + 16
+	var max_cy := (maxf(from.x, to.x) + maxf(from.y, to.y)) * 16 + 16
+	var cs := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(max_cx - min_cx + 64, max_cy - min_cy + 32)
+	cs.shape = shape
+	zone.add_child(cs)
+	zone.position = Vector2((min_cx + max_cx) / 2.0, (min_cy + max_cy) / 2.0)
+	level.add_child(zone)
 
 
 func _make_pad(floor_layer: TileMapLayer, cell: Vector2i, pad_name: String) -> Sprite2D:

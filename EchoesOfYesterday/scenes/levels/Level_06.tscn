@@ -1,54 +1,44 @@
 [gd_scene format=4]
 
-[ext_resource type="Script" path="res://scripts/level/level_06_manager.gd" id="1_1k4q7"]
-[ext_resource type="Texture2D" path="res://assets/environment/floor_tile.png" id="2_t6oym"]
-[ext_resource type="Texture2D" path="res://assets/mechanisms/switch_pad.png" id="3_e3c2q"]
-[ext_resource type="PackedScene" path="res://scenes/mechanisms/InterferenceField.tscn" id="4_tkleo"]
-[ext_resource type="Script" path="res://scripts/interaction/interference_field.gd" id="5_w8l13"]
-[ext_resource type="Texture2D" path="res://assets/environment/wall_block.png" id="6_l3601"]
-[ext_resource type="PackedScene" path="res://scenes/mechanisms/PressureSwitch.tscn" id="7_qg752"]
-[ext_resource type="Script" path="res://scripts/interaction/pressure_switch.gd" id="8_sdjpl"]
-[ext_resource type="PackedScene" path="res://scenes/mechanisms/TimeLockSwitch.tscn" id="9_e33sx"]
-[ext_resource type="Script" path="res://scripts/interaction/time_lock_switch.gd" id="10_xejwr"]
-[ext_resource type="PackedScene" path="res://scenes/mechanisms/EnergyCore.tscn" id="11_t0bvl"]
-[ext_resource type="Script" path="res://scripts/interaction/energy_core.gd" id="12_p17vc"]
-[ext_resource type="PackedScene" path="res://scenes/mechanisms/TimeRecorderDevice.tscn" id="13_6x760"]
-[ext_resource type="Script" path="res://scripts/interaction/time_recorder_device.gd" id="14_u47u3"]
-[ext_resource type="PackedScene" path="res://scenes/mechanisms/SecurityDoor.tscn" id="15_x0p0k"]
-[ext_resource type="Script" path="res://scripts/interaction/security_door.gd" id="16_o1o8c"]
-[ext_resource type="Texture2D" path="res://assets/mechanisms/light_dot.png" id="17_04d11"]
-[ext_resource type="Script" path="res://scripts/interaction/exit_area.gd" id="18_gtgd2"]
-[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="19_1kk8o"]
-[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="20_opdel"]
-[ext_resource type="Script" path="res://scripts/level/echo_manager.gd" id="21_gxk51"]
-[ext_resource type="PackedScene" path="res://scenes/ui/UI.tscn" id="22_futv6"]
-[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="23_xbb7p"]
+[ext_resource type="Script" path="res://scripts/level/level_06_manager.gd" id="1_e3c2q"]
+[ext_resource type="Texture2D" path="res://assets/environment/floor_tile.png" id="2_tkleo"]
+[ext_resource type="Texture2D" path="res://assets/mechanisms/switch_pad.png" id="3_w8l13"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/RecordingZone.tscn" id="4_l3601"]
+[ext_resource type="Script" path="res://scripts/interaction/recording_zone.gd" id="5_qg752"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/InterferenceField.tscn" id="6_sdjpl"]
+[ext_resource type="Script" path="res://scripts/interaction/interference_field.gd" id="7_e33sx"]
+[ext_resource type="Texture2D" path="res://assets/environment/wall_block.png" id="8_xejwr"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/PressureSwitch.tscn" id="9_t0bvl"]
+[ext_resource type="Script" path="res://scripts/interaction/pressure_switch.gd" id="10_p17vc"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/TimeLockSwitch.tscn" id="11_6x760"]
+[ext_resource type="Script" path="res://scripts/interaction/time_lock_switch.gd" id="12_u47u3"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/EnergyCore.tscn" id="13_x0p0k"]
+[ext_resource type="Script" path="res://scripts/interaction/energy_core.gd" id="14_o1o8c"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/TimeRecorderDevice.tscn" id="15_04d11"]
+[ext_resource type="Script" path="res://scripts/interaction/time_recorder_device.gd" id="16_gtgd2"]
+[ext_resource type="PackedScene" path="res://scenes/mechanisms/SecurityDoor.tscn" id="17_1kk8o"]
+[ext_resource type="Script" path="res://scripts/interaction/security_door.gd" id="18_opdel"]
+[ext_resource type="Texture2D" path="res://assets/mechanisms/light_dot.png" id="19_gxk51"]
+[ext_resource type="Script" path="res://scripts/interaction/exit_area.gd" id="20_futv6"]
+[ext_resource type="PackedScene" path="res://scenes/player/Player.tscn" id="21_xbb7p"]
+[ext_resource type="Script" path="res://scripts/player/player_controller.gd" id="22_yp5f0"]
+[ext_resource type="Script" path="res://scripts/level/echo_manager.gd" id="23_ixwj3"]
+[ext_resource type="PackedScene" path="res://scenes/ui/UI.tscn" id="24_82x56"]
+[ext_resource type="Script" path="res://scripts/ui/hud.gd" id="25_i75rl"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_yp5f0"]
-texture = ExtResource("2_t6oym")
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wd3ly"]
+texture = ExtResource("2_tkleo")
 texture_region_size = Vector2i(64, 32)
 0:0/0 = 0
 
-[sub_resource type="TileSet" id="TileSet_ixwj3"]
+[sub_resource type="TileSet" id="TileSet_12biv"]
 tile_shape = 1
 tile_layout = 5
 tile_size = Vector2i(64, 32)
-sources/0 = SubResource("TileSetAtlasSource_yp5f0")
+sources/0 = SubResource("TileSetAtlasSource_wd3ly")
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_82x56"]
-radius = 8.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_i75rl"]
-radius = 8.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_wd3ly"]
-radius = 8.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_12biv"]
-radius = 8.0
-
-[sub_resource type="CircleShape2D" id="CircleShape2D_54k7i"]
-radius = 8.0
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_54k7i"]
+size = Vector2(352, 176)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_i43ir"]
 radius = 8.0
@@ -125,17 +115,17 @@ radius = 8.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_qko7i"]
 radius = 8.0
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_fbry4"]
-points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+[sub_resource type="CircleShape2D" id="CircleShape2D_fbry4"]
+radius = 8.0
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_unonj"]
-points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+[sub_resource type="CircleShape2D" id="CircleShape2D_unonj"]
+radius = 8.0
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_e1efx"]
-points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+[sub_resource type="CircleShape2D" id="CircleShape2D_e1efx"]
+radius = 8.0
 
-[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_g4g7a"]
-points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+[sub_resource type="CircleShape2D" id="CircleShape2D_g4g7a"]
+radius = 8.0
 
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_knj1r"]
 points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
@@ -308,29 +298,29 @@ points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 [sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_pgo7t"]
 points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_pcme6"]
-radius = 12.0
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_pcme6"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_qqsr8"]
-radius = 12.0
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_qqsr8"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_pig4v"]
-radius = 12.0
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_pig4v"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_oj5hk"]
-radius = 12.0
+[sub_resource type="ConvexPolygonShape2D" id="ConvexPolygonShape2D_oj5hk"]
+points = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_pwu12"]
-radius = 14.0
+radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_gle3x"]
-radius = 14.0
+radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_boc07"]
-radius = 14.0
+radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_0iuab"]
-radius = 14.0
+radius = 12.0
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_y7caw"]
 radius = 14.0
@@ -512,1225 +502,1238 @@ radius = 14.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_u5lk7"]
 radius = 14.0
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sx26c"]
+[sub_resource type="CircleShape2D" id="CircleShape2D_sx26c"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h3fxj"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_d62dv"]
+radius = 14.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wo07a"]
+radius = 14.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vl2ie"]
 size = Vector2(44, 20)
 
-[node name="Level_06" type="Node2D" unique_id=2014127502]
-script = ExtResource("1_1k4q7")
+[node name="Level_06" type="Node2D" unique_id=1080071457]
+script = ExtResource("1_e3c2q")
 
-[node name="Floor" type="TileMapLayer" parent="." unique_id=1923756520]
+[node name="Floor" type="TileMapLayer" parent="." unique_id=698849806]
 tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAoAAAAAAAAAAAAAAAsAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA0AAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAAAAAAAAAABAAIAAAAAAAAAAAABAAMAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAABAAYAAAAAAAAAAAABAAcAAAAAAAAAAAABAAgAAAAAAAAAAAABAAkAAAAAAAAAAAABAAoAAAAAAAAAAAABAAsAAAAAAAAAAAABAAwAAAAAAAAAAAABAA0AAAAAAAAAAAACAAAAAAAAAAAAAAACAAEAAAAAAAAAAAACAAIAAAAAAAAAAAACAAMAAAAAAAAAAAACAAQAAAAAAAAAAAACAAUAAAAAAAAAAAACAAYAAAAAAAAAAAACAAcAAAAAAAAAAAACAAgAAAAAAAAAAAACAAkAAAAAAAAAAAACAAoAAAAAAAAAAAACAAsAAAAAAAAAAAACAAwAAAAAAAAAAAACAA0AAAAAAAAAAAADAAAAAAAAAAAAAAADAAEAAAAAAAAAAAADAAIAAAAAAAAAAAADAAMAAAAAAAAAAAADAAQAAAAAAAAAAAADAAUAAAAAAAAAAAADAAYAAAAAAAAAAAADAAcAAAAAAAAAAAADAAgAAAAAAAAAAAADAAkAAAAAAAAAAAADAAoAAAAAAAAAAAADAAsAAAAAAAAAAAADAAwAAAAAAAAAAAADAA0AAAAAAAAAAAAEAAAAAAAAAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAAAAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAAAAAAAAAAEAAgAAAAAAAAAAAAEAAkAAAAAAAAAAAAEAAoAAAAAAAAAAAAEAAsAAAAAAAAAAAAEAAwAAAAAAAAAAAAEAA0AAAAAAAAAAAAFAAAAAAAAAAAAAAAFAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAFAAMAAAAAAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAAAAAAAAAAFAAYAAAAAAAAAAAAFAAcAAAAAAAAAAAAFAAgAAAAAAAAAAAAFAAkAAAAAAAAAAAAFAAoAAAAAAAAAAAAFAAsAAAAAAAAAAAAFAAwAAAAAAAAAAAAFAA0AAAAAAAAAAAAGAAAAAAAAAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAAAAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAAAAAAAAAAGAAcAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAkAAAAAAAAAAAAGAAoAAAAAAAAAAAAGAAsAAAAAAAAAAAAGAAwAAAAAAAAAAAAGAA0AAAAAAAAAAAAHAAAAAAAAAAAAAAAHAAEAAAAAAAAAAAAHAAIAAAAAAAAAAAAHAAMAAAAAAAAAAAAHAAQAAAAAAAAAAAAHAAUAAAAAAAAAAAAHAAYAAAAAAAAAAAAHAAcAAAAAAAAAAAAHAAgAAAAAAAAAAAAHAAkAAAAAAAAAAAAHAAoAAAAAAAAAAAAHAAsAAAAAAAAAAAAHAAwAAAAAAAAAAAAHAA0AAAAAAAAAAAAIAAAAAAAAAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAAAAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAAAAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAAAAAAAAAAIAAcAAAAAAAAAAAAIAAgAAAAAAAAAAAAIAAkAAAAAAAAAAAAIAAoAAAAAAAAAAAAIAAsAAAAAAAAAAAAIAAwAAAAAAAAAAAAIAA0AAAAAAAAAAAAJAAAAAAAAAAAAAAAJAAEAAAAAAAAAAAAJAAIAAAAAAAAAAAAJAAMAAAAAAAAAAAAJAAQAAAAAAAAAAAAJAAUAAAAAAAAAAAAJAAYAAAAAAAAAAAAJAAcAAAAAAAAAAAAJAAgAAAAAAAAAAAAJAAkAAAAAAAAAAAAJAAoAAAAAAAAAAAAJAAsAAAAAAAAAAAAJAAwAAAAAAAAAAAAJAA0AAAAAAAAAAAAKAAAAAAAAAAAAAAAKAAEAAAAAAAAAAAAKAAIAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAQAAAAAAAAAAAAKAAUAAAAAAAAAAAAKAAYAAAAAAAAAAAAKAAcAAAAAAAAAAAAKAAgAAAAAAAAAAAAKAAkAAAAAAAAAAAAKAAoAAAAAAAAAAAAKAAsAAAAAAAAAAAAKAAwAAAAAAAAAAAAKAA0AAAAAAAAAAAALAAAAAAAAAAAAAAALAAEAAAAAAAAAAAALAAIAAAAAAAAAAAALAAMAAAAAAAAAAAALAAQAAAAAAAAAAAALAAUAAAAAAAAAAAALAAYAAAAAAAAAAAALAAcAAAAAAAAAAAALAAgAAAAAAAAAAAALAAkAAAAAAAAAAAALAAoAAAAAAAAAAAALAAsAAAAAAAAAAAALAAwAAAAAAAAAAAALAA0AAAAAAAAAAAAMAAAAAAAAAAAAAAAMAAEAAAAAAAAAAAAMAAIAAAAAAAAAAAAMAAMAAAAAAAAAAAAMAAQAAAAAAAAAAAAMAAUAAAAAAAAAAAAMAAYAAAAAAAAAAAAMAAcAAAAAAAAAAAAMAAgAAAAAAAAAAAAMAAkAAAAAAAAAAAAMAAoAAAAAAAAAAAAMAAsAAAAAAAAAAAAMAAwAAAAAAAAAAAAMAA0AAAAAAAAAAAANAAAAAAAAAAAAAAANAAEAAAAAAAAAAAANAAIAAAAAAAAAAAANAAMAAAAAAAAAAAANAAQAAAAAAAAAAAANAAUAAAAAAAAAAAANAAYAAAAAAAAAAAANAAcAAAAAAAAAAAANAAgAAAAAAAAAAAANAAkAAAAAAAAAAAANAAoAAAAAAAAAAAANAAsAAAAAAAAAAAANAAwAAAAAAAAAAAANAA0AAAAAAAAAAAAOAAAAAAAAAAAAAAAOAAEAAAAAAAAAAAAOAAIAAAAAAAAAAAAOAAMAAAAAAAAAAAAOAAQAAAAAAAAAAAAOAAUAAAAAAAAAAAAOAAYAAAAAAAAAAAAOAAcAAAAAAAAAAAAOAAgAAAAAAAAAAAAOAAkAAAAAAAAAAAAOAAoAAAAAAAAAAAAOAAsAAAAAAAAAAAAOAAwAAAAAAAAAAAAOAA0AAAAAAAAAAAAPAAAAAAAAAAAAAAAPAAEAAAAAAAAAAAAPAAIAAAAAAAAAAAAPAAMAAAAAAAAAAAAPAAQAAAAAAAAAAAAPAAUAAAAAAAAAAAAPAAYAAAAAAAAAAAAPAAcAAAAAAAAAAAAPAAgAAAAAAAAAAAAPAAkAAAAAAAAAAAAPAAoAAAAAAAAAAAAPAAsAAAAAAAAAAAAPAAwAAAAAAAAAAAAPAA0AAAAAAAAAAAAQAAAAAAAAAAAAAAAQAAEAAAAAAAAAAAAQAAIAAAAAAAAAAAAQAAMAAAAAAAAAAAAQAAQAAAAAAAAAAAAQAAUAAAAAAAAAAAAQAAYAAAAAAAAAAAAQAAcAAAAAAAAAAAAQAAgAAAAAAAAAAAAQAAkAAAAAAAAAAAAQAAoAAAAAAAAAAAAQAAsAAAAAAAAAAAAQAAwAAAAAAAAAAAAQAA0AAAAAAAAAAAARAAAAAAAAAAAAAAARAAEAAAAAAAAAAAARAAIAAAAAAAAAAAARAAMAAAAAAAAAAAARAAQAAAAAAAAAAAARAAUAAAAAAAAAAAARAAYAAAAAAAAAAAARAAcAAAAAAAAAAAARAAgAAAAAAAAAAAARAAkAAAAAAAAAAAARAAoAAAAAAAAAAAARAAsAAAAAAAAAAAARAAwAAAAAAAAAAAARAA0AAAAAAAAAAAA=")
-tile_set = SubResource("TileSet_ixwj3")
+tile_set = SubResource("TileSet_12biv")
 
-[node name="Decals" type="Node2D" parent="." unique_id=1993800647]
+[node name="Decals" type="Node2D" parent="." unique_id=584934475]
 
-[node name="SwitchAPad" type="Sprite2D" parent="Decals" unique_id=786844836]
+[node name="SwitchAPad" type="Sprite2D" parent="Decals" unique_id=1372778341]
 position = Vector2(0, 96)
-texture = ExtResource("3_e3c2q")
+texture = ExtResource("3_w8l13")
 
-[node name="SwitchBPad" type="Sprite2D" parent="Decals" unique_id=171829110]
+[node name="SwitchBPad" type="Sprite2D" parent="Decals" unique_id=975872273]
 position = Vector2(192, 192)
-texture = ExtResource("3_e3c2q")
+texture = ExtResource("3_w8l13")
 
-[node name="TimeLockPad" type="Sprite2D" parent="Decals" unique_id=1088871694]
+[node name="TimeLockPad" type="Sprite2D" parent="Decals" unique_id=164845118]
 position = Vector2(416, 304)
-texture = ExtResource("3_e3c2q")
+texture = ExtResource("3_w8l13")
 
-[node name="Field0" type="Area2D" parent="." unique_id=1914652588 instance=ExtResource("4_tkleo")]
+[node name="RecordingZone" type="Area2D" parent="." unique_id=509009676 instance=ExtResource("4_l3601")]
+unique_name_in_owner = true
+position = Vector2(-240, 232)
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("5_qg752")
+
+[node name="@CollisionShape2D@2" type="CollisionShape2D" parent="RecordingZone" unique_id=1618403554]
+shape = SubResource("RectangleShape2D_54k7i")
+
+[node name="Field0" type="Area2D" parent="." unique_id=1887762598 instance=ExtResource("6_sdjpl")]
 unique_name_in_owner = true
 collision_layer = 8
 collision_mask = 6
-script = ExtResource("5_w8l13")
+script = ExtResource("7_e33sx")
 
-[node name="@CollisionShape2D@2" type="CollisionShape2D" parent="Field0" unique_id=873141653]
-position = Vector2(-160, 144)
-shape = SubResource("CircleShape2D_82x56")
-
-[node name="@Polygon2D@3" type="Polygon2D" parent="Field0" unique_id=656593817]
-position = Vector2(-160, 144)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@4" type="CollisionShape2D" parent="Field0" unique_id=1297195335]
+[node name="@CollisionShape2D@3" type="CollisionShape2D" parent="Field0" unique_id=1519243958]
 position = Vector2(-128, 160)
-shape = SubResource("CircleShape2D_i75rl")
-
-[node name="@Polygon2D@5" type="Polygon2D" parent="Field0" unique_id=789031804]
-position = Vector2(-128, 160)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@6" type="CollisionShape2D" parent="Field0" unique_id=422194166]
-position = Vector2(-96, 176)
-shape = SubResource("CircleShape2D_wd3ly")
-
-[node name="@Polygon2D@7" type="Polygon2D" parent="Field0" unique_id=966302392]
-position = Vector2(-96, 176)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@8" type="CollisionShape2D" parent="Field0" unique_id=2091443935]
-position = Vector2(-64, 192)
-shape = SubResource("CircleShape2D_12biv")
-
-[node name="@Polygon2D@9" type="Polygon2D" parent="Field0" unique_id=1955074436]
-position = Vector2(-64, 192)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@10" type="CollisionShape2D" parent="Field0" unique_id=370457842]
-position = Vector2(-32, 208)
-shape = SubResource("CircleShape2D_54k7i")
-
-[node name="@Polygon2D@11" type="Polygon2D" parent="Field0" unique_id=122647447]
-position = Vector2(-32, 208)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="Field1" type="Area2D" parent="." unique_id=798952087 instance=ExtResource("4_tkleo")]
-unique_name_in_owner = true
-collision_layer = 8
-collision_mask = 6
-script = ExtResource("5_w8l13")
-
-[node name="@CollisionShape2D@12" type="CollisionShape2D" parent="Field1" unique_id=613796086]
-position = Vector2(128, 160)
 shape = SubResource("CircleShape2D_i43ir")
 
-[node name="@Polygon2D@13" type="Polygon2D" parent="Field1" unique_id=1776629255]
-position = Vector2(128, 160)
+[node name="@Polygon2D@4" type="Polygon2D" parent="Field0" unique_id=828382905]
+position = Vector2(-128, 160)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@14" type="CollisionShape2D" parent="Field1" unique_id=297363150]
-position = Vector2(96, 176)
+[node name="@CollisionShape2D@5" type="CollisionShape2D" parent="Field0" unique_id=1319183494]
+position = Vector2(-96, 176)
 shape = SubResource("CircleShape2D_4ycjc")
 
-[node name="@Polygon2D@15" type="Polygon2D" parent="Field1" unique_id=712829583]
-position = Vector2(96, 176)
+[node name="@Polygon2D@6" type="Polygon2D" parent="Field0" unique_id=1368282185]
+position = Vector2(-96, 176)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@16" type="CollisionShape2D" parent="Field1" unique_id=275927745]
-position = Vector2(64, 192)
+[node name="@CollisionShape2D@7" type="CollisionShape2D" parent="Field0" unique_id=1048650623]
+position = Vector2(-64, 192)
 shape = SubResource("CircleShape2D_wbxn0")
 
-[node name="@Polygon2D@17" type="Polygon2D" parent="Field1" unique_id=1083352323]
-position = Vector2(64, 192)
+[node name="@Polygon2D@8" type="Polygon2D" parent="Field0" unique_id=322413507]
+position = Vector2(-64, 192)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@18" type="CollisionShape2D" parent="Field1" unique_id=1451098576]
-position = Vector2(32, 208)
+[node name="@CollisionShape2D@9" type="CollisionShape2D" parent="Field0" unique_id=572108212]
+position = Vector2(-32, 208)
 shape = SubResource("CircleShape2D_de4oy")
 
-[node name="@Polygon2D@19" type="Polygon2D" parent="Field1" unique_id=908047559]
-position = Vector2(32, 208)
+[node name="@Polygon2D@10" type="Polygon2D" parent="Field0" unique_id=1368061214]
+position = Vector2(-32, 208)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@20" type="CollisionShape2D" parent="Field1" unique_id=2134550735]
-position = Vector2(0, 224)
+[node name="Field1" type="Area2D" parent="." unique_id=1410131011 instance=ExtResource("6_sdjpl")]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("7_e33sx")
+
+[node name="@CollisionShape2D@11" type="CollisionShape2D" parent="Field1" unique_id=1071302763]
+position = Vector2(128, 160)
 shape = SubResource("CircleShape2D_r6w88")
 
-[node name="@Polygon2D@21" type="Polygon2D" parent="Field1" unique_id=2090463783]
-position = Vector2(0, 224)
+[node name="@Polygon2D@12" type="Polygon2D" parent="Field1" unique_id=792772765]
+position = Vector2(128, 160)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@22" type="CollisionShape2D" parent="Field1" unique_id=1329470750]
-position = Vector2(-32, 240)
+[node name="@CollisionShape2D@13" type="CollisionShape2D" parent="Field1" unique_id=2042325786]
+position = Vector2(96, 176)
 shape = SubResource("CircleShape2D_dag4p")
 
-[node name="@Polygon2D@23" type="Polygon2D" parent="Field1" unique_id=859958927]
-position = Vector2(-32, 240)
+[node name="@Polygon2D@14" type="Polygon2D" parent="Field1" unique_id=661669497]
+position = Vector2(96, 176)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@24" type="CollisionShape2D" parent="Field1" unique_id=1244539727]
-position = Vector2(-64, 256)
+[node name="@CollisionShape2D@15" type="CollisionShape2D" parent="Field1" unique_id=1938612124]
+position = Vector2(64, 192)
 shape = SubResource("CircleShape2D_5japj")
 
-[node name="@Polygon2D@25" type="Polygon2D" parent="Field1" unique_id=1655387594]
-position = Vector2(-64, 256)
+[node name="@Polygon2D@16" type="Polygon2D" parent="Field1" unique_id=1343323615]
+position = Vector2(64, 192)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@26" type="CollisionShape2D" parent="Field1" unique_id=1345583594]
-position = Vector2(-96, 272)
+[node name="@CollisionShape2D@17" type="CollisionShape2D" parent="Field1" unique_id=104626046]
+position = Vector2(32, 208)
 shape = SubResource("CircleShape2D_pyw4y")
 
-[node name="@Polygon2D@27" type="Polygon2D" parent="Field1" unique_id=999247477]
-position = Vector2(-96, 272)
+[node name="@Polygon2D@18" type="Polygon2D" parent="Field1" unique_id=961917793]
+position = Vector2(32, 208)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@28" type="CollisionShape2D" parent="Field1" unique_id=1465210035]
-position = Vector2(-128, 288)
+[node name="@CollisionShape2D@19" type="CollisionShape2D" parent="Field1" unique_id=41804659]
+position = Vector2(0, 224)
 shape = SubResource("CircleShape2D_l5ngs")
 
-[node name="@Polygon2D@29" type="Polygon2D" parent="Field1" unique_id=37424206]
-position = Vector2(-128, 288)
+[node name="@Polygon2D@20" type="Polygon2D" parent="Field1" unique_id=154953991]
+position = Vector2(0, 224)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@30" type="CollisionShape2D" parent="Field1" unique_id=300068260]
-position = Vector2(-160, 304)
+[node name="@CollisionShape2D@21" type="CollisionShape2D" parent="Field1" unique_id=533831413]
+position = Vector2(-32, 240)
 shape = SubResource("CircleShape2D_mf50o")
 
-[node name="@Polygon2D@31" type="Polygon2D" parent="Field1" unique_id=1369360548]
-position = Vector2(-160, 304)
+[node name="@Polygon2D@22" type="Polygon2D" parent="Field1" unique_id=918407553]
+position = Vector2(-32, 240)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="Field2" type="Area2D" parent="." unique_id=1366470545 instance=ExtResource("4_tkleo")]
-unique_name_in_owner = true
-collision_layer = 8
-collision_mask = 6
-script = ExtResource("5_w8l13")
-
-[node name="@CollisionShape2D@32" type="CollisionShape2D" parent="Field2" unique_id=1850373744]
-position = Vector2(352, 208)
+[node name="@CollisionShape2D@23" type="CollisionShape2D" parent="Field1" unique_id=333731528]
+position = Vector2(-64, 256)
 shape = SubResource("CircleShape2D_3p8ia")
 
-[node name="@Polygon2D@33" type="Polygon2D" parent="Field2" unique_id=1406490914]
-position = Vector2(352, 208)
+[node name="@Polygon2D@24" type="Polygon2D" parent="Field1" unique_id=1136586563]
+position = Vector2(-64, 256)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@34" type="CollisionShape2D" parent="Field2" unique_id=689376971]
-position = Vector2(320, 224)
+[node name="@CollisionShape2D@25" type="CollisionShape2D" parent="Field1" unique_id=1545275174]
+position = Vector2(-96, 272)
 shape = SubResource("CircleShape2D_vas13")
 
-[node name="@Polygon2D@35" type="Polygon2D" parent="Field2" unique_id=2079706942]
-position = Vector2(320, 224)
+[node name="@Polygon2D@26" type="Polygon2D" parent="Field1" unique_id=1168641390]
+position = Vector2(-96, 272)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@36" type="CollisionShape2D" parent="Field2" unique_id=496695386]
-position = Vector2(288, 240)
+[node name="@CollisionShape2D@27" type="CollisionShape2D" parent="Field1" unique_id=1389700631]
+position = Vector2(-128, 288)
 shape = SubResource("CircleShape2D_wav6t")
 
-[node name="@Polygon2D@37" type="Polygon2D" parent="Field2" unique_id=2014065992]
-position = Vector2(288, 240)
+[node name="@Polygon2D@28" type="Polygon2D" parent="Field1" unique_id=1004449147]
+position = Vector2(-128, 288)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@38" type="CollisionShape2D" parent="Field2" unique_id=10484460]
-position = Vector2(256, 256)
+[node name="@CollisionShape2D@29" type="CollisionShape2D" parent="Field1" unique_id=45203858]
+position = Vector2(-160, 304)
 shape = SubResource("CircleShape2D_kagj3")
 
-[node name="@Polygon2D@39" type="Polygon2D" parent="Field2" unique_id=1025136305]
-position = Vector2(256, 256)
+[node name="@Polygon2D@30" type="Polygon2D" parent="Field1" unique_id=2133612972]
+position = Vector2(-160, 304)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@40" type="CollisionShape2D" parent="Field2" unique_id=1067885874]
-position = Vector2(224, 272)
-shape = SubResource("CircleShape2D_dv0gc")
-
-[node name="@Polygon2D@41" type="Polygon2D" parent="Field2" unique_id=1163324010]
-position = Vector2(224, 272)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@42" type="CollisionShape2D" parent="Field2" unique_id=44815992]
-position = Vector2(192, 288)
-shape = SubResource("CircleShape2D_o5qrx")
-
-[node name="@Polygon2D@43" type="Polygon2D" parent="Field2" unique_id=1112958166]
-position = Vector2(192, 288)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@44" type="CollisionShape2D" parent="Field2" unique_id=2122923833]
-position = Vector2(160, 304)
-shape = SubResource("CircleShape2D_r5pa8")
-
-[node name="@Polygon2D@45" type="Polygon2D" parent="Field2" unique_id=2094835331]
-position = Vector2(160, 304)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@46" type="CollisionShape2D" parent="Field2" unique_id=2049220083]
-position = Vector2(128, 320)
-shape = SubResource("CircleShape2D_vgpfb")
-
-[node name="@Polygon2D@47" type="Polygon2D" parent="Field2" unique_id=2017328473]
-position = Vector2(128, 320)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@48" type="CollisionShape2D" parent="Field2" unique_id=759083717]
-position = Vector2(96, 336)
-shape = SubResource("CircleShape2D_nw3sn")
-
-[node name="@Polygon2D@49" type="Polygon2D" parent="Field2" unique_id=290821262]
-position = Vector2(96, 336)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="@CollisionShape2D@50" type="CollisionShape2D" parent="Field2" unique_id=472572127]
-position = Vector2(64, 352)
-shape = SubResource("CircleShape2D_0arhj")
-
-[node name="@Polygon2D@51" type="Polygon2D" parent="Field2" unique_id=27469806]
-position = Vector2(64, 352)
-color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
-
-[node name="Field3" type="Area2D" parent="." unique_id=2066187485 instance=ExtResource("4_tkleo")]
+[node name="Field2" type="Area2D" parent="." unique_id=1130527748 instance=ExtResource("6_sdjpl")]
 unique_name_in_owner = true
 collision_layer = 8
 collision_mask = 6
-script = ExtResource("5_w8l13")
+script = ExtResource("7_e33sx")
 
-[node name="@CollisionShape2D@52" type="CollisionShape2D" parent="Field3" unique_id=635014735]
-position = Vector2(256, 320)
+[node name="@CollisionShape2D@31" type="CollisionShape2D" parent="Field2" unique_id=1111220805]
+position = Vector2(352, 208)
+shape = SubResource("CircleShape2D_dv0gc")
+
+[node name="@Polygon2D@32" type="Polygon2D" parent="Field2" unique_id=1742443241]
+position = Vector2(352, 208)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@33" type="CollisionShape2D" parent="Field2" unique_id=921263894]
+position = Vector2(320, 224)
+shape = SubResource("CircleShape2D_o5qrx")
+
+[node name="@Polygon2D@34" type="Polygon2D" parent="Field2" unique_id=1632867873]
+position = Vector2(320, 224)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@35" type="CollisionShape2D" parent="Field2" unique_id=484552726]
+position = Vector2(288, 240)
+shape = SubResource("CircleShape2D_r5pa8")
+
+[node name="@Polygon2D@36" type="Polygon2D" parent="Field2" unique_id=1134771540]
+position = Vector2(288, 240)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@37" type="CollisionShape2D" parent="Field2" unique_id=736624699]
+position = Vector2(256, 256)
+shape = SubResource("CircleShape2D_vgpfb")
+
+[node name="@Polygon2D@38" type="Polygon2D" parent="Field2" unique_id=489144929]
+position = Vector2(256, 256)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@39" type="CollisionShape2D" parent="Field2" unique_id=29102736]
+position = Vector2(224, 272)
+shape = SubResource("CircleShape2D_nw3sn")
+
+[node name="@Polygon2D@40" type="Polygon2D" parent="Field2" unique_id=1494018445]
+position = Vector2(224, 272)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@41" type="CollisionShape2D" parent="Field2" unique_id=405003688]
+position = Vector2(192, 288)
+shape = SubResource("CircleShape2D_0arhj")
+
+[node name="@Polygon2D@42" type="Polygon2D" parent="Field2" unique_id=805481834]
+position = Vector2(192, 288)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@43" type="CollisionShape2D" parent="Field2" unique_id=2082119376]
+position = Vector2(160, 304)
 shape = SubResource("CircleShape2D_r224l")
 
-[node name="@Polygon2D@53" type="Polygon2D" parent="Field3" unique_id=2033167804]
-position = Vector2(256, 320)
+[node name="@Polygon2D@44" type="Polygon2D" parent="Field2" unique_id=1111986738]
+position = Vector2(160, 304)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@54" type="CollisionShape2D" parent="Field3" unique_id=2060705093]
-position = Vector2(288, 336)
+[node name="@CollisionShape2D@45" type="CollisionShape2D" parent="Field2" unique_id=145526491]
+position = Vector2(128, 320)
 shape = SubResource("CircleShape2D_ml21b")
 
-[node name="@Polygon2D@55" type="Polygon2D" parent="Field3" unique_id=271822649]
-position = Vector2(288, 336)
+[node name="@Polygon2D@46" type="Polygon2D" parent="Field2" unique_id=1084630747]
+position = Vector2(128, 320)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@56" type="CollisionShape2D" parent="Field3" unique_id=1254080508]
-position = Vector2(320, 352)
+[node name="@CollisionShape2D@47" type="CollisionShape2D" parent="Field2" unique_id=1449010616]
+position = Vector2(96, 336)
 shape = SubResource("CircleShape2D_06kvf")
 
-[node name="@Polygon2D@57" type="Polygon2D" parent="Field3" unique_id=1852020510]
-position = Vector2(320, 352)
+[node name="@Polygon2D@48" type="Polygon2D" parent="Field2" unique_id=1329844002]
+position = Vector2(96, 336)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@58" type="CollisionShape2D" parent="Field3" unique_id=402190745]
-position = Vector2(352, 368)
+[node name="@CollisionShape2D@49" type="CollisionShape2D" parent="Field2" unique_id=1791203375]
+position = Vector2(64, 352)
 shape = SubResource("CircleShape2D_nt3xp")
 
-[node name="@Polygon2D@59" type="Polygon2D" parent="Field3" unique_id=1390259055]
-position = Vector2(352, 368)
+[node name="@Polygon2D@50" type="Polygon2D" parent="Field2" unique_id=640010418]
+position = Vector2(64, 352)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="@CollisionShape2D@60" type="CollisionShape2D" parent="Field3" unique_id=1654551242]
-position = Vector2(384, 384)
+[node name="Field3" type="Area2D" parent="." unique_id=168194378 instance=ExtResource("6_sdjpl")]
+unique_name_in_owner = true
+collision_layer = 8
+collision_mask = 6
+script = ExtResource("7_e33sx")
+
+[node name="@CollisionShape2D@51" type="CollisionShape2D" parent="Field3" unique_id=1022322637]
+position = Vector2(256, 320)
 shape = SubResource("CircleShape2D_qko7i")
 
-[node name="@Polygon2D@61" type="Polygon2D" parent="Field3" unique_id=610364473]
+[node name="@Polygon2D@52" type="Polygon2D" parent="Field3" unique_id=693050147]
+position = Vector2(256, 320)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@53" type="CollisionShape2D" parent="Field3" unique_id=1183348574]
+position = Vector2(288, 336)
+shape = SubResource("CircleShape2D_fbry4")
+
+[node name="@Polygon2D@54" type="Polygon2D" parent="Field3" unique_id=250962251]
+position = Vector2(288, 336)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@55" type="CollisionShape2D" parent="Field3" unique_id=1505284259]
+position = Vector2(320, 352)
+shape = SubResource("CircleShape2D_unonj")
+
+[node name="@Polygon2D@56" type="Polygon2D" parent="Field3" unique_id=35269377]
+position = Vector2(320, 352)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@57" type="CollisionShape2D" parent="Field3" unique_id=1121147148]
+position = Vector2(352, 368)
+shape = SubResource("CircleShape2D_e1efx")
+
+[node name="@Polygon2D@58" type="Polygon2D" parent="Field3" unique_id=1927555574]
+position = Vector2(352, 368)
+color = Color(0.851, 0.365, 0.365, 0.34)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
+
+[node name="@CollisionShape2D@59" type="CollisionShape2D" parent="Field3" unique_id=1376108932]
+position = Vector2(384, 384)
+shape = SubResource("CircleShape2D_g4g7a")
+
+[node name="@Polygon2D@60" type="Polygon2D" parent="Field3" unique_id=587049905]
 position = Vector2(384, 384)
 color = Color(0.851, 0.365, 0.365, 0.34)
-polygon = PackedVector2Array(0, -12, 12, 0, 0, 12, -12, 0)
+polygon = PackedVector2Array(0, -16, 32, 0, 0, 16, -32, 0)
 
-[node name="WallColliders" type="StaticBody2D" parent="." unique_id=1646188408]
+[node name="WallColliders" type="StaticBody2D" parent="." unique_id=1037819871]
 collision_mask = 0
 
-[node name="@CollisionShape2D@62" type="CollisionShape2D" parent="WallColliders" unique_id=1172220041]
+[node name="@CollisionShape2D@61" type="CollisionShape2D" parent="WallColliders" unique_id=1171391996]
 position = Vector2(32, 16)
-shape = SubResource("ConvexPolygonShape2D_fbry4")
-
-[node name="@CollisionShape2D@63" type="CollisionShape2D" parent="WallColliders" unique_id=1106239776]
-position = Vector2(0, 32)
-shape = SubResource("ConvexPolygonShape2D_unonj")
-
-[node name="@CollisionShape2D@64" type="CollisionShape2D" parent="WallColliders" unique_id=334658793]
-position = Vector2(-32, 48)
-shape = SubResource("ConvexPolygonShape2D_e1efx")
-
-[node name="@CollisionShape2D@65" type="CollisionShape2D" parent="WallColliders" unique_id=524472055]
-position = Vector2(-64, 64)
-shape = SubResource("ConvexPolygonShape2D_g4g7a")
-
-[node name="@CollisionShape2D@66" type="CollisionShape2D" parent="WallColliders" unique_id=713565205]
-position = Vector2(-96, 80)
 shape = SubResource("ConvexPolygonShape2D_knj1r")
 
-[node name="@CollisionShape2D@67" type="CollisionShape2D" parent="WallColliders" unique_id=1713361232]
-position = Vector2(-128, 96)
+[node name="@CollisionShape2D@62" type="CollisionShape2D" parent="WallColliders" unique_id=1981672790]
+position = Vector2(0, 32)
 shape = SubResource("ConvexPolygonShape2D_rb2xo")
 
-[node name="@CollisionShape2D@68" type="CollisionShape2D" parent="WallColliders" unique_id=1586573043]
-position = Vector2(-160, 112)
+[node name="@CollisionShape2D@63" type="CollisionShape2D" parent="WallColliders" unique_id=333418552]
+position = Vector2(-32, 48)
 shape = SubResource("ConvexPolygonShape2D_et7sc")
 
-[node name="@CollisionShape2D@69" type="CollisionShape2D" parent="WallColliders" unique_id=1382084675]
-position = Vector2(-192, 128)
+[node name="@CollisionShape2D@64" type="CollisionShape2D" parent="WallColliders" unique_id=26253989]
+position = Vector2(-64, 64)
 shape = SubResource("ConvexPolygonShape2D_s636h")
 
-[node name="@CollisionShape2D@70" type="CollisionShape2D" parent="WallColliders" unique_id=612028760]
-position = Vector2(-224, 144)
+[node name="@CollisionShape2D@65" type="CollisionShape2D" parent="WallColliders" unique_id=693272169]
+position = Vector2(-96, 80)
 shape = SubResource("ConvexPolygonShape2D_dt4cf")
 
-[node name="@CollisionShape2D@71" type="CollisionShape2D" parent="WallColliders" unique_id=1280287349]
-position = Vector2(-256, 160)
+[node name="@CollisionShape2D@66" type="CollisionShape2D" parent="WallColliders" unique_id=1006255391]
+position = Vector2(-128, 96)
 shape = SubResource("ConvexPolygonShape2D_40cib")
 
-[node name="@CollisionShape2D@72" type="CollisionShape2D" parent="WallColliders" unique_id=839185435]
-position = Vector2(-288, 176)
+[node name="@CollisionShape2D@67" type="CollisionShape2D" parent="WallColliders" unique_id=1787077797]
+position = Vector2(-160, 112)
 shape = SubResource("ConvexPolygonShape2D_5w01j")
 
-[node name="@CollisionShape2D@73" type="CollisionShape2D" parent="WallColliders" unique_id=1824796814]
-position = Vector2(-320, 192)
+[node name="@CollisionShape2D@68" type="CollisionShape2D" parent="WallColliders" unique_id=360450795]
+position = Vector2(-192, 128)
 shape = SubResource("ConvexPolygonShape2D_7fxtl")
 
-[node name="@CollisionShape2D@74" type="CollisionShape2D" parent="WallColliders" unique_id=2015375275]
-position = Vector2(-352, 208)
+[node name="@CollisionShape2D@69" type="CollisionShape2D" parent="WallColliders" unique_id=1574450720]
+position = Vector2(-224, 144)
 shape = SubResource("ConvexPolygonShape2D_p65gd")
 
-[node name="@CollisionShape2D@75" type="CollisionShape2D" parent="WallColliders" unique_id=1455299276]
-position = Vector2(-384, 224)
+[node name="@CollisionShape2D@70" type="CollisionShape2D" parent="WallColliders" unique_id=679724335]
+position = Vector2(-256, 160)
 shape = SubResource("ConvexPolygonShape2D_dakau")
 
-[node name="@CollisionShape2D@76" type="CollisionShape2D" parent="WallColliders" unique_id=2080909807]
-position = Vector2(64, 32)
+[node name="@CollisionShape2D@71" type="CollisionShape2D" parent="WallColliders" unique_id=1092857402]
+position = Vector2(-288, 176)
 shape = SubResource("ConvexPolygonShape2D_ce8ie")
 
-[node name="@CollisionShape2D@77" type="CollisionShape2D" parent="WallColliders" unique_id=205858075]
-position = Vector2(-352, 240)
+[node name="@CollisionShape2D@72" type="CollisionShape2D" parent="WallColliders" unique_id=2076444334]
+position = Vector2(-320, 192)
 shape = SubResource("ConvexPolygonShape2D_2wu27")
 
-[node name="@CollisionShape2D@78" type="CollisionShape2D" parent="WallColliders" unique_id=134801451]
-position = Vector2(96, 48)
+[node name="@CollisionShape2D@73" type="CollisionShape2D" parent="WallColliders" unique_id=1667160901]
+position = Vector2(-352, 208)
 shape = SubResource("ConvexPolygonShape2D_igat0")
 
-[node name="@CollisionShape2D@79" type="CollisionShape2D" parent="WallColliders" unique_id=682495029]
-position = Vector2(-320, 256)
+[node name="@CollisionShape2D@74" type="CollisionShape2D" parent="WallColliders" unique_id=578350842]
+position = Vector2(-384, 224)
 shape = SubResource("ConvexPolygonShape2D_q7jsx")
 
-[node name="@CollisionShape2D@80" type="CollisionShape2D" parent="WallColliders" unique_id=1527389589]
-position = Vector2(128, 64)
+[node name="@CollisionShape2D@75" type="CollisionShape2D" parent="WallColliders" unique_id=592005193]
+position = Vector2(64, 32)
 shape = SubResource("ConvexPolygonShape2D_y7reu")
 
-[node name="@CollisionShape2D@81" type="CollisionShape2D" parent="WallColliders" unique_id=738967904]
-position = Vector2(-288, 272)
+[node name="@CollisionShape2D@76" type="CollisionShape2D" parent="WallColliders" unique_id=2044512712]
+position = Vector2(-352, 240)
 shape = SubResource("ConvexPolygonShape2D_i0u4c")
 
-[node name="@CollisionShape2D@82" type="CollisionShape2D" parent="WallColliders" unique_id=1946318754]
-position = Vector2(160, 80)
+[node name="@CollisionShape2D@77" type="CollisionShape2D" parent="WallColliders" unique_id=389992868]
+position = Vector2(96, 48)
 shape = SubResource("ConvexPolygonShape2D_rlfnn")
 
-[node name="@CollisionShape2D@83" type="CollisionShape2D" parent="WallColliders" unique_id=442486454]
-position = Vector2(-256, 288)
+[node name="@CollisionShape2D@78" type="CollisionShape2D" parent="WallColliders" unique_id=852077550]
+position = Vector2(-320, 256)
 shape = SubResource("ConvexPolygonShape2D_dimbk")
 
-[node name="@CollisionShape2D@84" type="CollisionShape2D" parent="WallColliders" unique_id=1860279795]
-position = Vector2(192, 96)
+[node name="@CollisionShape2D@79" type="CollisionShape2D" parent="WallColliders" unique_id=168378391]
+position = Vector2(128, 64)
 shape = SubResource("ConvexPolygonShape2D_juarp")
 
-[node name="@CollisionShape2D@85" type="CollisionShape2D" parent="WallColliders" unique_id=298624536]
-position = Vector2(-224, 304)
+[node name="@CollisionShape2D@80" type="CollisionShape2D" parent="WallColliders" unique_id=1863461413]
+position = Vector2(-288, 272)
 shape = SubResource("ConvexPolygonShape2D_uvij6")
 
-[node name="@CollisionShape2D@86" type="CollisionShape2D" parent="WallColliders" unique_id=990394906]
-position = Vector2(224, 112)
+[node name="@CollisionShape2D@81" type="CollisionShape2D" parent="WallColliders" unique_id=1526167764]
+position = Vector2(160, 80)
 shape = SubResource("ConvexPolygonShape2D_p6a1q")
 
-[node name="@CollisionShape2D@87" type="CollisionShape2D" parent="WallColliders" unique_id=2103673174]
-position = Vector2(-192, 320)
+[node name="@CollisionShape2D@82" type="CollisionShape2D" parent="WallColliders" unique_id=1830072371]
+position = Vector2(-256, 288)
 shape = SubResource("ConvexPolygonShape2D_qmwx0")
 
-[node name="@CollisionShape2D@88" type="CollisionShape2D" parent="WallColliders" unique_id=39225826]
-position = Vector2(256, 128)
+[node name="@CollisionShape2D@83" type="CollisionShape2D" parent="WallColliders" unique_id=439444564]
+position = Vector2(192, 96)
 shape = SubResource("ConvexPolygonShape2D_utdfn")
 
-[node name="@CollisionShape2D@89" type="CollisionShape2D" parent="WallColliders" unique_id=1478326492]
-position = Vector2(-160, 336)
+[node name="@CollisionShape2D@84" type="CollisionShape2D" parent="WallColliders" unique_id=360342012]
+position = Vector2(-224, 304)
 shape = SubResource("ConvexPolygonShape2D_10q8v")
 
-[node name="@CollisionShape2D@90" type="CollisionShape2D" parent="WallColliders" unique_id=1241211022]
-position = Vector2(288, 144)
+[node name="@CollisionShape2D@85" type="CollisionShape2D" parent="WallColliders" unique_id=1352281660]
+position = Vector2(224, 112)
 shape = SubResource("ConvexPolygonShape2D_tx85o")
 
-[node name="@CollisionShape2D@91" type="CollisionShape2D" parent="WallColliders" unique_id=403731321]
-position = Vector2(-128, 352)
+[node name="@CollisionShape2D@86" type="CollisionShape2D" parent="WallColliders" unique_id=366292523]
+position = Vector2(-192, 320)
 shape = SubResource("ConvexPolygonShape2D_cl4k3")
 
-[node name="@CollisionShape2D@92" type="CollisionShape2D" parent="WallColliders" unique_id=1227996477]
-position = Vector2(352, 176)
+[node name="@CollisionShape2D@87" type="CollisionShape2D" parent="WallColliders" unique_id=926301690]
+position = Vector2(256, 128)
 shape = SubResource("ConvexPolygonShape2D_vdkpm")
 
-[node name="@CollisionShape2D@93" type="CollisionShape2D" parent="WallColliders" unique_id=302392589]
-position = Vector2(-64, 384)
+[node name="@CollisionShape2D@88" type="CollisionShape2D" parent="WallColliders" unique_id=347663061]
+position = Vector2(-160, 336)
 shape = SubResource("ConvexPolygonShape2D_6bkl7")
 
-[node name="@CollisionShape2D@94" type="CollisionShape2D" parent="WallColliders" unique_id=67503631]
-position = Vector2(384, 192)
+[node name="@CollisionShape2D@89" type="CollisionShape2D" parent="WallColliders" unique_id=987852326]
+position = Vector2(288, 144)
 shape = SubResource("ConvexPolygonShape2D_8ufpy")
 
-[node name="@CollisionShape2D@95" type="CollisionShape2D" parent="WallColliders" unique_id=1859393070]
-position = Vector2(-32, 400)
+[node name="@CollisionShape2D@90" type="CollisionShape2D" parent="WallColliders" unique_id=500019113]
+position = Vector2(-128, 352)
 shape = SubResource("ConvexPolygonShape2D_yvj8t")
 
-[node name="@CollisionShape2D@96" type="CollisionShape2D" parent="WallColliders" unique_id=683889483]
-position = Vector2(416, 208)
+[node name="@CollisionShape2D@91" type="CollisionShape2D" parent="WallColliders" unique_id=1557338990]
+position = Vector2(352, 176)
 shape = SubResource("ConvexPolygonShape2D_452y4")
 
-[node name="@CollisionShape2D@97" type="CollisionShape2D" parent="WallColliders" unique_id=1227766793]
-position = Vector2(0, 416)
+[node name="@CollisionShape2D@92" type="CollisionShape2D" parent="WallColliders" unique_id=899508790]
+position = Vector2(-64, 384)
 shape = SubResource("ConvexPolygonShape2D_g6umy")
 
-[node name="@CollisionShape2D@98" type="CollisionShape2D" parent="WallColliders" unique_id=2137931023]
-position = Vector2(448, 224)
+[node name="@CollisionShape2D@93" type="CollisionShape2D" parent="WallColliders" unique_id=493011836]
+position = Vector2(384, 192)
 shape = SubResource("ConvexPolygonShape2D_31tcw")
 
-[node name="@CollisionShape2D@99" type="CollisionShape2D" parent="WallColliders" unique_id=655665790]
-position = Vector2(32, 432)
+[node name="@CollisionShape2D@94" type="CollisionShape2D" parent="WallColliders" unique_id=1596672019]
+position = Vector2(-32, 400)
 shape = SubResource("ConvexPolygonShape2D_15at2")
 
-[node name="@CollisionShape2D@100" type="CollisionShape2D" parent="WallColliders" unique_id=329229421]
-position = Vector2(480, 240)
+[node name="@CollisionShape2D@95" type="CollisionShape2D" parent="WallColliders" unique_id=1285119958]
+position = Vector2(416, 208)
 shape = SubResource("ConvexPolygonShape2D_dsehr")
 
-[node name="@CollisionShape2D@101" type="CollisionShape2D" parent="WallColliders" unique_id=1792193785]
-position = Vector2(64, 448)
+[node name="@CollisionShape2D@96" type="CollisionShape2D" parent="WallColliders" unique_id=838671591]
+position = Vector2(0, 416)
 shape = SubResource("ConvexPolygonShape2D_8o43q")
 
-[node name="@CollisionShape2D@102" type="CollisionShape2D" parent="WallColliders" unique_id=811261311]
-position = Vector2(512, 256)
+[node name="@CollisionShape2D@97" type="CollisionShape2D" parent="WallColliders" unique_id=808768097]
+position = Vector2(448, 224)
 shape = SubResource("ConvexPolygonShape2D_lcyga")
 
-[node name="@CollisionShape2D@103" type="CollisionShape2D" parent="WallColliders" unique_id=2135256193]
-position = Vector2(96, 464)
+[node name="@CollisionShape2D@98" type="CollisionShape2D" parent="WallColliders" unique_id=444544974]
+position = Vector2(32, 432)
 shape = SubResource("ConvexPolygonShape2D_0dq4e")
 
-[node name="@CollisionShape2D@104" type="CollisionShape2D" parent="WallColliders" unique_id=833122906]
-position = Vector2(544, 272)
+[node name="@CollisionShape2D@99" type="CollisionShape2D" parent="WallColliders" unique_id=686624167]
+position = Vector2(480, 240)
 shape = SubResource("ConvexPolygonShape2D_7r53d")
 
-[node name="@CollisionShape2D@105" type="CollisionShape2D" parent="WallColliders" unique_id=1594742716]
-position = Vector2(128, 480)
+[node name="@CollisionShape2D@100" type="CollisionShape2D" parent="WallColliders" unique_id=356202888]
+position = Vector2(64, 448)
 shape = SubResource("ConvexPolygonShape2D_rd03j")
 
-[node name="@CollisionShape2D@106" type="CollisionShape2D" parent="WallColliders" unique_id=1969486764]
-position = Vector2(576, 288)
+[node name="@CollisionShape2D@101" type="CollisionShape2D" parent="WallColliders" unique_id=759497882]
+position = Vector2(512, 256)
 shape = SubResource("ConvexPolygonShape2D_u10ol")
 
-[node name="@CollisionShape2D@107" type="CollisionShape2D" parent="WallColliders" unique_id=258198303]
-position = Vector2(544, 304)
+[node name="@CollisionShape2D@102" type="CollisionShape2D" parent="WallColliders" unique_id=54287876]
+position = Vector2(96, 464)
 shape = SubResource("ConvexPolygonShape2D_qdrvw")
 
-[node name="@CollisionShape2D@108" type="CollisionShape2D" parent="WallColliders" unique_id=1488617446]
-position = Vector2(512, 320)
+[node name="@CollisionShape2D@103" type="CollisionShape2D" parent="WallColliders" unique_id=1197252698]
+position = Vector2(544, 272)
 shape = SubResource("ConvexPolygonShape2D_vgr46")
 
-[node name="@CollisionShape2D@109" type="CollisionShape2D" parent="WallColliders" unique_id=1220707846]
-position = Vector2(480, 336)
+[node name="@CollisionShape2D@104" type="CollisionShape2D" parent="WallColliders" unique_id=668348890]
+position = Vector2(128, 480)
 shape = SubResource("ConvexPolygonShape2D_5d51y")
 
-[node name="@CollisionShape2D@110" type="CollisionShape2D" parent="WallColliders" unique_id=1372018008]
-position = Vector2(448, 352)
+[node name="@CollisionShape2D@105" type="CollisionShape2D" parent="WallColliders" unique_id=770120982]
+position = Vector2(576, 288)
 shape = SubResource("ConvexPolygonShape2D_wp1vl")
 
-[node name="@CollisionShape2D@111" type="CollisionShape2D" parent="WallColliders" unique_id=927054326]
-position = Vector2(416, 368)
+[node name="@CollisionShape2D@106" type="CollisionShape2D" parent="WallColliders" unique_id=1808928781]
+position = Vector2(544, 304)
 shape = SubResource("ConvexPolygonShape2D_j6c4j")
 
-[node name="@CollisionShape2D@112" type="CollisionShape2D" parent="WallColliders" unique_id=897991223]
-position = Vector2(384, 384)
+[node name="@CollisionShape2D@107" type="CollisionShape2D" parent="WallColliders" unique_id=444270812]
+position = Vector2(512, 320)
 shape = SubResource("ConvexPolygonShape2D_ff2f0")
 
-[node name="@CollisionShape2D@113" type="CollisionShape2D" parent="WallColliders" unique_id=1292957915]
-position = Vector2(352, 400)
+[node name="@CollisionShape2D@108" type="CollisionShape2D" parent="WallColliders" unique_id=1859919239]
+position = Vector2(480, 336)
 shape = SubResource("ConvexPolygonShape2D_r7f2u")
 
-[node name="@CollisionShape2D@114" type="CollisionShape2D" parent="WallColliders" unique_id=1678667754]
-position = Vector2(320, 416)
+[node name="@CollisionShape2D@109" type="CollisionShape2D" parent="WallColliders" unique_id=77852721]
+position = Vector2(448, 352)
 shape = SubResource("ConvexPolygonShape2D_hlpih")
 
-[node name="@CollisionShape2D@115" type="CollisionShape2D" parent="WallColliders" unique_id=1286819864]
-position = Vector2(288, 432)
+[node name="@CollisionShape2D@110" type="CollisionShape2D" parent="WallColliders" unique_id=141116186]
+position = Vector2(416, 368)
 shape = SubResource("ConvexPolygonShape2D_3ob1y")
 
-[node name="@CollisionShape2D@116" type="CollisionShape2D" parent="WallColliders" unique_id=142132486]
-position = Vector2(256, 448)
+[node name="@CollisionShape2D@111" type="CollisionShape2D" parent="WallColliders" unique_id=1608337253]
+position = Vector2(384, 384)
 shape = SubResource("ConvexPolygonShape2D_56em0")
 
-[node name="@CollisionShape2D@117" type="CollisionShape2D" parent="WallColliders" unique_id=501916144]
-position = Vector2(224, 464)
+[node name="@CollisionShape2D@112" type="CollisionShape2D" parent="WallColliders" unique_id=1526992915]
+position = Vector2(352, 400)
 shape = SubResource("ConvexPolygonShape2D_rlxs5")
 
-[node name="@CollisionShape2D@118" type="CollisionShape2D" parent="WallColliders" unique_id=1430887936]
-position = Vector2(192, 480)
+[node name="@CollisionShape2D@113" type="CollisionShape2D" parent="WallColliders" unique_id=1126322960]
+position = Vector2(320, 416)
 shape = SubResource("ConvexPolygonShape2D_bww46")
 
-[node name="@CollisionShape2D@119" type="CollisionShape2D" parent="WallColliders" unique_id=487123344]
-position = Vector2(160, 496)
+[node name="@CollisionShape2D@114" type="CollisionShape2D" parent="WallColliders" unique_id=704002318]
+position = Vector2(288, 432)
 shape = SubResource("ConvexPolygonShape2D_8q6uu")
 
-[node name="@CollisionShape2D@120" type="CollisionShape2D" parent="WallColliders" unique_id=819646465]
-position = Vector2(320, 128)
+[node name="@CollisionShape2D@115" type="CollisionShape2D" parent="WallColliders" unique_id=2123614493]
+position = Vector2(256, 448)
 shape = SubResource("ConvexPolygonShape2D_gm2xp")
 
-[node name="@CollisionShape2D@121" type="CollisionShape2D" parent="WallColliders" unique_id=156001009]
-position = Vector2(352, 144)
+[node name="@CollisionShape2D@116" type="CollisionShape2D" parent="WallColliders" unique_id=219967995]
+position = Vector2(224, 464)
 shape = SubResource("ConvexPolygonShape2D_ycapo")
 
-[node name="@CollisionShape2D@122" type="CollisionShape2D" parent="WallColliders" unique_id=1384198464]
-position = Vector2(384, 160)
+[node name="@CollisionShape2D@117" type="CollisionShape2D" parent="WallColliders" unique_id=975284266]
+position = Vector2(192, 480)
 shape = SubResource("ConvexPolygonShape2D_pgo7t")
 
-[node name="@CollisionShape2D@123" type="CollisionShape2D" parent="WallColliders" unique_id=1257387371]
+[node name="@CollisionShape2D@118" type="CollisionShape2D" parent="WallColliders" unique_id=1423256928]
+position = Vector2(160, 496)
+shape = SubResource("ConvexPolygonShape2D_pcme6")
+
+[node name="@CollisionShape2D@119" type="CollisionShape2D" parent="WallColliders" unique_id=1892295218]
+position = Vector2(320, 128)
+shape = SubResource("ConvexPolygonShape2D_qqsr8")
+
+[node name="@CollisionShape2D@120" type="CollisionShape2D" parent="WallColliders" unique_id=1242536516]
+position = Vector2(352, 144)
+shape = SubResource("ConvexPolygonShape2D_pig4v")
+
+[node name="@CollisionShape2D@121" type="CollisionShape2D" parent="WallColliders" unique_id=208986340]
+position = Vector2(384, 160)
+shape = SubResource("ConvexPolygonShape2D_oj5hk")
+
+[node name="@CollisionShape2D@122" type="CollisionShape2D" parent="WallColliders" unique_id=259900775]
 position = Vector2(32, 0)
-shape = SubResource("CircleShape2D_pcme6")
-
-[node name="@CollisionShape2D@124" type="CollisionShape2D" parent="WallColliders" unique_id=824876763]
-position = Vector2(608, 288)
-shape = SubResource("CircleShape2D_qqsr8")
-
-[node name="@CollisionShape2D@125" type="CollisionShape2D" parent="WallColliders" unique_id=580548434]
-position = Vector2(160, 512)
-shape = SubResource("CircleShape2D_pig4v")
-
-[node name="@CollisionShape2D@126" type="CollisionShape2D" parent="WallColliders" unique_id=945403684]
-position = Vector2(-416, 224)
-shape = SubResource("CircleShape2D_oj5hk")
-
-[node name="@CollisionShape2D@127" type="CollisionShape2D" parent="WallColliders" unique_id=1870676990]
-position = Vector2(64, 16)
 shape = SubResource("CircleShape2D_pwu12")
 
-[node name="@CollisionShape2D@128" type="CollisionShape2D" parent="WallColliders" unique_id=1367863169]
-position = Vector2(-416, 224)
+[node name="@CollisionShape2D@123" type="CollisionShape2D" parent="WallColliders" unique_id=754027234]
+position = Vector2(608, 288)
 shape = SubResource("CircleShape2D_gle3x")
 
-[node name="@CollisionShape2D@129" type="CollisionShape2D" parent="WallColliders" unique_id=163687776]
-position = Vector2(96, 32)
+[node name="@CollisionShape2D@124" type="CollisionShape2D" parent="WallColliders" unique_id=955275226]
+position = Vector2(160, 512)
 shape = SubResource("CircleShape2D_boc07")
 
-[node name="@CollisionShape2D@130" type="CollisionShape2D" parent="WallColliders" unique_id=1540036561]
-position = Vector2(-384, 240)
+[node name="@CollisionShape2D@125" type="CollisionShape2D" parent="WallColliders" unique_id=2015398693]
+position = Vector2(-416, 224)
 shape = SubResource("CircleShape2D_0iuab")
 
-[node name="@CollisionShape2D@131" type="CollisionShape2D" parent="WallColliders" unique_id=707274418]
-position = Vector2(128, 48)
+[node name="@CollisionShape2D@126" type="CollisionShape2D" parent="WallColliders" unique_id=1157004787]
+position = Vector2(64, 16)
 shape = SubResource("CircleShape2D_y7caw")
 
-[node name="@CollisionShape2D@132" type="CollisionShape2D" parent="WallColliders" unique_id=978650286]
-position = Vector2(-352, 256)
+[node name="@CollisionShape2D@127" type="CollisionShape2D" parent="WallColliders" unique_id=1262041824]
+position = Vector2(-416, 224)
 shape = SubResource("CircleShape2D_tekh7")
 
-[node name="@CollisionShape2D@133" type="CollisionShape2D" parent="WallColliders" unique_id=1755984331]
-position = Vector2(160, 64)
+[node name="@CollisionShape2D@128" type="CollisionShape2D" parent="WallColliders" unique_id=1006938329]
+position = Vector2(96, 32)
 shape = SubResource("CircleShape2D_eanbq")
 
-[node name="@CollisionShape2D@134" type="CollisionShape2D" parent="WallColliders" unique_id=10014969]
-position = Vector2(-320, 272)
+[node name="@CollisionShape2D@129" type="CollisionShape2D" parent="WallColliders" unique_id=1195838246]
+position = Vector2(-384, 240)
 shape = SubResource("CircleShape2D_ld8h1")
 
-[node name="@CollisionShape2D@135" type="CollisionShape2D" parent="WallColliders" unique_id=1028944969]
-position = Vector2(192, 80)
+[node name="@CollisionShape2D@130" type="CollisionShape2D" parent="WallColliders" unique_id=219731533]
+position = Vector2(128, 48)
 shape = SubResource("CircleShape2D_d3rdq")
 
-[node name="@CollisionShape2D@136" type="CollisionShape2D" parent="WallColliders" unique_id=1400225145]
-position = Vector2(-288, 288)
+[node name="@CollisionShape2D@131" type="CollisionShape2D" parent="WallColliders" unique_id=268719188]
+position = Vector2(-352, 256)
 shape = SubResource("CircleShape2D_uvw3e")
 
-[node name="@CollisionShape2D@137" type="CollisionShape2D" parent="WallColliders" unique_id=1864614131]
-position = Vector2(224, 96)
+[node name="@CollisionShape2D@132" type="CollisionShape2D" parent="WallColliders" unique_id=1256989871]
+position = Vector2(160, 64)
 shape = SubResource("CircleShape2D_struy")
 
-[node name="@CollisionShape2D@138" type="CollisionShape2D" parent="WallColliders" unique_id=530600099]
-position = Vector2(-256, 304)
+[node name="@CollisionShape2D@133" type="CollisionShape2D" parent="WallColliders" unique_id=403337695]
+position = Vector2(-320, 272)
 shape = SubResource("CircleShape2D_s4fqd")
 
-[node name="@CollisionShape2D@139" type="CollisionShape2D" parent="WallColliders" unique_id=1108854520]
-position = Vector2(256, 112)
+[node name="@CollisionShape2D@134" type="CollisionShape2D" parent="WallColliders" unique_id=255141930]
+position = Vector2(192, 80)
 shape = SubResource("CircleShape2D_juvx4")
 
-[node name="@CollisionShape2D@140" type="CollisionShape2D" parent="WallColliders" unique_id=299959048]
-position = Vector2(-224, 320)
+[node name="@CollisionShape2D@135" type="CollisionShape2D" parent="WallColliders" unique_id=351221955]
+position = Vector2(-288, 288)
 shape = SubResource("CircleShape2D_lqing")
 
-[node name="@CollisionShape2D@141" type="CollisionShape2D" parent="WallColliders" unique_id=61467314]
-position = Vector2(288, 128)
+[node name="@CollisionShape2D@136" type="CollisionShape2D" parent="WallColliders" unique_id=2105867418]
+position = Vector2(224, 96)
 shape = SubResource("CircleShape2D_0nb0i")
 
-[node name="@CollisionShape2D@142" type="CollisionShape2D" parent="WallColliders" unique_id=165409460]
-position = Vector2(-192, 336)
+[node name="@CollisionShape2D@137" type="CollisionShape2D" parent="WallColliders" unique_id=1227248742]
+position = Vector2(-256, 304)
 shape = SubResource("CircleShape2D_en8fq")
 
-[node name="@CollisionShape2D@143" type="CollisionShape2D" parent="WallColliders" unique_id=1053405631]
-position = Vector2(320, 144)
+[node name="@CollisionShape2D@138" type="CollisionShape2D" parent="WallColliders" unique_id=199979724]
+position = Vector2(256, 112)
 shape = SubResource("CircleShape2D_xf3lb")
 
-[node name="@CollisionShape2D@144" type="CollisionShape2D" parent="WallColliders" unique_id=1382345781]
-position = Vector2(-160, 352)
+[node name="@CollisionShape2D@139" type="CollisionShape2D" parent="WallColliders" unique_id=644539023]
+position = Vector2(-224, 320)
 shape = SubResource("CircleShape2D_00uuv")
 
-[node name="@CollisionShape2D@145" type="CollisionShape2D" parent="WallColliders" unique_id=878018581]
-position = Vector2(352, 160)
+[node name="@CollisionShape2D@140" type="CollisionShape2D" parent="WallColliders" unique_id=1810194563]
+position = Vector2(288, 128)
 shape = SubResource("CircleShape2D_6uukm")
 
-[node name="@CollisionShape2D@146" type="CollisionShape2D" parent="WallColliders" unique_id=1721183218]
-position = Vector2(-128, 368)
+[node name="@CollisionShape2D@141" type="CollisionShape2D" parent="WallColliders" unique_id=1298314772]
+position = Vector2(-192, 336)
 shape = SubResource("CircleShape2D_43fp0")
 
-[node name="@CollisionShape2D@147" type="CollisionShape2D" parent="WallColliders" unique_id=503475709]
-position = Vector2(384, 176)
+[node name="@CollisionShape2D@142" type="CollisionShape2D" parent="WallColliders" unique_id=303715918]
+position = Vector2(320, 144)
 shape = SubResource("CircleShape2D_oi2qr")
 
-[node name="@CollisionShape2D@148" type="CollisionShape2D" parent="WallColliders" unique_id=763543300]
-position = Vector2(-96, 384)
+[node name="@CollisionShape2D@143" type="CollisionShape2D" parent="WallColliders" unique_id=1544506356]
+position = Vector2(-160, 352)
 shape = SubResource("CircleShape2D_0q6iw")
 
-[node name="@CollisionShape2D@149" type="CollisionShape2D" parent="WallColliders" unique_id=1421812407]
-position = Vector2(416, 192)
+[node name="@CollisionShape2D@144" type="CollisionShape2D" parent="WallColliders" unique_id=2113805926]
+position = Vector2(352, 160)
 shape = SubResource("CircleShape2D_txycl")
 
-[node name="@CollisionShape2D@150" type="CollisionShape2D" parent="WallColliders" unique_id=1971185078]
-position = Vector2(-64, 400)
+[node name="@CollisionShape2D@145" type="CollisionShape2D" parent="WallColliders" unique_id=883466750]
+position = Vector2(-128, 368)
 shape = SubResource("CircleShape2D_pyrfr")
 
-[node name="@CollisionShape2D@151" type="CollisionShape2D" parent="WallColliders" unique_id=1184001621]
-position = Vector2(448, 208)
+[node name="@CollisionShape2D@146" type="CollisionShape2D" parent="WallColliders" unique_id=1663590514]
+position = Vector2(384, 176)
 shape = SubResource("CircleShape2D_ms1a5")
 
-[node name="@CollisionShape2D@152" type="CollisionShape2D" parent="WallColliders" unique_id=1347739672]
-position = Vector2(-32, 416)
+[node name="@CollisionShape2D@147" type="CollisionShape2D" parent="WallColliders" unique_id=60227124]
+position = Vector2(-96, 384)
 shape = SubResource("CircleShape2D_mt6pw")
 
-[node name="@CollisionShape2D@153" type="CollisionShape2D" parent="WallColliders" unique_id=102752007]
-position = Vector2(480, 224)
+[node name="@CollisionShape2D@148" type="CollisionShape2D" parent="WallColliders" unique_id=1180499575]
+position = Vector2(416, 192)
 shape = SubResource("CircleShape2D_hmi2m")
 
-[node name="@CollisionShape2D@154" type="CollisionShape2D" parent="WallColliders" unique_id=1855037789]
-position = Vector2(0, 432)
+[node name="@CollisionShape2D@149" type="CollisionShape2D" parent="WallColliders" unique_id=867994030]
+position = Vector2(-64, 400)
 shape = SubResource("CircleShape2D_4u1ao")
 
-[node name="@CollisionShape2D@155" type="CollisionShape2D" parent="WallColliders" unique_id=946772845]
-position = Vector2(512, 240)
+[node name="@CollisionShape2D@150" type="CollisionShape2D" parent="WallColliders" unique_id=490819204]
+position = Vector2(448, 208)
 shape = SubResource("CircleShape2D_ghuu0")
 
-[node name="@CollisionShape2D@156" type="CollisionShape2D" parent="WallColliders" unique_id=1221302364]
-position = Vector2(32, 448)
+[node name="@CollisionShape2D@151" type="CollisionShape2D" parent="WallColliders" unique_id=569414824]
+position = Vector2(-32, 416)
 shape = SubResource("CircleShape2D_y7iy3")
 
-[node name="@CollisionShape2D@157" type="CollisionShape2D" parent="WallColliders" unique_id=2026971125]
-position = Vector2(544, 256)
+[node name="@CollisionShape2D@152" type="CollisionShape2D" parent="WallColliders" unique_id=756885334]
+position = Vector2(480, 224)
 shape = SubResource("CircleShape2D_1spqn")
 
-[node name="@CollisionShape2D@158" type="CollisionShape2D" parent="WallColliders" unique_id=1936668501]
-position = Vector2(64, 464)
+[node name="@CollisionShape2D@153" type="CollisionShape2D" parent="WallColliders" unique_id=919479634]
+position = Vector2(0, 432)
 shape = SubResource("CircleShape2D_b4m3l")
 
-[node name="@CollisionShape2D@159" type="CollisionShape2D" parent="WallColliders" unique_id=400705792]
-position = Vector2(576, 272)
+[node name="@CollisionShape2D@154" type="CollisionShape2D" parent="WallColliders" unique_id=41838766]
+position = Vector2(512, 240)
 shape = SubResource("CircleShape2D_fjdp5")
 
-[node name="@CollisionShape2D@160" type="CollisionShape2D" parent="WallColliders" unique_id=1152330792]
-position = Vector2(96, 480)
+[node name="@CollisionShape2D@155" type="CollisionShape2D" parent="WallColliders" unique_id=859473392]
+position = Vector2(32, 448)
 shape = SubResource("CircleShape2D_508dc")
 
-[node name="@CollisionShape2D@161" type="CollisionShape2D" parent="WallColliders" unique_id=234968803]
-position = Vector2(608, 288)
+[node name="@CollisionShape2D@156" type="CollisionShape2D" parent="WallColliders" unique_id=1213189632]
+position = Vector2(544, 256)
 shape = SubResource("CircleShape2D_easfq")
 
-[node name="@CollisionShape2D@162" type="CollisionShape2D" parent="WallColliders" unique_id=71858345]
-position = Vector2(128, 496)
+[node name="@CollisionShape2D@157" type="CollisionShape2D" parent="WallColliders" unique_id=1759439527]
+position = Vector2(64, 464)
 shape = SubResource("CircleShape2D_gpcee")
 
-[node name="@CollisionShape2D@163" type="CollisionShape2D" parent="WallColliders" unique_id=106969623]
-position = Vector2(576, 304)
+[node name="@CollisionShape2D@158" type="CollisionShape2D" parent="WallColliders" unique_id=1618792310]
+position = Vector2(576, 272)
 shape = SubResource("CircleShape2D_yora0")
 
-[node name="@CollisionShape2D@164" type="CollisionShape2D" parent="WallColliders" unique_id=806837345]
-position = Vector2(32, 0)
+[node name="@CollisionShape2D@159" type="CollisionShape2D" parent="WallColliders" unique_id=661661757]
+position = Vector2(96, 480)
 shape = SubResource("CircleShape2D_jgd6s")
 
-[node name="@CollisionShape2D@165" type="CollisionShape2D" parent="WallColliders" unique_id=1465838992]
-position = Vector2(544, 320)
+[node name="@CollisionShape2D@160" type="CollisionShape2D" parent="WallColliders" unique_id=1938688603]
+position = Vector2(608, 288)
 shape = SubResource("CircleShape2D_p6yol")
 
-[node name="@CollisionShape2D@166" type="CollisionShape2D" parent="WallColliders" unique_id=177679852]
-position = Vector2(0, 16)
+[node name="@CollisionShape2D@161" type="CollisionShape2D" parent="WallColliders" unique_id=512454657]
+position = Vector2(128, 496)
 shape = SubResource("CircleShape2D_pnn6y")
 
-[node name="@CollisionShape2D@167" type="CollisionShape2D" parent="WallColliders" unique_id=925054894]
-position = Vector2(512, 336)
+[node name="@CollisionShape2D@162" type="CollisionShape2D" parent="WallColliders" unique_id=1965179939]
+position = Vector2(576, 304)
 shape = SubResource("CircleShape2D_vj7ly")
 
-[node name="@CollisionShape2D@168" type="CollisionShape2D" parent="WallColliders" unique_id=1135035400]
-position = Vector2(-32, 32)
+[node name="@CollisionShape2D@163" type="CollisionShape2D" parent="WallColliders" unique_id=391744897]
+position = Vector2(32, 0)
 shape = SubResource("CircleShape2D_t2p7q")
 
-[node name="@CollisionShape2D@169" type="CollisionShape2D" parent="WallColliders" unique_id=1747461407]
-position = Vector2(480, 352)
+[node name="@CollisionShape2D@164" type="CollisionShape2D" parent="WallColliders" unique_id=349426509]
+position = Vector2(544, 320)
 shape = SubResource("CircleShape2D_kb77e")
 
-[node name="@CollisionShape2D@170" type="CollisionShape2D" parent="WallColliders" unique_id=37713179]
-position = Vector2(-64, 48)
+[node name="@CollisionShape2D@165" type="CollisionShape2D" parent="WallColliders" unique_id=102230612]
+position = Vector2(0, 16)
 shape = SubResource("CircleShape2D_yn0y5")
 
-[node name="@CollisionShape2D@171" type="CollisionShape2D" parent="WallColliders" unique_id=1452538568]
-position = Vector2(448, 368)
+[node name="@CollisionShape2D@166" type="CollisionShape2D" parent="WallColliders" unique_id=20202911]
+position = Vector2(512, 336)
 shape = SubResource("CircleShape2D_3o4jy")
 
-[node name="@CollisionShape2D@172" type="CollisionShape2D" parent="WallColliders" unique_id=2040159571]
-position = Vector2(-96, 64)
+[node name="@CollisionShape2D@167" type="CollisionShape2D" parent="WallColliders" unique_id=1320637152]
+position = Vector2(-32, 32)
 shape = SubResource("CircleShape2D_8qdn8")
 
-[node name="@CollisionShape2D@173" type="CollisionShape2D" parent="WallColliders" unique_id=2106987608]
-position = Vector2(416, 384)
+[node name="@CollisionShape2D@168" type="CollisionShape2D" parent="WallColliders" unique_id=637083387]
+position = Vector2(480, 352)
 shape = SubResource("CircleShape2D_hxn4q")
 
-[node name="@CollisionShape2D@174" type="CollisionShape2D" parent="WallColliders" unique_id=1711039315]
-position = Vector2(-128, 80)
+[node name="@CollisionShape2D@169" type="CollisionShape2D" parent="WallColliders" unique_id=1339960951]
+position = Vector2(-64, 48)
 shape = SubResource("CircleShape2D_tulhy")
 
-[node name="@CollisionShape2D@175" type="CollisionShape2D" parent="WallColliders" unique_id=737878806]
-position = Vector2(384, 400)
+[node name="@CollisionShape2D@170" type="CollisionShape2D" parent="WallColliders" unique_id=1828423869]
+position = Vector2(448, 368)
 shape = SubResource("CircleShape2D_jvryr")
 
-[node name="@CollisionShape2D@176" type="CollisionShape2D" parent="WallColliders" unique_id=71941797]
-position = Vector2(-160, 96)
+[node name="@CollisionShape2D@171" type="CollisionShape2D" parent="WallColliders" unique_id=1556444903]
+position = Vector2(-96, 64)
 shape = SubResource("CircleShape2D_4u2n1")
 
-[node name="@CollisionShape2D@177" type="CollisionShape2D" parent="WallColliders" unique_id=74149826]
-position = Vector2(352, 416)
+[node name="@CollisionShape2D@172" type="CollisionShape2D" parent="WallColliders" unique_id=257536861]
+position = Vector2(416, 384)
 shape = SubResource("CircleShape2D_v7m8y")
 
-[node name="@CollisionShape2D@178" type="CollisionShape2D" parent="WallColliders" unique_id=917889666]
-position = Vector2(-192, 112)
+[node name="@CollisionShape2D@173" type="CollisionShape2D" parent="WallColliders" unique_id=1916675281]
+position = Vector2(-128, 80)
 shape = SubResource("CircleShape2D_vg714")
 
-[node name="@CollisionShape2D@179" type="CollisionShape2D" parent="WallColliders" unique_id=5606658]
-position = Vector2(320, 432)
+[node name="@CollisionShape2D@174" type="CollisionShape2D" parent="WallColliders" unique_id=819283044]
+position = Vector2(384, 400)
 shape = SubResource("CircleShape2D_avq5u")
 
-[node name="@CollisionShape2D@180" type="CollisionShape2D" parent="WallColliders" unique_id=1799685518]
-position = Vector2(-224, 128)
+[node name="@CollisionShape2D@175" type="CollisionShape2D" parent="WallColliders" unique_id=459011296]
+position = Vector2(-160, 96)
 shape = SubResource("CircleShape2D_mom1i")
 
-[node name="@CollisionShape2D@181" type="CollisionShape2D" parent="WallColliders" unique_id=303974827]
-position = Vector2(288, 448)
+[node name="@CollisionShape2D@176" type="CollisionShape2D" parent="WallColliders" unique_id=1179885625]
+position = Vector2(352, 416)
 shape = SubResource("CircleShape2D_pt4l6")
 
-[node name="@CollisionShape2D@182" type="CollisionShape2D" parent="WallColliders" unique_id=1310760740]
-position = Vector2(-256, 144)
+[node name="@CollisionShape2D@177" type="CollisionShape2D" parent="WallColliders" unique_id=728196804]
+position = Vector2(-192, 112)
 shape = SubResource("CircleShape2D_mmyqv")
 
-[node name="@CollisionShape2D@183" type="CollisionShape2D" parent="WallColliders" unique_id=950265179]
-position = Vector2(256, 464)
+[node name="@CollisionShape2D@178" type="CollisionShape2D" parent="WallColliders" unique_id=1306169408]
+position = Vector2(320, 432)
 shape = SubResource("CircleShape2D_ga0n3")
 
-[node name="@CollisionShape2D@184" type="CollisionShape2D" parent="WallColliders" unique_id=1819262254]
-position = Vector2(-288, 160)
+[node name="@CollisionShape2D@179" type="CollisionShape2D" parent="WallColliders" unique_id=1708561103]
+position = Vector2(-224, 128)
 shape = SubResource("CircleShape2D_nnl5o")
 
-[node name="@CollisionShape2D@185" type="CollisionShape2D" parent="WallColliders" unique_id=1127635745]
-position = Vector2(224, 480)
+[node name="@CollisionShape2D@180" type="CollisionShape2D" parent="WallColliders" unique_id=174255366]
+position = Vector2(288, 448)
 shape = SubResource("CircleShape2D_7ar1v")
 
-[node name="@CollisionShape2D@186" type="CollisionShape2D" parent="WallColliders" unique_id=723247008]
-position = Vector2(-320, 176)
+[node name="@CollisionShape2D@181" type="CollisionShape2D" parent="WallColliders" unique_id=172583071]
+position = Vector2(-256, 144)
 shape = SubResource("CircleShape2D_2ygvq")
 
-[node name="@CollisionShape2D@187" type="CollisionShape2D" parent="WallColliders" unique_id=914736910]
-position = Vector2(192, 496)
+[node name="@CollisionShape2D@182" type="CollisionShape2D" parent="WallColliders" unique_id=1479421181]
+position = Vector2(256, 464)
 shape = SubResource("CircleShape2D_ej6hx")
 
-[node name="@CollisionShape2D@188" type="CollisionShape2D" parent="WallColliders" unique_id=380899061]
-position = Vector2(-352, 192)
+[node name="@CollisionShape2D@183" type="CollisionShape2D" parent="WallColliders" unique_id=45707116]
+position = Vector2(-288, 160)
 shape = SubResource("CircleShape2D_jw3e1")
 
-[node name="@CollisionShape2D@189" type="CollisionShape2D" parent="WallColliders" unique_id=439209909]
-position = Vector2(160, 512)
+[node name="@CollisionShape2D@184" type="CollisionShape2D" parent="WallColliders" unique_id=6766060]
+position = Vector2(224, 480)
 shape = SubResource("CircleShape2D_b8sm0")
 
-[node name="@CollisionShape2D@190" type="CollisionShape2D" parent="WallColliders" unique_id=412729681]
-position = Vector2(-384, 208)
+[node name="@CollisionShape2D@185" type="CollisionShape2D" parent="WallColliders" unique_id=2035672413]
+position = Vector2(-320, 176)
 shape = SubResource("CircleShape2D_u5lk7")
 
-[node name="YSorted" type="Node2D" parent="." unique_id=1099885375]
+[node name="@CollisionShape2D@186" type="CollisionShape2D" parent="WallColliders" unique_id=820335384]
+position = Vector2(192, 496)
+shape = SubResource("CircleShape2D_sx26c")
+
+[node name="@CollisionShape2D@187" type="CollisionShape2D" parent="WallColliders" unique_id=186687985]
+position = Vector2(-352, 192)
+shape = SubResource("CircleShape2D_h3fxj")
+
+[node name="@CollisionShape2D@188" type="CollisionShape2D" parent="WallColliders" unique_id=2070410982]
+position = Vector2(160, 512)
+shape = SubResource("CircleShape2D_d62dv")
+
+[node name="@CollisionShape2D@189" type="CollisionShape2D" parent="WallColliders" unique_id=706581446]
+position = Vector2(-384, 208)
+shape = SubResource("CircleShape2D_wo07a")
+
+[node name="YSorted" type="Node2D" parent="." unique_id=593280784]
 y_sort_enabled = true
 
-[node name="@Sprite2D@191" type="Sprite2D" parent="YSorted" unique_id=1367414780]
+[node name="@Sprite2D@190" type="Sprite2D" parent="YSorted" unique_id=458174770]
 position = Vector2(32, 16)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@192" type="Sprite2D" parent="YSorted" unique_id=1411165462]
+[node name="@Sprite2D@191" type="Sprite2D" parent="YSorted" unique_id=1390244391]
 position = Vector2(0, 32)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@193" type="Sprite2D" parent="YSorted" unique_id=2049318946]
+[node name="@Sprite2D@192" type="Sprite2D" parent="YSorted" unique_id=246235896]
 position = Vector2(-32, 48)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@194" type="Sprite2D" parent="YSorted" unique_id=489738467]
+[node name="@Sprite2D@193" type="Sprite2D" parent="YSorted" unique_id=1021520786]
 position = Vector2(-64, 64)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@195" type="Sprite2D" parent="YSorted" unique_id=577055202]
+[node name="@Sprite2D@194" type="Sprite2D" parent="YSorted" unique_id=14784694]
 position = Vector2(-96, 80)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@196" type="Sprite2D" parent="YSorted" unique_id=1250637936]
+[node name="@Sprite2D@195" type="Sprite2D" parent="YSorted" unique_id=30206720]
 position = Vector2(-128, 96)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@197" type="Sprite2D" parent="YSorted" unique_id=1485479059]
+[node name="@Sprite2D@196" type="Sprite2D" parent="YSorted" unique_id=1948314093]
 position = Vector2(-160, 112)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@198" type="Sprite2D" parent="YSorted" unique_id=729586880]
+[node name="@Sprite2D@197" type="Sprite2D" parent="YSorted" unique_id=797954988]
 position = Vector2(-192, 128)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@199" type="Sprite2D" parent="YSorted" unique_id=1520578487]
+[node name="@Sprite2D@198" type="Sprite2D" parent="YSorted" unique_id=369083159]
 position = Vector2(-224, 144)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@200" type="Sprite2D" parent="YSorted" unique_id=1427174134]
+[node name="@Sprite2D@199" type="Sprite2D" parent="YSorted" unique_id=881229049]
 position = Vector2(-256, 160)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@201" type="Sprite2D" parent="YSorted" unique_id=2006819493]
+[node name="@Sprite2D@200" type="Sprite2D" parent="YSorted" unique_id=1701383584]
 position = Vector2(-288, 176)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@202" type="Sprite2D" parent="YSorted" unique_id=742103870]
+[node name="@Sprite2D@201" type="Sprite2D" parent="YSorted" unique_id=1977584958]
 position = Vector2(-320, 192)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@203" type="Sprite2D" parent="YSorted" unique_id=621738579]
+[node name="@Sprite2D@202" type="Sprite2D" parent="YSorted" unique_id=455662885]
 position = Vector2(-352, 208)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@204" type="Sprite2D" parent="YSorted" unique_id=168471869]
+[node name="@Sprite2D@203" type="Sprite2D" parent="YSorted" unique_id=1386251948]
 position = Vector2(-384, 224)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@205" type="Sprite2D" parent="YSorted" unique_id=1289530856]
+[node name="@Sprite2D@204" type="Sprite2D" parent="YSorted" unique_id=1517064868]
 position = Vector2(64, 32)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@206" type="Sprite2D" parent="YSorted" unique_id=2136382670]
+[node name="@Sprite2D@205" type="Sprite2D" parent="YSorted" unique_id=93453193]
 position = Vector2(-352, 240)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@207" type="Sprite2D" parent="YSorted" unique_id=974439357]
+[node name="@Sprite2D@206" type="Sprite2D" parent="YSorted" unique_id=1389981538]
 position = Vector2(96, 48)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@208" type="Sprite2D" parent="YSorted" unique_id=348594803]
+[node name="@Sprite2D@207" type="Sprite2D" parent="YSorted" unique_id=1935877914]
 position = Vector2(-320, 256)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@209" type="Sprite2D" parent="YSorted" unique_id=1241919994]
+[node name="@Sprite2D@208" type="Sprite2D" parent="YSorted" unique_id=952769664]
 position = Vector2(128, 64)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@210" type="Sprite2D" parent="YSorted" unique_id=788479355]
+[node name="@Sprite2D@209" type="Sprite2D" parent="YSorted" unique_id=1816707788]
 position = Vector2(-288, 272)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@211" type="Sprite2D" parent="YSorted" unique_id=1073080609]
+[node name="@Sprite2D@210" type="Sprite2D" parent="YSorted" unique_id=583807330]
 position = Vector2(160, 80)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@212" type="Sprite2D" parent="YSorted" unique_id=687069130]
+[node name="@Sprite2D@211" type="Sprite2D" parent="YSorted" unique_id=1943567734]
 position = Vector2(-256, 288)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@213" type="Sprite2D" parent="YSorted" unique_id=1809424550]
+[node name="@Sprite2D@212" type="Sprite2D" parent="YSorted" unique_id=2001053492]
 position = Vector2(192, 96)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@214" type="Sprite2D" parent="YSorted" unique_id=764147616]
+[node name="@Sprite2D@213" type="Sprite2D" parent="YSorted" unique_id=1205051989]
 position = Vector2(-224, 304)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@215" type="Sprite2D" parent="YSorted" unique_id=141384676]
+[node name="@Sprite2D@214" type="Sprite2D" parent="YSorted" unique_id=1641569013]
 position = Vector2(224, 112)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@216" type="Sprite2D" parent="YSorted" unique_id=736747638]
+[node name="@Sprite2D@215" type="Sprite2D" parent="YSorted" unique_id=548394488]
 position = Vector2(-192, 320)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@217" type="Sprite2D" parent="YSorted" unique_id=1291959347]
+[node name="@Sprite2D@216" type="Sprite2D" parent="YSorted" unique_id=196895772]
 position = Vector2(256, 128)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@218" type="Sprite2D" parent="YSorted" unique_id=1612120658]
+[node name="@Sprite2D@217" type="Sprite2D" parent="YSorted" unique_id=1279093559]
 position = Vector2(-160, 336)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@219" type="Sprite2D" parent="YSorted" unique_id=320941368]
+[node name="@Sprite2D@218" type="Sprite2D" parent="YSorted" unique_id=265224636]
 position = Vector2(288, 144)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@220" type="Sprite2D" parent="YSorted" unique_id=1657913664]
+[node name="@Sprite2D@219" type="Sprite2D" parent="YSorted" unique_id=52628354]
 position = Vector2(-128, 352)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@221" type="Sprite2D" parent="YSorted" unique_id=448695884]
+[node name="@Sprite2D@220" type="Sprite2D" parent="YSorted" unique_id=822767891]
 position = Vector2(352, 176)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@222" type="Sprite2D" parent="YSorted" unique_id=1205307094]
+[node name="@Sprite2D@221" type="Sprite2D" parent="YSorted" unique_id=170679548]
 position = Vector2(-64, 384)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@223" type="Sprite2D" parent="YSorted" unique_id=1256972089]
+[node name="@Sprite2D@222" type="Sprite2D" parent="YSorted" unique_id=930468100]
 position = Vector2(384, 192)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@224" type="Sprite2D" parent="YSorted" unique_id=1147901004]
+[node name="@Sprite2D@223" type="Sprite2D" parent="YSorted" unique_id=2075340237]
 position = Vector2(-32, 400)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@225" type="Sprite2D" parent="YSorted" unique_id=1731848164]
+[node name="@Sprite2D@224" type="Sprite2D" parent="YSorted" unique_id=1765082029]
 position = Vector2(416, 208)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@226" type="Sprite2D" parent="YSorted" unique_id=153677863]
+[node name="@Sprite2D@225" type="Sprite2D" parent="YSorted" unique_id=1225379096]
 position = Vector2(0, 416)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@227" type="Sprite2D" parent="YSorted" unique_id=2098712730]
+[node name="@Sprite2D@226" type="Sprite2D" parent="YSorted" unique_id=1955983628]
 position = Vector2(448, 224)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@228" type="Sprite2D" parent="YSorted" unique_id=249867493]
+[node name="@Sprite2D@227" type="Sprite2D" parent="YSorted" unique_id=1637503400]
 position = Vector2(32, 432)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@229" type="Sprite2D" parent="YSorted" unique_id=1934759758]
+[node name="@Sprite2D@228" type="Sprite2D" parent="YSorted" unique_id=1052065]
 position = Vector2(480, 240)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@230" type="Sprite2D" parent="YSorted" unique_id=1246864475]
+[node name="@Sprite2D@229" type="Sprite2D" parent="YSorted" unique_id=1298241196]
 position = Vector2(64, 448)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@231" type="Sprite2D" parent="YSorted" unique_id=1145944892]
+[node name="@Sprite2D@230" type="Sprite2D" parent="YSorted" unique_id=1216173356]
 position = Vector2(512, 256)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@232" type="Sprite2D" parent="YSorted" unique_id=1811052022]
+[node name="@Sprite2D@231" type="Sprite2D" parent="YSorted" unique_id=1338466691]
 position = Vector2(96, 464)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@233" type="Sprite2D" parent="YSorted" unique_id=659897371]
+[node name="@Sprite2D@232" type="Sprite2D" parent="YSorted" unique_id=618629962]
 position = Vector2(544, 272)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@234" type="Sprite2D" parent="YSorted" unique_id=1716876022]
+[node name="@Sprite2D@233" type="Sprite2D" parent="YSorted" unique_id=423651856]
 position = Vector2(128, 480)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@235" type="Sprite2D" parent="YSorted" unique_id=1077743198]
+[node name="@Sprite2D@234" type="Sprite2D" parent="YSorted" unique_id=783161439]
 position = Vector2(576, 288)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@236" type="Sprite2D" parent="YSorted" unique_id=1140120406]
+[node name="@Sprite2D@235" type="Sprite2D" parent="YSorted" unique_id=1719244786]
 position = Vector2(544, 304)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@237" type="Sprite2D" parent="YSorted" unique_id=705698471]
+[node name="@Sprite2D@236" type="Sprite2D" parent="YSorted" unique_id=1998192758]
 position = Vector2(512, 320)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@238" type="Sprite2D" parent="YSorted" unique_id=2125463411]
+[node name="@Sprite2D@237" type="Sprite2D" parent="YSorted" unique_id=717242992]
 position = Vector2(480, 336)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@239" type="Sprite2D" parent="YSorted" unique_id=247026024]
+[node name="@Sprite2D@238" type="Sprite2D" parent="YSorted" unique_id=1632405752]
 position = Vector2(448, 352)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@240" type="Sprite2D" parent="YSorted" unique_id=1050501230]
+[node name="@Sprite2D@239" type="Sprite2D" parent="YSorted" unique_id=932314474]
 position = Vector2(416, 368)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@241" type="Sprite2D" parent="YSorted" unique_id=2138140345]
+[node name="@Sprite2D@240" type="Sprite2D" parent="YSorted" unique_id=1089914116]
 position = Vector2(384, 384)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@242" type="Sprite2D" parent="YSorted" unique_id=736369691]
+[node name="@Sprite2D@241" type="Sprite2D" parent="YSorted" unique_id=1974822750]
 position = Vector2(352, 400)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@243" type="Sprite2D" parent="YSorted" unique_id=998777959]
+[node name="@Sprite2D@242" type="Sprite2D" parent="YSorted" unique_id=915910986]
 position = Vector2(320, 416)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@244" type="Sprite2D" parent="YSorted" unique_id=1206319644]
+[node name="@Sprite2D@243" type="Sprite2D" parent="YSorted" unique_id=1024027860]
 position = Vector2(288, 432)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@245" type="Sprite2D" parent="YSorted" unique_id=1603437362]
+[node name="@Sprite2D@244" type="Sprite2D" parent="YSorted" unique_id=1650740940]
 position = Vector2(256, 448)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@246" type="Sprite2D" parent="YSorted" unique_id=1598510789]
+[node name="@Sprite2D@245" type="Sprite2D" parent="YSorted" unique_id=841655712]
 position = Vector2(224, 464)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@247" type="Sprite2D" parent="YSorted" unique_id=868197377]
+[node name="@Sprite2D@246" type="Sprite2D" parent="YSorted" unique_id=1887043186]
 position = Vector2(192, 480)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="@Sprite2D@248" type="Sprite2D" parent="YSorted" unique_id=1763042795]
+[node name="@Sprite2D@247" type="Sprite2D" parent="YSorted" unique_id=75102484]
 position = Vector2(160, 496)
-texture = ExtResource("6_l3601")
+texture = ExtResource("8_xejwr")
 offset = Vector2(0, -24)
 
-[node name="SwitchA" type="Area2D" parent="YSorted" unique_id=1893279151 node_paths=PackedStringArray("pad_sprite") instance=ExtResource("7_qg752")]
+[node name="SwitchA" type="Area2D" parent="YSorted" unique_id=655104550 node_paths=PackedStringArray("pad_sprite") instance=ExtResource("9_t0bvl")]
 unique_name_in_owner = true
 position = Vector2(0, 96)
 collision_layer = 8
 collision_mask = 6
-script = ExtResource("8_sdjpl")
+script = ExtResource("10_p17vc")
 pad_sprite = NodePath("../../Decals/SwitchAPad")
 
-[node name="SwitchB" type="Area2D" parent="YSorted" unique_id=860955429 node_paths=PackedStringArray("pad_sprite") instance=ExtResource("7_qg752")]
+[node name="SwitchB" type="Area2D" parent="YSorted" unique_id=740890087 node_paths=PackedStringArray("pad_sprite") instance=ExtResource("9_t0bvl")]
 unique_name_in_owner = true
 position = Vector2(192, 192)
 collision_layer = 8
 collision_mask = 6
-script = ExtResource("8_sdjpl")
+script = ExtResource("10_p17vc")
 pad_sprite = NodePath("../../Decals/SwitchBPad")
 
-[node name="TimeLock" type="Area2D" parent="YSorted" unique_id=199001038 node_paths=PackedStringArray("pad_sprite") instance=ExtResource("9_e33sx")]
+[node name="TimeLock" type="Area2D" parent="YSorted" unique_id=1799528546 node_paths=PackedStringArray("pad_sprite") instance=ExtResource("11_6x760")]
 unique_name_in_owner = true
 position = Vector2(416, 304)
 collision_layer = 8
 collision_mask = 6
-script = ExtResource("10_xejwr")
+script = ExtResource("12_u47u3")
 pad_sprite = NodePath("../../Decals/TimeLockPad")
 
-[node name="Core" type="Area2D" parent="YSorted" unique_id=1518577019 instance=ExtResource("11_t0bvl")]
+[node name="Core" type="Area2D" parent="YSorted" unique_id=1849715778 instance=ExtResource("13_x0p0k")]
 unique_name_in_owner = true
 position = Vector2(192, 416)
 collision_layer = 8
 collision_mask = 0
-script = ExtResource("12_p17vc")
+script = ExtResource("14_o1o8c")
 
-[node name="TimeRecorderDevice" type="Area2D" parent="YSorted" unique_id=1313590213 instance=ExtResource("13_6x760")]
+[node name="TimeRecorderDevice" type="Area2D" parent="YSorted" unique_id=1652052444 instance=ExtResource("15_04d11")]
 unique_name_in_owner = true
 position = Vector2(-160, 208)
 collision_layer = 8
 collision_mask = 2
-script = ExtResource("14_u47u3")
+script = ExtResource("16_gtgd2")
 
-[node name="SecurityDoor" type="StaticBody2D" parent="YSorted" unique_id=160028500 instance=ExtResource("15_x0p0k")]
+[node name="SecurityDoor" type="StaticBody2D" parent="YSorted" unique_id=660084819 instance=ExtResource("17_1kk8o")]
 unique_name_in_owner = true
-position = Vector2(288, 176)
+position = Vector2(256, 192)
 collision_mask = 0
-script = ExtResource("16_o1o8c")
+script = ExtResource("18_opdel")
 
-[node name="LightA" type="Sprite2D" parent="YSorted" unique_id=1322721359]
+[node name="LightA" type="Sprite2D" parent="YSorted" unique_id=264728252]
 unique_name_in_owner = true
-position = Vector2(234, 146)
-texture = ExtResource("17_04d11")
+position = Vector2(202, 162)
+texture = ExtResource("19_gxk51")
 
-[node name="LightB" type="Sprite2D" parent="YSorted" unique_id=699106664]
+[node name="LightB" type="Sprite2D" parent="YSorted" unique_id=1313504515]
 unique_name_in_owner = true
-position = Vector2(270, 146)
-texture = ExtResource("17_04d11")
+position = Vector2(238, 162)
+texture = ExtResource("19_gxk51")
 
-[node name="LightC" type="Sprite2D" parent="YSorted" unique_id=1050627374]
+[node name="LightC" type="Sprite2D" parent="YSorted" unique_id=162361810]
 unique_name_in_owner = true
-position = Vector2(306, 146)
-texture = ExtResource("17_04d11")
+position = Vector2(274, 162)
+texture = ExtResource("19_gxk51")
 
-[node name="LightD" type="Sprite2D" parent="YSorted" unique_id=1366052859]
+[node name="LightD" type="Sprite2D" parent="YSorted" unique_id=1770885203]
 unique_name_in_owner = true
-position = Vector2(342, 146)
-texture = ExtResource("17_04d11")
+position = Vector2(310, 162)
+texture = ExtResource("19_gxk51")
 
-[node name="ExitArea" type="Area2D" parent="YSorted" unique_id=800114401]
+[node name="ExitArea" type="Area2D" parent="YSorted" unique_id=119009786]
 unique_name_in_owner = true
 position = Vector2(320, 160)
 collision_layer = 8
 collision_mask = 2
-script = ExtResource("18_gtgd2")
+script = ExtResource("20_futv6")
 
-[node name="Zone" type="CollisionShape2D" parent="YSorted/ExitArea" unique_id=637704339]
-shape = SubResource("RectangleShape2D_sx26c")
+[node name="Zone" type="CollisionShape2D" parent="YSorted/ExitArea" unique_id=189619456]
+shape = SubResource("RectangleShape2D_vl2ie")
 
-[node name="Player" type="CharacterBody2D" parent="YSorted" unique_id=293360374 instance=ExtResource("19_1kk8o")]
+[node name="Player" type="CharacterBody2D" parent="YSorted" unique_id=1104652787 instance=ExtResource("21_xbb7p")]
 unique_name_in_owner = true
 position = Vector2(-256, 224)
 collision_layer = 2
 motion_mode = 1
-script = ExtResource("20_opdel")
+script = ExtResource("22_yp5f0")
 camera_limit_rect = Rect2i(-416, -32, 1024, 544)
 
-[node name="EchoManager" type="Node" parent="." unique_id=2122415226]
+[node name="EchoManager" type="Node" parent="." unique_id=740700523]
 unique_name_in_owner = true
-script = ExtResource("21_gxk51")
+script = ExtResource("23_ixwj3")
 debug_trajectory = true
 ysorted_path = NodePath("../YSorted")
 
-[node name="UI" type="CanvasLayer" parent="." unique_id=827803881 instance=ExtResource("22_futv6")]
+[node name="UI" type="CanvasLayer" parent="." unique_id=1833965604 instance=ExtResource("24_82x56")]
 unique_name_in_owner = true
 process_mode = 3
-script = ExtResource("23_xbb7p")
+script = ExtResource("25_i75rl")

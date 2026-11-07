@@ -23,6 +23,8 @@ signal interacted(target: Node2D)
 var direction: Vector2 = Vector2.DOWN
 ## 动画状态:idle / walk / interact(记录字段 animation_state,合法值见 docs/03 §3.6)
 var anim_state: String = "idle"
+## 是否处于初始记录区内(RecordingZone 维护;默认 true——L1—L3 无记录区,不受限)
+var in_recording_zone := true
 
 var _interact_timer: float = 0.0
 

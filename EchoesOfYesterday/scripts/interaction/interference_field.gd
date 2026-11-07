@@ -11,10 +11,10 @@ signal player_entered(body: Node2D)  # 玩家踏入(免疫伤害,仅教学预警
 
 const FIELD_COLOR := Color(0.851, 0.365, 0.365, 0.34)  # #D95D5D 半透明覆格
 ## 判定圈半径(格中心):等距车道与邻格场心的最小间隙 ~28.6px(回声圆心 reach ≈19px),
-## r8 留 ≥11px 确定裕量——贴行车道绝不误伤;穿越格心的回声必触发。
-## 视觉菱形 ±12 同步缩小,诚实映射"危险核心"(docs/14 E-41 判定口径)
+## r8 留 ≥11px 确定裕量——贴行车道绝不误伤;穿越格心的回声必触发(docs/14 E-41 判定口径)
 const TRIGGER_RADIUS := 8.0
-static var FOOTPRINT := PackedVector2Array([Vector2(0, -12), Vector2(12, 0), Vector2(0, 12), Vector2(-12, 0)])
+## 视觉:全格红覆格(用户验收反馈,可读性优先——整格铺红明确"此路危险")
+static var FOOTPRINT := PackedVector2Array([Vector2(0, -16), Vector2(32, 0), Vector2(0, 16), Vector2(-32, 0)])
 
 var _visuals: Array[Polygon2D] = []
 

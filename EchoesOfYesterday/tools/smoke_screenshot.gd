@@ -11,6 +11,7 @@ var _switch: Area2D
 var _door: StaticBody2D
 var _mgr: Node
 var _level: Node
+var _exit: Area2D
 
 
 func _initialize() -> void:
@@ -20,6 +21,25 @@ func _initialize() -> void:
 func _frames(n: int) -> void:
 	for i in n:
 		await physics_frame
+
+
+## 闭环走位(记录区"回原位"后位置不再可开环标定,通关走位改用闭环)
+func _walk_to(target: Vector2, tol := 10.0) -> void:
+	for i in 600:
+		var d: Vector2 = target - _player.global_position
+		if d.length() <= tol:
+			break
+		Input.action_press("move_right" if d.x > 0 else "move_left")
+		Input.action_press("move_down" if d.y > 0 else "move_up")
+		await physics_frame
+		Input.action_release("move_right")
+		Input.action_release("move_left")
+		Input.action_release("move_down")
+		Input.action_release("move_up")
+	Input.action_release("move_right")
+	Input.action_release("move_left")
+	Input.action_release("move_down")
+	Input.action_release("move_up")
 
 
 func _press(action: String, frames: int) -> void:
@@ -84,6 +104,7 @@ func _run() -> void:
 	_switch = scene.get_node("YSorted/PressureSwitch")
 	_door = scene.get_node("YSorted/SecurityDoor")
 	_mgr = scene.get_node("EchoManager")
+	_exit = scene.get_node("YSorted/ExitArea")
 	root.get_node("GameEvents").notify_requested.connect(func(t: String) -> void: print("NOTIFY: ", t))
 	root.get_node("GameEvents").level_completed.connect(func(id: int) -> void: print("LEVEL_COMPLETED id=", id))
 	_state("spawn")
@@ -109,14 +130,8 @@ func _run() -> void:
 	_state("echo_holds")
 
 	# 3) 穿门(TC-05)→ 抵达出口 → 通关(存档 + T-07,TC-14/15)
-	await _press("move_right", 26)
-	await _press("move_down", 8)
-	await _press("move_right", 14)
-	await _press("move_up", 26)
-	await _press("move_right", 10)
-	_state("north_side")
-	await _press("move_up", 6)
-	await _press("move_right", 24)
+	# 记录区"回原位"后玩家位置 = 记录起点(开关以东),通关走位改闭环直达出口
+	await _walk_to(_exit.position, 16.0)
 	await _frames(WAIT)
 	_state("complete")
 	await _shot("smoke_m4_complete.png")

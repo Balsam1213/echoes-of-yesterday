@@ -9,6 +9,7 @@ var is_recording := false
 
 var _buffer: EchoRecording = null
 var _player: PlayerController
+var _start_pos := Vector2.ZERO  # 本次记录的起点(记录完成回到原位,docs/13 §5.1)
 var _pending_events: Array = []  # 本帧待写入的交互事件(Player.interacted → 采样帧落地,docs/15 §4)
 
 
@@ -45,7 +46,12 @@ func clear_all() -> void:
 
 
 func _start() -> void:
+	## 记录区规则(docs/13 §5.1):只能从初始记录区开始;区外按 R 仅提示,不开始
+	if not _player.in_recording_zone:
+		GameEvents.notify_requested.emit(UIText.T_RECORD_ZONE)
+		return
 	_buffer = EchoRecording.new()
+	_start_pos = _player.global_position
 	is_recording = true
 	_pending_events = []
 	GameEvents.recording_started.emit()
@@ -57,6 +63,7 @@ func _stop() -> void:
 	_buffer = null
 	_pending_events = []
 	GameEvents.recording_stopped.emit(recording.duration())
+	_player.reset_to(_start_pos)  # 记录完成回到原位;回声生成位置 = 记录起点,杜绝远端起录
 
 
 func _on_player_interacted(target: Node2D) -> void:

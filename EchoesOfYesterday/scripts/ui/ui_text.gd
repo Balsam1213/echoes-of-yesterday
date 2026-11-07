@@ -21,6 +21,7 @@ const T03_DEVICE := "检测到时间记录设备。该设备能够记录并重�
 const T05_RECORDED := "记录完成。按 空格,播放这段记录。"
 const T06_CAP := "回声数量已达上限(%d)。按 X 可删除回声。"
 const T_NO_RECORDING := "没有可播放的记录。按 R 先记录一段行动。"
+const T_RECORD_ZONE := "时间记录只能从初始区域开始。回到出生点附近再按 R。"
 const T07_COMPLETE := "第一次回声已成功建立。\n你发现,过去的行动可以改变现在。"
 const T10_INTRO := "两台电闸,一扇双锁门。"
 const T12_TWO_LOCKS := "门的两半锁栓需要同时缩回。也许,你可以让另一个自己帮忙。"

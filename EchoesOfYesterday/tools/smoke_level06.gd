@@ -1,5 +1,6 @@
 extends SceneTree
-## Level_06 冒烟:序列门(A→B→C 乱序拒绝)+ 三区调度 + 时间锁冲刺全流程(docs/16)。
+## Level_06 冒烟:序列门(A→B→C 乱序拒绝)+ 三区调度 + 时间锁冲刺(docs/16
+## + docs/13 §5.1 记录区:R1/R2/R3 均自西区初始记录区起录,停止回原位)。
 ## 标准解:回声 1 守 A、回声 2 守 B、回声 3 踩 C,玩家亲自拨核心后 ambush 冲刺。
 ## 运行:godot --path . -s tools/smoke_level06.gd
 
@@ -70,6 +71,42 @@ func _walk_cells(from: Vector2i, to: Vector2i) -> void:
 		await _walk_to(p)
 
 
+## 持键连续走位(全速):长路线录制用——逐帧 press/release 的走法速度减半,
+## 47 格路线会超出 30s 记录上限(冒烟教训:长路线录制必须持键走)。
+## 死区 4px:轴向对齐的目标不按横向键,否则斜向分量把玩家顶进墙棱无法滑动
+func _walk_chain(points: Array) -> void:
+	var idx := 0
+	var guard := 0
+	while idx < points.size() and guard < 4000:
+		guard += 1
+		var d: Vector2 = (points[idx] as Vector2) - _player.global_position
+		if guard % 120 == 0:
+			print("  chain f=%d idx=%d/%d pos=%s d=%s" % [guard, idx, points.size(), _player.global_position.round(), d.round()])
+		if absf(d.x) <= 4.0 and absf(d.y) <= 4.0:
+			idx += 1
+			Input.action_release("move_right")
+			Input.action_release("move_left")
+			Input.action_release("move_down")
+			Input.action_release("move_up")
+			await physics_frame
+			continue
+		if absf(d.x) > 4.0:
+			Input.action_press("move_right" if d.x > 0 else "move_left")
+		else:
+			Input.action_release("move_right")
+			Input.action_release("move_left")
+		if absf(d.y) > 4.0:
+			Input.action_press("move_down" if d.y > 0 else "move_up")
+		else:
+			Input.action_release("move_down")
+			Input.action_release("move_up")
+		await physics_frame
+	Input.action_release("move_right")
+	Input.action_release("move_left")
+	Input.action_release("move_down")
+	Input.action_release("move_up")
+
+
 func _state(tag: String) -> void:
 	print("%s pos=%s a=%s b=%s c=%s core=%s door=%s echoes=%d" % [
 		tag, _player.global_position.round(), _sw_a.is_active(), _sw_b.is_active(),
@@ -93,6 +130,10 @@ func _run() -> void:
 	print("title=", scene.get_node("UI/HUD/LevelLabel").text)
 	root.get_node("GameEvents").notify_requested.connect(func(t: String) -> void: print("NOTIFY: ", t))
 	root.get_node("GameEvents").level_completed.connect(func(id: int) -> void: print("LEVEL_COMPLETED id=", id))
+	root.get_node("GameEvents").recording_started.connect(func() -> void:
+		print("REC_START pos=", _player.global_position.round(), " in_zone=", _player.get("in_recording_zone")))
+	root.get_node("GameEvents").recording_stopped.connect(func(d: float) -> void:
+		print("REC_STOP dur=", d, " pos=", _player.global_position.round()))
 	_state("spawn")
 
 	# 1) 乱序教学:先踩 B(A 未激活)→ 物理激活但灯不亮 + T-62(TC-70/E-61)
@@ -104,21 +145,24 @@ func _run() -> void:
 		quit(1)
 		return
 	print("PASS illegal_b: sequence rejected, light off")
+	await _walk_cells(Vector2i(8, 3), Vector2i(2, 11))  # 回初始记录区
 
-	# 2) 录 R1(B→A)→ 立即发射回声 1(游戏只保留最近一条记录:录一条发一条,L3 先例)
+	# 2) R1(自记录区):x1 窄道绕 F0 → A;发射回声 1(TC-73)
 	await _tap("record_toggle")
-	await _walk_cells(Vector2i(8, 3), Vector2i(8, 1))
-	await _walk_cells(Vector2i(8, 1), Vector2i(2, 1))
-	await _walk_cells(Vector2i(2, 1), Vector2i(2, 3))
+	await _walk_cells(Vector2i(2, 11), Vector2i(1, 11))
+	await _walk_cells(Vector2i(1, 11), Vector2i(1, 3))
+	await _walk_cells(Vector2i(1, 3), Vector2i(2, 3))
 	await _frames(8)
 	await _tap("record_toggle")
 	await _tap("play_echo")
 	_state("echo1_launched")
 
-	# 3) 录 R2(A→B)→ 等回声 1 就位(A 先激活,序列合法,E-61)→ 发射回声 2
+	# 3) R2(自记录区):x1 窄道 → 北渡口 (6,1) → B;等 A 就位后发射(E-61 顺序)
 	await _tap("record_toggle")
-	await _walk_cells(Vector2i(2, 3), Vector2i(2, 1))
-	await _walk_cells(Vector2i(2, 1), Vector2i(8, 1))
+	await _walk_cells(Vector2i(2, 11), Vector2i(1, 11))
+	await _walk_cells(Vector2i(1, 11), Vector2i(1, 1))
+	await _walk_cells(Vector2i(1, 1), Vector2i(6, 1))
+	await _walk_cells(Vector2i(6, 1), Vector2i(8, 1))
 	await _walk_cells(Vector2i(8, 1), Vector2i(8, 3))
 	await _frames(8)
 	await _tap("record_toggle")
@@ -143,18 +187,26 @@ func _run() -> void:
 	print("PASS echo2_b")
 	_state("ab_held")
 
-	# 4) 走东区,录 R3:x12 窄道北上 → 踩 C(末帧)
-	await _walk_cells(Vector2i(8, 3), Vector2i(12, 8))
+	# 4) R3(自记录区):x1 窄道 → 北渡口 → y1 东行 → x10 南行 → (11,12) 南口 → x12 窄道北上 → 踩 C
+	# (持键连续走位:路线 47 格,逐帧 press/release 会超出 30s 记录上限)
 	await _tap("record_toggle")
-	await _walk_cells(Vector2i(12, 8), Vector2i(12, 2))
-	await _walk_cells(Vector2i(12, 2), Vector2i(14, 2))
-	await _walk_cells(Vector2i(14, 2), Vector2i(15, 3))
+	var r3_pts: Array = []
+	r3_pts.append_array(_cell_chain(Vector2i(2, 11), Vector2i(1, 11)))
+	r3_pts.append_array(_cell_chain(Vector2i(1, 11), Vector2i(1, 1)))
+	r3_pts.append_array(_cell_chain(Vector2i(1, 1), Vector2i(6, 1)))
+	r3_pts.append_array(_cell_chain(Vector2i(6, 1), Vector2i(10, 1)))
+	r3_pts.append_array(_cell_chain(Vector2i(10, 1), Vector2i(10, 12)))
+	r3_pts.append_array(_cell_chain(Vector2i(10, 12), Vector2i(12, 12)))
+	r3_pts.append_array(_cell_chain(Vector2i(12, 12), Vector2i(12, 2)))
+	r3_pts.append_array(_cell_chain(Vector2i(12, 2), Vector2i(14, 2)))
+	r3_pts.append_array(_cell_chain(Vector2i(14, 2), Vector2i(15, 3)))
+	await _walk_chain(r3_pts)
 	await _frames(8)
 	await _tap("record_toggle")
 	_state("r3_recorded")
 
 	# 5) 玩家亲自拨核心(持续 ON,TC-74 修订:标准解由玩家执行)
-	await _walk_cells(Vector2i(15, 3), Vector2i(15, 10))
+	await _walk_cells(Vector2i(2, 11), Vector2i(15, 10))
 	await _frames(8)
 	await _tap("interact")
 	await _frames(8)
@@ -170,7 +222,7 @@ func _run() -> void:
 	_state("ambush")
 	await _tap("play_echo")
 	var c_opened := false
-	for i in 600:
+	for i in 900:
 		if _lock.is_active():
 			c_opened = true
 			break

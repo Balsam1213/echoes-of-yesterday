@@ -11,7 +11,7 @@ const SWITCH_A_CELL := Vector2i(2, 3)
 const SWITCH_B_CELL := Vector2i(8, 3)
 const LOCK_CELL := Vector2i(15, 3)
 const CORE_CELL := Vector2i(15, 10)
-const DOOR_CELL := Vector2i(9, 1)
+const DOOR_CELL := Vector2i(9, 2)  # 门置 (9,2):北走廊 y1 是回声唯一北通道,门不得占 (9,1)
 const EXIT_CELL := Vector2i(9, 0)
 static var FOOTPRINT := PackedVector2Array([Vector2(0, -16), Vector2(32, 0), Vector2(0, 16), Vector2(-32, 0)])
 
@@ -47,9 +47,12 @@ func _run() -> void:
 	decals.name = "Decals"
 	level.add_child(decals)
 
+	# 初始记录区(西区南段,docs/13 §5.1:记录只能在此开始)
+	_add_record_zone(level, floor_layer, Vector2i(0, 9), Vector2i(5, 13))
+
 	# 干扰场 ×4(docs/16 §3):F0 西区横带 / F1 西中隔离 / F2 中东隔离 / F3 东区内部
 	var field_defs := {
-		"Field0": _rect_cells(Vector2i(1, 7), Vector2i(5, 7)),
+		"Field0": _rect_cells(Vector2i(2, 7), Vector2i(5, 7)),
 		"Field1": _rect_cells(Vector2i(6, 3), Vector2i(6, 12)),
 		"Field2": _rect_cells(Vector2i(11, 1), Vector2i(11, 10)),
 		"Field3": _rect_cells(Vector2i(13, 6), Vector2i(17, 6)),
@@ -202,6 +205,24 @@ func _rect_cells(from: Vector2i, to: Vector2i) -> Array[Vector2i]:
 		for y in range(from.y, to.y + 1):
 			cells.append(Vector2i(x, y))
 	return cells
+
+
+## 初始记录区:覆盖格位矩形 [from..to] 的世界包围盒(含各格菱形外沿)
+func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, from: Vector2i, to: Vector2i) -> void:
+	var zone: Area2D = (load("res://scenes/mechanisms/RecordingZone.tscn") as PackedScene).instantiate()
+	zone.name = "RecordingZone"
+	zone.unique_name_in_owner = true
+	var min_cx := (minf(from.x, to.x) - maxf(from.y, to.y)) * 32 + 32
+	var max_cx := (maxf(from.x, to.x) - minf(from.y, to.y)) * 32 + 32
+	var min_cy := (minf(from.x, to.x) + minf(from.y, to.y)) * 16 + 16
+	var max_cy := (maxf(from.x, to.x) + maxf(from.y, to.y)) * 16 + 16
+	var cs := CollisionShape2D.new()
+	var shape := RectangleShape2D.new()
+	shape.size = Vector2(max_cx - min_cx + 64, max_cy - min_cy + 32)
+	cs.shape = shape
+	zone.add_child(cs)
+	zone.position = Vector2((min_cx + max_cx) / 2.0, (min_cy + max_cy) / 2.0)
+	level.add_child(zone)
 
 
 func _make_pad(floor_layer: TileMapLayer, cell: Vector2i, pad_name: String) -> Sprite2D:

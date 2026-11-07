@@ -1,8 +1,7 @@
 extends SceneTree
-## Level_04 冒烟:干扰场消散 + 绕行录制 + 脉冲板同振全流程(docs/14)。
-## 走位采用闭环 _walk_to + **逐格中心链**(_cell_chain):相邻格心方向恰为等距轴,
-## 避免屏幕 45° 对角切角斜穿干扰判定圈(冒烟教训:路线必须逐格给定)。
-## 同振对齐用「记录帧定位 B 触发帧 + 延迟入场」。
+## Level_04 冒烟:干扰场消散 + 绕行录制 + 脉冲板同振 + 推进 L5(docs/14 + docs/13 §5.1 记录区)。
+## 记录区规则:所有记录从初始记录区(西南角)起录,停止后玩家自动回到记录起点。
+## 走位采用闭环 _walk_to + 逐格中心链(_cell_chain);同振对齐用「记录帧定位 B 触发帧 + 延迟入场」。
 ## 运行:godot --path . -s tools/smoke_level04.gd
 
 var _player: Node2D
@@ -27,7 +26,6 @@ func _cw(x: int, y: int) -> Vector2:
 	return Vector2((x - y) * 32 + 32, (x + y) * 16 + 16)
 
 
-## 逐格中心链:从 from 到 to,先沿 x 轴后沿 y 轴(每步一格,方向恒为等距轴)
 func _cell_chain(from: Vector2i, to: Vector2i) -> Array:
 	var pts: Array = []
 	var x := from.x
@@ -103,11 +101,28 @@ func _run() -> void:
 	root.get_node("GameEvents").level_completed.connect(func(id: int) -> void: print("LEVEL_COMPLETED id=", id))
 	_state("spawn")
 
-	# 1) 贪短直穿干扰带(东行 y10 → 北上 x10 列,穿 B 与 (10,5))→ 回声消散(TC-49/E-41)
+	# 0) 记录区规则:离开初始区按 R → 提示且不开始(TC-49 补充,docs/13 §5.1)
+	await _walk_cells(Vector2i(2, 10), Vector2i(10, 10))
+	await _tap("record_toggle")
+	await _frames(6)
+	if _player.recorder.is_recording:
+		print("FAIL: recording started outside record zone")
+		quit(1)
+		return
+	print("PASS record_zone: R denied outside zone")
+
+	# 1) 贪短直穿干扰带(东行 y10 → 北上 x10 列,穿 (10,5))→ 回声消散(TC-49/E-41)
+	await _walk_cells(Vector2i(10, 10), Vector2i(2, 10))  # 回到初始区
 	await _tap("record_toggle")
 	await _walk_cells(Vector2i(2, 10), Vector2i(10, 10))
 	await _walk_cells(Vector2i(10, 10), Vector2i(10, 5))
 	await _tap("record_toggle")
+	_state("after_record")
+	if _player.global_position.distance_to(_pos_spawn) > 40.0:
+		print("FAIL: player did not return to record start, pos=", _player.global_position)
+		quit(1)
+		return
+	print("PASS return_to_start: player back at record origin")
 	await _tap("play_echo")
 	await _frames(300)
 	_state("after_dissolve")
@@ -118,14 +133,13 @@ func _run() -> void:
 	print("PASS dissolve: echoes=0")
 
 	# 2) A 路绕行(东缺口 x12→折西 y4)→ 回声 1 常踩 A(TC-50)
-	await _walk_cells(Vector2i(10, 5), Vector2i(2, 10))
 	await _tap("record_toggle")
 	await _walk_cells(Vector2i(2, 10), Vector2i(12, 10))
 	await _walk_cells(Vector2i(12, 10), Vector2i(12, 4))
 	await _walk_cells(Vector2i(12, 4), Vector2i(3, 4))
 	await _walk_cells(Vector2i(3, 4), Vector2i(3, 2))
 	await _frames(8)
-	await _tap("record_toggle")
+	await _tap("record_toggle")  # 停止后自动回到记录起点(初始区)
 	await _tap("play_echo")
 	await _frames(620)
 	_state("echo1_a")
@@ -135,11 +149,9 @@ func _run() -> void:
 		return
 	print("PASS echo1_a: A held by echo")
 
-	# 3) B 路:U 形南口进出瞬踩 B,记录并定位 B 触发帧(TC-51)
+	# 3) B 路(自初始区):东行 y10 → 北上 x10 → U 形南口瞬踩 B → 折返 → 止于 (12,10)
 	await _tap("record_toggle")
-	await _walk_cells(Vector2i(3, 2), Vector2i(12, 2))
-	await _walk_cells(Vector2i(12, 2), Vector2i(12, 10))
-	await _walk_cells(Vector2i(12, 10), Vector2i(10, 10))
+	await _walk_cells(Vector2i(2, 10), Vector2i(10, 10))
 	await _walk_cells(Vector2i(10, 10), Vector2i(10, 7))
 	await _walk_cells(Vector2i(10, 7), Vector2i(10, 10))
 	await _walk_cells(Vector2i(10, 10), Vector2i(12, 10))
@@ -157,7 +169,7 @@ func _run() -> void:
 	_state("b_recorded")
 
 	# 4) 同振对齐:埋伏 (12,2) → 发射回声 2 → 掐点踩 P → 门开 1.5s(TC-52)
-	await _walk_cells(Vector2i(12, 10), Vector2i(12, 2))
+	await _walk_cells(Vector2i(2, 10), Vector2i(12, 2))
 	await _tap("play_echo")
 	await _frames(bi - 25)
 	await _walk_to(_pos_p, 6.0)  # 踩上 P(0.5s 固定窗)
@@ -179,4 +191,30 @@ func _run() -> void:
 	await _frames(12)
 	_state("complete")
 	print("save=", FileAccess.get_file_as_string("user://save.json"))
+
+	# 6) 通关推进 L5(TC-57;修复回归:next_scene 必须生效)
+	await _frames(80)
+	await _tap_key(KEY_E)
+	await _frames(20)
+	var nxt := String(current_scene.name) if current_scene != null else "<null>"
+	print("after_key current_scene=", nxt)
+	if nxt != "Level_05":
+		print("FAIL: expected advance to Level_05, got ", nxt)
+		quit(1)
+		return
+	print("PASS advance_l5: chapter chain ok")
 	quit()
+
+
+func _tap_key(keycode: Key) -> void:
+	var ev := InputEventKey.new()
+	ev.keycode = keycode
+	ev.physical_keycode = keycode
+	ev.pressed = true
+	Input.parse_input_event(ev)
+	await _frames(2)
+	var up := InputEventKey.new()
+	up.keycode = keycode
+	up.physical_keycode = keycode
+	up.pressed = false
+	Input.parse_input_event(up)
