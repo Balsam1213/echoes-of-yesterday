@@ -495,3 +495,19 @@
 **验证**:regression_m5 / regression_m6 ALL PASS;六关冒烟全绿(含 L1→…→L6→LevelSelect 推进与菜单断言)。
 
 **下一步**:用户复验;可选:Windows 运行包重导出、第三章(第 7—8 关)设计。
+
+---
+
+## 2026-11-07 | 第二章 Windows 运行包导出 + SmartScreen 处置
+
+**完成**:
+- 导出配置更新:product_version 0.3、file_version 0.3.0.0、描述改「第二章(第 1-6 关)」;
+- Windows 单文件 exe 导出成功(111MB 内嵌 PCK),`--headless --quit-after 180` 启动冒烟 exit=0 无错误;
+- 打包 `build/EchoesOfYesterday_Chapter2_v0.1.zip`(exe + 操作说明);
+- 操作说明全面重写:第二章操作/新机关/六关提示/关卡选择/**SmartScreen 放行指引**(更多信息→仍要运行);
+- docs/09 §12 第二章交付记录;tag `chapter2-v0.1` 重打至最新提交。
+
+**问题与决定**:
+- 用户报告 SmartScreen「阻止了无法识别的应用」——根因 = **未购买代码签名证书**,无发行者信誉,任何自签/无签 exe 都无法消除该提示。处置:操作说明附放行指引;证书选项呈报用户决策(Azure Trusted Signing ~$9.99/月、Certum 开源签名 ~€19/年、OV 证书 ¥1500+/年;2023 年起所有代码签名证书均需硬件令牌或云端密钥,无法用纯 .pfx 自动化)。若购证,实现路径:Godot 导出后用 `signtool sign /fd sha256 /tr <时间戳>` 补签(Azure Trusted Signing 为 `trusted-signing` 集成或 CLI)。
+
+**下一步**:用户决策签名方案;GitHub Release 发布(chapter2-v0.1 zip);第三章(第 7—8 关)设计。
