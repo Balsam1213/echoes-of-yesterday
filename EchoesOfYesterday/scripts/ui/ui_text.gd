@@ -13,7 +13,9 @@ static func level_title(level_id: int) -> String:
 		"第二章 · 第4关 时间干扰",
 		"第二章 · 第5关 重复的实验",
 		"第二章 · 第6关 失控区域",
-	][clampi(level_id - 1, 0, 5)]
+		"第三章 · 第7关 相位回廊",
+		"第三章 · 第8关 昨日回声",
+	][clampi(level_id - 1, 0, 7)]
 
 const T01_KEYS := "WASD 移动 · R 记录 · 空格 回声 · X 删除回声 · Backspace 重置 · Esc 暂停"
 const T02_CANNOT_PASS := "你无法一边踩住开关,一边穿过安全门。"
@@ -51,6 +53,18 @@ const T60_INTRO := "失控区域。这里的机关不再讲道理——它们只
 const T61_LOCK_HINT := "时间锁:踩上即启动,十秒后自动松开。"
 const T62_ORDER_WRONG := "失控区域的机关认顺序。先来后到,乱了不认。"
 const T63_COMPLETE := "失控的不是区域,是时间本身。第二章,完。"
+
+# —— 第三章(docs/17—19,2026-11-07)——
+const T70_INTRO := "相位回廊。实验室为实体设防——但封锁,拦不住回声。"
+const T71_GATE_HINT := "相位封锁:实体止步。时间回声不受影响。"
+const T72_PARADOX := "同一时刻,只能有一个你。过去与现在相撞,回声碎裂。"
+const T73_SANDBOX_HINT := "试一试:录一段走进凹室的路,回放,然后自己跟上去。"
+const T74_FIELD_HINT := "悖论区:与你的回声同场,回声即碎。"
+const T75_COMPLETE := "过去替你走了你走不了的路。而站在它身后的你,像极了昨天的自己。"
+const T80_INTRO := "核心实验室。异常的震中就在里面——所有回声,都从这里出发。"
+const T81_GATE_HINT := "核心舱:相位封锁,由核心供电。断电的窗口,稍纵即逝。"
+const T82_CORE_HINT := "异常核心:拨动即断电,十秒后自动复电。"
+const T83_COMPLETE := "记录仪上最早的一段,日期是昨天。它站在你现在的位置,做了你正在做的每一件事。\n—— 你也是一段回声。第三章,完。"
 const HINT_NEXT := "按任意键继续"
 const HINT_REPLAY := "按任意键重玩"
 const HINT_SELECT := "按任意键打开关卡选择"
@@ -68,13 +82,15 @@ static func echo_count_text(count: int, cap: int = 3) -> String:
 	return "回声 " + "●".repeat(count) + "○".repeat(maxi(cap - count, 0))
 
 
-## 完成界面三段文案按关卡选择(docs/13 §5 推进链;章节末关显示章节完)
-## 第 3 关随第二章开放改为「继续」(next_scene → Level_04);第 6 关为章末(重玩)
+## 完成界面三段文案按关卡选择(docs/13 §5 / docs/17 §1 推进链;章节末关显示章节完)
+## 提示按「是否还有下一关」:第 8 关为章末(打开关卡选择);第 3/6 关虽显示
+## 「章节完」标题,但已接下一章 next_scene → 「继续」(L3→L4 先例)
 static func complete_body(level_id: int) -> String:
 	return [
 		T07_COMPLETE, T14_COMPLETE, T18_COMPLETE,
 		T45_COMPLETE, T54_COMPLETE, T63_COMPLETE,
-	][clampi(level_id - 1, 0, 5)]
+		T75_COMPLETE, T83_COMPLETE,
+	][clampi(level_id - 1, 0, 7)]
 
 
 static func complete_title(level_id: int) -> String:
@@ -85,8 +101,10 @@ static func complete_title(level_id: int) -> String:
 		4: return "—— 第四关 完成 ——"
 		5: return "—— 第五关 完成 ——"
 		6: return "—— 第二章 完 ——"
+		7: return "—— 第 7 关 完成 ——"
+		8: return "—— 第三章 完 ——"
 		_: return "—— 第 %d 关 完成 ——" % level_id
 
 
 static func complete_hint(level_id: int) -> String:
-	return HINT_SELECT if level_id >= 6 else HINT_NEXT
+	return HINT_SELECT if level_id >= 8 else HINT_NEXT

@@ -5,7 +5,7 @@ extends Control
 ## 未解锁关卡灰置显示,提供进度反馈(docs/08 存档口径:unlocked_levels = 已通关)。
 
 const SELECT_SCENE := "res://scenes/ui/LevelSelect.tscn"
-const MAX_LEVEL := 6
+const MAX_LEVEL := 8
 
 ## 打开菜单前的场景路径(返回用;空 = 回第一关)
 static var previous_scene := ""

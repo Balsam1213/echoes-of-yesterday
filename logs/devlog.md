@@ -532,3 +532,24 @@
 - 开发环境核查:Godot 4.7.2(`Documents/Godot/`,不在 PATH,跑测试用完整路径 console 版)、工程已导入、导出管线两轮验证、MCP 桥接齐备——实现阶段就绪。
 
 **下一步**:用户评审 docs/17—19;定稿后进入实现(docs/17 §5 实现清单:两新机关场景+脚本、build_level_07/08、ui_text/level_select 扩容与章末集合 {3,6,8}、Level_06.tscn 补 next_scene、smoke_level07/08 + regression_m7)。
+
+---
+
+## 2026-11-08 | 第三章(第 7—8 关)实现交付:全量回归九套件全绿
+
+**完成**:
+- 新机关 ParadoxField(悖论区:玩家 ∧ 回声同场 → 区内回声全消散,双清单在场判定 + 闪白 + 紫覆格,E-71~74)与 PhaseGate(相位门:set_phased 双态 + 近身提示钩子,回声恒穿,E-75/76)落地;新 class_name `--import` 入缓存;
+- Level07/08Manager + build_level_07/08(记录区/出口区手搭、悖论区逐格注入、密封块墙体、门位铁律);ui_text 扩容至 8 关(T-70~83)、level_select MAX_LEVEL=8、Level_06.tscn 补 next_scene(L6→L7 推进链,仿 L3→L4);
+- 测试:regression_m7(19 项断言)、smoke_level07/08(全流程通关 + 推进链);smoke_level06 章末断言改为 L6→L7(第三章开放)。
+
+**问题与决定**:
+- **L8 求解结构修正「录一条发一条」**:记录只保留最近一条——「录两条再发两条」会让两次发射都复放第二条路线;docs/18/19 §5 已按实装微调(每条回声的发射紧跟各自录制);
+- **build_level_07 漏设 next_scene**:L7 通关原地重玩(L4/L5 同款教训第三次出现),冒烟推进断言当场拦截 → 补设;此教训应升级为构建脚本模板固定行;
+- **回归测试竞态**:「回声停上开关」的固定帧等待不可靠(录制时长 ≈ 走位时长,边界漂移),改为对 sw.is_active() 的轮询;另一次失败是录制路线停在 (8,7) 而 S2 在 (8,6);
+- **complete_hint 章末集合修正**:设计稿的 {3,6,8} 在 L6 接入 next_scene 后语义失效——实装 `level_id >= 8`(L3/L6 显示「章节完」标题但提示「继续」,L3→L4 先例);
+- TimeLockSwitch 必须 arm() 才启动(L8 自由时间锁 = 常武装,重置后重新武装);EnergyCore 初始 ON 由关卡管理器驱动(不改既有契约,pack 不存运行态);
+- 冒烟走位链必须避开实体格:x-first 链撞 (5,9) 核心被卡、守卫帧耗尽导致录制中断——新关路线设计先查 Solid 格(与 L6「路线要预留滑行」同源)。
+
+**验证**:regression_m5 / regression_m6 / regression_m7 ALL PASS;七关冒烟(smoke_screenshot/level02..08)全绿;L1→…→L8→LevelSelect 推进链断言通过;全部日志无 SCRIPT ERROR 与 Error calling from signal。
+
+**下一步**:用户人工验收(L7/L8 体感与首通时长硬指标 L7≥5 分 / L8≥7 分、悖论区紫色视觉定稿);可选:Windows 运行包 v0.4 导出 + tag chapter3-v0.1 + GitHub Release。

@@ -241,17 +241,17 @@ func _run() -> void:
 	_state("complete")
 	print("save=", FileAccess.get_file_as_string("user://save.json"))
 
-	# 8) 章末通关 → 任意键打开关卡选择菜单(用户验收新增)
+	# 8) 第二章通关 → 任意键推进第三章(第三章开放:L6 补 next_scene,仿 L3→L4 先例)
 	await _frames(80)
 	await _tap_key(KEY_E)
 	await _frames(20)
 	var nxt := String(current_scene.name) if current_scene != null else "<null>"
 	print("after_key current_scene=", nxt)
-	if nxt != "LevelSelect":
-		print("FAIL: expected LevelSelect menu, got ", nxt)
+	if nxt != "Level_07":
+		print("FAIL: expected advance to Level_07, got ", nxt)
 		quit(1)
 		return
-	print("PASS advance_select: level select opened")
+	print("PASS advance_l7: L6 -> L7 (chapter 3 open)")
 	quit()
 
 
