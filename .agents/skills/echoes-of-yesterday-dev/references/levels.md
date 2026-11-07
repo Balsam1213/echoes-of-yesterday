@@ -44,9 +44,27 @@ T-03(首次靠近装置,重置重武装)→ T-02(首次踩上开关后离开)→
 
 ## 新增关卡步骤
 
-1. 复制 `tools/build_level_01.gd` 为 `build_level_XX.gd`,改布局常量与机关组合(走 isometric.md 的格位/锚点规则);
-2. 新建 `scripts/level/level_XX_manager.gd`(可继承 Level01Manager 模式),root `set_script` 挂接;
-3. `GameEvents` 增加新信号须同步 docs/02 §2.2;
-4. 构建:`timeout 90 godot --headless --path EchoesOfYesterday -s tools/build_level_XX.gd`;新 class_name 先跑一次 `--import` 入全局缓存;
-5. 主场景切换改 project.godot `run/main_scene`;
-6. 冒烟剧本按新布局调整走位(门洞通道 |dx|≤10,路线要预留滑行)。
+1. 复制 `tools/build_level_04.gd`(第二章模板:含记录区/出口区手搭)为 `build_level_XX.gd`,改布局常量与机关组合(走 isometric.md 的格位/锚点规则);
+2. 新建 `scripts/level/level_XX_manager.gd`(继承 LevelManagerBase),root `set_script` 挂接;
+3. **每关必设** `max_echoes` 与 `next_scene`(漏设 = 过关原地重玩,L4/L5 返修教训);章末关 next_scene 留空 → 完成界面任意键打开关卡选择菜单;
+4. `GameEvents` 增加新信号须同步 docs/02 §2.2;
+5. 构建:`timeout 90 godot --headless --path EchoesOfYesterday -s tools/build_level_XX.gd`;新 class_name 先跑一次 `--import` 入全局缓存;
+6. 冒烟剧本按新布局调整走位(门洞通道 |dx|≤10,路线要预留滑行);**推进链必须断言 `current_scene` 变化**。
+
+## 第二章(L4—L6)构建要点(docs/13—16)
+
+| 关 | 地图 | 机关 | 记录区 | 上限 | next_scene |
+| --- | --- | --- | --- | --- | --- |
+| L4 时间干扰 | 16×12 | 干扰场×2、脉冲板×2、同振窗门 | x0..3, y9..11 | 3 | Level_05 |
+| L5 重复的实验 | 16×12 | 能量核心×2、联动桥、干扰场 | x0..6, y1..11(前厅) | 3 | Level_06 |
+| L6 失控区域 | 18×14 | 序列门(关卡层)、时间锁、核心、干扰场×4 | x0..5, y9..13 | 3 | ""(章末→菜单) |
+
+- **记录区注入**:`_add_record_zone(level, floor_layer, decals, from, to, SPAWN_CELL)`——世界包围盒 Area + 出生点标记(z_index=1 置顶,防墙体精灵遮挡);
+- **出口触发区手搭**:单格 44×20(128×32 泄漏邻格,实例内部子节点修改 pack() 不记录);
+- **门位铁律**:门正对出口且不占回声必经渡口(L6 门 (9,1) 正对出口,回声跨区走 y2 行);
+- **聚合逻辑归关卡层**:同振窗(L4,1.5s 维持)、门 AND(L5)、序列门(L6,乱序无效+闪红);
+- 干扰场判定圈 = 格心圆 r8(isometric.md 32px 口径);回声车道贴行绝不误伤。
+
+## 推进链与关卡选择(用户验收新增)
+
+L1→L2→…→L6 全链 `next_scene`;章末(next_scene 为空)完成界面任意键 → `LevelSelect` 菜单(已通关可点选重玩、未通关灰置);暂停菜单「关卡选择」按钮同入口;`LevelSelect.previous_scene` 静态记录来源,Esc 返回。

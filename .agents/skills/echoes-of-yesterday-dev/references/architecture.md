@@ -5,7 +5,7 @@
 ## 目录(仓库根)
 
 ```
-docs/          00—09 上位文档体系(需求/技术/规范/关卡/计划/测试)
+docs/          00—16 上位文档体系(需求/技术/规范/章节规划/关卡/计划/测试)
 logs/          devlog.md(每次任务必写)、changelog.md、issues.md
 EchoesOfYesterday/   Godot 工程根
 tools/         -s 构建与测试脚本(见 testing.md)
@@ -26,7 +26,7 @@ tools/         -s 构建与测试脚本(见 testing.md)
 
 | 单例 | 文件 | 职责 |
 | --- | --- | --- |
-| `GameEvents` | `scripts/core/game_events.gd` | 全局信号总线:recording_started / recording_stopped(duration) / echo_spawned(id) / echo_deleted(id) / echo_count_changed(count) / echo_playback_started(duration) / echo_playback_stopped / notify_requested(text) / level_completed(id) / restart_requested |
+| `GameEvents` | `scripts/core/game_events.gd` | 全局信号总线:recording_started / recording_stopped(duration) / echo_spawned(id) / echo_deleted(id) / echo_count_changed(count, cap) / echo_playback_started(duration) / echo_playback_stopped / notify_requested(text) / level_started(id) / level_completed(id) / advance_requested / level_reset_requested |
 | `SaveManager` | `scripts/save/save_manager.gd` | mark_level_completed(id) / is_level_unlocked(id);存档 user://save.json |
 
 规则:跨场景通信只走 GameEvents;子→父用信号;禁止节点跨树互引、禁止 UI/关卡反向依赖子节点内部。
@@ -44,7 +44,9 @@ tools/         -s 构建与测试脚本(见 testing.md)
 
 ## 场景组装模式
 
-关卡场景 = 根 Node2D(挂 LevelXXManager)+ `Floor`(TileMapLayer)+ `WallColliders`(StaticBody2D 菱形脚印集)+ `YSorted`(y_sort,实体)+ `UI`(CanvasLayer)。参考 `scenes/levels/Level_01.tscn` 与 `tools/build_level_01.gd`。
+关卡场景 = 根 Node2D(挂 LevelXXManager)+ `Floor`(TileMapLayer)+ `Decals`(地面贴花层)+ `RecordingZone`(L4—L6 初始记录区)+ `WallColliders`(StaticBody2D 菱形脚印集)+ `YSorted`(y_sort,实体)+ `EchoManager` + `UI`(CanvasLayer)。参考 `scenes/levels/Level_04.tscn` 与 `tools/build_level_04.gd`(第二章模板:记录区/出口区手搭注入)。
+
+其他场景:`scenes/ui/LevelSelect.tscn`(关卡选择菜单,章末任意键/暂停菜单入口,`LevelSelect.previous_scene` 记录返回目标)。
 
 **构建脚本铁律**:
 - owner 只赋无主节点(`child.owner == null` 才赋,递归)——否则 pack() 展开实例子场景 → 静态影子副本(M2 事故:玩家看到假机关)。

@@ -33,8 +33,10 @@ Player (CharacterBody2D, 层2 掩码1, motion_mode=1 floating)
 ## 对外接口
 
 - `recorder: TimeRecorder` —— 记录器引用(关卡/回声管理经此取记录)
-- `reset_to(pos: Vector2)` —— 关卡重置用:瞬移 + 清速度/朝向/交互计时/动画
+- `reset_to(pos: Vector2)` —— 关卡重置/记录完成回原位用:瞬移 + 清速度/朝向/交互计时/动画
 - `camera_limit_rect: Rect2i`(@export)—— 相机边界,关卡构建时设置
+- `in_recording_zone: bool`(默认 true)—— 初始记录区标志(RecordingZone 维护);`true`=可按 R 起录;L1—L3 无区域,恒 true
+- `interacted(target: Node2D)` 信号 —— E 命中 `interactable` 组目标时发出(目标真实 toggle + TimeRecorder 写 events,docs/15 §4);未命中只播 interact 动画(E-56 空挥)
 
 ## 修改约束
 
