@@ -187,15 +187,15 @@ func _run() -> void:
 	print("PASS echo2_b")
 	_state("ab_held")
 
-	# 4) R3(自记录区):x1 窄道 → 北渡口 → y1 东行 → x10 南行 → (11,12) 南口 → x12 窄道北上 → 踩 C
-	# (持键连续走位:路线 47 格,逐帧 press/release 会超出 30s 记录上限)
+	# 4) R3(自记录区):x1 窄道 → 北渡口 (6,2) → y2 东行(避开门格 9,1)→ x10 南行 → (11,12) 南口 → x12 窄道北上 → 踩 C
+	# (持键连续走位:长路线录制须全速,逐帧 press/release 会超出 30s 记录上限)
 	await _tap("record_toggle")
 	var r3_pts: Array = []
 	r3_pts.append_array(_cell_chain(Vector2i(2, 11), Vector2i(1, 11)))
 	r3_pts.append_array(_cell_chain(Vector2i(1, 11), Vector2i(1, 1)))
-	r3_pts.append_array(_cell_chain(Vector2i(1, 1), Vector2i(6, 1)))
-	r3_pts.append_array(_cell_chain(Vector2i(6, 1), Vector2i(10, 1)))
-	r3_pts.append_array(_cell_chain(Vector2i(10, 1), Vector2i(10, 12)))
+	r3_pts.append_array(_cell_chain(Vector2i(1, 1), Vector2i(6, 2)))
+	r3_pts.append_array(_cell_chain(Vector2i(6, 2), Vector2i(10, 2)))
+	r3_pts.append_array(_cell_chain(Vector2i(10, 2), Vector2i(10, 12)))
 	r3_pts.append_array(_cell_chain(Vector2i(10, 12), Vector2i(12, 12)))
 	r3_pts.append_array(_cell_chain(Vector2i(12, 12), Vector2i(12, 2)))
 	r3_pts.append_array(_cell_chain(Vector2i(12, 2), Vector2i(14, 2)))
@@ -240,4 +240,30 @@ func _run() -> void:
 	await _frames(12)
 	_state("complete")
 	print("save=", FileAccess.get_file_as_string("user://save.json"))
+
+	# 8) 章末通关 → 任意键打开关卡选择菜单(用户验收新增)
+	await _frames(80)
+	await _tap_key(KEY_E)
+	await _frames(20)
+	var nxt := String(current_scene.name) if current_scene != null else "<null>"
+	print("after_key current_scene=", nxt)
+	if nxt != "LevelSelect":
+		print("FAIL: expected LevelSelect menu, got ", nxt)
+		quit(1)
+		return
+	print("PASS advance_select: level select opened")
 	quit()
+
+
+func _tap_key(keycode: Key) -> void:
+	var ev := InputEventKey.new()
+	ev.keycode = keycode
+	ev.physical_keycode = keycode
+	ev.pressed = true
+	Input.parse_input_event(ev)
+	await _frames(2)
+	var up := InputEventKey.new()
+	up.keycode = keycode
+	up.physical_keycode = keycode
+	up.pressed = false
+	Input.parse_input_event(up)

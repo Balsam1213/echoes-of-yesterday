@@ -469,3 +469,16 @@
 **验证**:regression_m5 ALL PASS、regression_m6 ALL PASS、smoke_screenshot(L1→L2)、smoke_level02(L2→L3)、smoke_level03(L3→L4)、smoke_level04(L4→L5)、smoke_level05(L5→L6)、smoke_level06 全绿;记录区拒绝/回原位断言入 L4 冒烟。
 
 **下一步**:用户复验(记录区手感/视觉/推进);可选:Windows 运行包重导出、第三章设计。
+
+---
+
+## 2026-11-07 | 第二章返修 2:用户复验三项(出生标记/门位/关卡选择菜单)
+
+**用户反馈与处置**(全部闭环,七套件复跑全绿):
+1. **出生点加标记** → 初始记录区加**淡青底纹**(Polygon2D 覆盖区域,透明度 0.10)+ **出生点淡青圆点贴花**(light_dot ×3 缩放,#45D9F2)——记录起点一眼可辨;构建脚本 `_add_record_zone` 扩展注入(三关共用);
+2. **L6 门位差一格,没挡住终点** → v1.2 把门移到 (9,2) 后,玩家可经 (9,1) 绕过、门形同虚设。修复 = **门回正 (9,1) 正对出口 (9,0)**(脚印菱形侧向封死),R3 跨区路线改走 **y2 行**(F1 缺口含 (6,2),避开门格)——门挡路与回声通路解耦;
+3. **新增关卡选择菜单** → `LevelSelect` 场景(ui/):列出 6 关,**已通关可点选重玩、未通关灰置**;入口 = 章末完成界面任意键(`LevelManagerBase._on_advance_requested`:next_scene 为空 → 打开菜单)+ 暂停菜单「关卡选择」按钮;Esc 返回来源场景(`LevelSelect.previous_scene` 静态记录);完成界面章末提示改「按任意键打开关卡选择」(HINT_SELECT);L6 冒烟尾部断言「章末任意键 → LevelSelect」。
+
+**验证**:regression_m5 / regression_m6 ALL PASS;六关冒烟全绿,L1→…→L6→**LevelSelect** 全链断言通过;日志无 SCRIPT ERROR。
+
+**下一步**:用户复验;可选:Windows 运行包重导出、第三章(第 7—8 关)设计。

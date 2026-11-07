@@ -11,7 +11,7 @@ const SWITCH_A_CELL := Vector2i(2, 3)
 const SWITCH_B_CELL := Vector2i(8, 3)
 const LOCK_CELL := Vector2i(15, 3)
 const CORE_CELL := Vector2i(15, 10)
-const DOOR_CELL := Vector2i(9, 2)  # 门置 (9,2):北走廊 y1 是回声唯一北通道,门不得占 (9,1)
+const DOOR_CELL := Vector2i(9, 1)  # 门正对出口 (9,0),侧向由脚印菱形封死;回声跨区路线走 y2 行避开(返修:门曾误置 (9,2) 可从 (9,1) 绕过)
 const EXIT_CELL := Vector2i(9, 0)
 static var FOOTPRINT := PackedVector2Array([Vector2(0, -16), Vector2(32, 0), Vector2(0, 16), Vector2(-32, 0)])
 
@@ -48,7 +48,7 @@ func _run() -> void:
 	level.add_child(decals)
 
 	# 初始记录区(西区南段,docs/13 §5.1:记录只能在此开始)
-	_add_record_zone(level, floor_layer, Vector2i(0, 9), Vector2i(5, 13))
+	_add_record_zone(level, floor_layer, decals, Vector2i(0, 9), Vector2i(5, 13), SPAWN_CELL)
 
 	# 干扰场 ×4(docs/16 §3):F0 西区横带 / F1 西中隔离 / F2 中东隔离 / F3 东区内部
 	var field_defs := {
@@ -207,8 +207,8 @@ func _rect_cells(from: Vector2i, to: Vector2i) -> Array[Vector2i]:
 	return cells
 
 
-## 初始记录区:覆盖格位矩形 [from..to] 的世界包围盒(含各格菱形外沿)
-func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, from: Vector2i, to: Vector2i) -> void:
+## 初始记录区:覆盖格位矩形 [from..to] 的世界包围盒(含各格菱形外沿)+ 淡青底纹 + 出生点标记
+func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, decals: Node2D, from: Vector2i, to: Vector2i, spawn_cell: Vector2i) -> void:
 	var zone: Area2D = (load("res://scenes/mechanisms/RecordingZone.tscn") as PackedScene).instantiate()
 	zone.name = "RecordingZone"
 	zone.unique_name_in_owner = true
@@ -216,13 +216,24 @@ func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, from: Vector2i, 
 	var max_cx := (maxf(from.x, to.x) - minf(from.y, to.y)) * 32 + 32
 	var min_cy := (minf(from.x, to.x) + minf(from.y, to.y)) * 16 + 16
 	var max_cy := (maxf(from.x, to.x) + maxf(from.y, to.y)) * 16 + 16
+	var center := Vector2((min_cx + max_cx) / 2.0, (min_cy + max_cy) / 2.0)
+	var size := Vector2(max_cx - min_cx + 64, max_cy - min_cy + 32)
 	var cs := CollisionShape2D.new()
 	var shape := RectangleShape2D.new()
-	shape.size = Vector2(max_cx - min_cx + 64, max_cy - min_cy + 32)
+	shape.size = size
 	cs.shape = shape
 	zone.add_child(cs)
-	zone.position = Vector2((min_cx + max_cx) / 2.0, (min_cy + max_cy) / 2.0)
+	zone.position = center
+	zone.setup_visual(center, size)
 	level.add_child(zone)
+	# 出生点标记:淡青圆点贴花,方便玩家辨认记录起点(用户验收)
+	var marker := Sprite2D.new()
+	marker.name = "SpawnMarker"
+	marker.texture = load("res://assets/mechanisms/light_dot.png")
+	marker.scale = Vector2(3, 3)
+	marker.modulate = Color(0.271, 0.851, 0.949, 0.6)
+	marker.position = floor_layer.map_to_local(spawn_cell)
+	decals.add_child(marker)
 
 
 func _make_pad(floor_layer: TileMapLayer, cell: Vector2i, pad_name: String) -> Sprite2D:

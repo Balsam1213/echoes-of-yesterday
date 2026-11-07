@@ -68,13 +68,14 @@ func _on_exit_entered() -> void:
 
 
 func _on_advance_requested() -> void:
-	## 完成界面任意键:重置并推进到下一关(末关 next_scene 为空 → 原地重玩)
+	## 完成界面任意键:重置并推进到下一关(章末 next_scene 为空 → 打开关卡选择菜单)
 	reset_room()
 	get_tree().paused = false
 	if next_scene != "":
 		get_tree().change_scene_to_file(next_scene)
 	else:
-		_state = State.PLAY
+		LevelSelect.previous_scene = scene_file_path
+		get_tree().change_scene_to_file(LevelSelect.SELECT_SCENE)
 
 
 func _on_level_reset_requested() -> void:

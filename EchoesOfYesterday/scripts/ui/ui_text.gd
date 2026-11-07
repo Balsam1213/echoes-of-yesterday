@@ -53,10 +53,14 @@ const T62_ORDER_WRONG := "失控区域的机关认顺序。先来后到,乱了�
 const T63_COMPLETE := "失控的不是区域,是时间本身。第二章,完。"
 const HINT_NEXT := "按任意键继续"
 const HINT_REPLAY := "按任意键重玩"
+const HINT_SELECT := "按任意键打开关卡选择"
 const PAUSE_TITLE := "暂 停"
 const BTN_CONTINUE := "继续游戏"
 const BTN_RESTART := "重新开始本关"
+const BTN_SELECT := "关卡选择"
 const BTN_QUIT := "退出游戏"
+const SELECT_TITLE := "关卡选择"
+const SELECT_HINT := "点击关卡开始 · Esc 返回"
 
 const HINT_SECONDS := 4.0
 
@@ -85,4 +89,4 @@ static func complete_title(level_id: int) -> String:
 
 
 static func complete_hint(level_id: int) -> String:
-	return HINT_REPLAY if level_id >= 6 else HINT_NEXT
+	return HINT_SELECT if level_id >= 6 else HINT_NEXT

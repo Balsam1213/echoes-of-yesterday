@@ -163,6 +163,11 @@ unique_name_in_owner = true
 layout_mode = 2
 text = "重新开始本关"
 
+[node name="BtnSelect" type="Button" parent="PauseMenu/Center/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "关卡选择"
+
 [node name="BtnQuit" type="Button" parent="PauseMenu/Center/VBox"]
 unique_name_in_owner = true
 layout_mode = 2

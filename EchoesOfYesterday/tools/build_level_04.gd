@@ -48,7 +48,7 @@ func _run() -> void:
 	level.add_child(decals)
 
 	# 初始记录区(西南角,docs/13 §5.1:记录只能在此开始)
-	_add_record_zone(level, floor_layer, Vector2i(0, 9), Vector2i(3, 11))
+	_add_record_zone(level, floor_layer, decals, Vector2i(0, 9), Vector2i(3, 11), SPAWN_CELL)
 
 	# 干扰场(恒定危害区;置于 Decals 之后、YSorted 之前:覆格在角色之下)
 	var field_main: Area2D = (load("res://scenes/mechanisms/InterferenceField.tscn") as PackedScene).instantiate()
@@ -191,8 +191,8 @@ func _run() -> void:
 	quit()
 
 
-## 初始记录区:覆盖格位矩形 [from..to] 的世界包围盒(含各格菱形外沿)
-func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, from: Vector2i, to: Vector2i) -> void:
+## 初始记录区:覆盖格位矩形 [from..to] 的世界包围盒(含各格菱形外沿)+ 淡青底纹 + 出生点标记
+func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, decals: Node2D, from: Vector2i, to: Vector2i, spawn_cell: Vector2i) -> void:
 	var zone: Area2D = (load("res://scenes/mechanisms/RecordingZone.tscn") as PackedScene).instantiate()
 	zone.name = "RecordingZone"
 	zone.unique_name_in_owner = true
@@ -200,13 +200,24 @@ func _add_record_zone(level: Node2D, floor_layer: TileMapLayer, from: Vector2i, 
 	var max_cx := (maxf(from.x, to.x) - minf(from.y, to.y)) * 32 + 32
 	var min_cy := (minf(from.x, to.x) + minf(from.y, to.y)) * 16 + 16
 	var max_cy := (maxf(from.x, to.x) + maxf(from.y, to.y)) * 16 + 16
+	var center := Vector2((min_cx + max_cx) / 2.0, (min_cy + max_cy) / 2.0)
+	var size := Vector2(max_cx - min_cx + 64, max_cy - min_cy + 32)
 	var cs := CollisionShape2D.new()
 	var shape := RectangleShape2D.new()
-	shape.size = Vector2(max_cx - min_cx + 64, max_cy - min_cy + 32)
+	shape.size = size
 	cs.shape = shape
 	zone.add_child(cs)
-	zone.position = Vector2((min_cx + max_cx) / 2.0, (min_cy + max_cy) / 2.0)
+	zone.position = center
+	zone.setup_visual(center, size)
 	level.add_child(zone)
+	# 出生点标记:淡青圆点贴花,方便玩家辨认记录起点(用户验收)
+	var marker := Sprite2D.new()
+	marker.name = "SpawnMarker"
+	marker.texture = load("res://assets/mechanisms/light_dot.png")
+	marker.scale = Vector2(3, 3)
+	marker.modulate = Color(0.271, 0.851, 0.949, 0.6)
+	marker.position = floor_layer.map_to_local(spawn_cell)
+	decals.add_child(marker)
 
 
 func _make_pad(floor_layer: TileMapLayer, cell: Vector2i, pad_name: String) -> Sprite2D:

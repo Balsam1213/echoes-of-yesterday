@@ -7,9 +7,11 @@ func _ready() -> void:
 	%Title.text = UIText.PAUSE_TITLE
 	%BtnContinue.text = UIText.BTN_CONTINUE
 	%BtnRestart.text = UIText.BTN_RESTART
+	%BtnSelect.text = UIText.BTN_SELECT
 	%BtnQuit.text = UIText.BTN_QUIT
 	%BtnContinue.pressed.connect(_toggle)
 	%BtnRestart.pressed.connect(_on_restart)
+	%BtnSelect.pressed.connect(_on_select)
 	%BtnQuit.pressed.connect(_on_quit)
 
 
@@ -29,6 +31,14 @@ func _on_restart() -> void:
 	get_tree().paused = false
 	visible = false
 	GameEvents.level_reset_requested.emit()
+
+
+func _on_select() -> void:
+	## 打开关卡选择菜单(记住来源,Esc 可返回本关)
+	get_tree().paused = false
+	visible = false
+	LevelSelect.previous_scene = get_tree().current_scene.scene_file_path
+	get_tree().change_scene_to_file(LevelSelect.SELECT_SCENE)
 
 
 func _on_quit() -> void:
