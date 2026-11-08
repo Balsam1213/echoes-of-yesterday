@@ -1,7 +1,9 @@
 extends SceneTree
-## Level_07 冒烟:相位门三门取舍 + 悖论区全流程(docs/18 §5 返修 2 + docs/17 §5.1 记录区)。
-## 标准解:南口双门密封(核心 OFF)→ 东室门落下录 E1 守 S1(发)→ 拨核心供电
-## (南口落下 + 东门密封,取舍)→ 录 E2 停 S2(区内)→ 玩家穿区北上 → 北侧发射 E2 → 冲门。
+## Level_07 冒烟:相位门三门取舍 + 悖论区全流程(docs/18 §5 返修 3 + docs/17 §5.1 记录区)。
+## 标准解(极性返修 3 交换):初始 OFF = 南口双门落下(可自由北上)+ 东室门密封 →
+## 拨核心 ON(南口密封 + 东门落下)录 E1 守 S1 → 拨回 OFF(东门密封)发射 E1
+## (穿**密封**东门)→ 录 E2 停 S2(区内)→ 玩家穿区北上 → 北侧发射 E2 → 冲门。
+## 密封配套审计:tools/audit_seal_l7.gd(南口密封态北区不可达)。
 ## 运行:godot --path . -s tools/smoke_level07.gd
 
 var _player: Node2D
@@ -15,6 +17,7 @@ var _door: StaticBody2D
 var _mgr: Node
 var _pos_exit: Vector2
 var _notifies: Array[String] = []
+var save_backup := ""  # 真实存档备份(_finish 统一还原;成功/失败路径都要走)
 
 
 func _initialize() -> void:
@@ -72,6 +75,22 @@ func _walk_cells(from: Vector2i, to: Vector2i) -> void:
 		await _walk_to(p)
 
 
+## 拨核心到目标态(幂等;调用时玩家须在记录起点 (2,9)——走位固定经 y10 行,
+## x-first 直线会撞 (5,9) 核心实体,返修 2 教训)
+func _set_core(want: bool) -> void:
+	if _core.get("is_on") == want:
+		return
+	await _walk_cells(Vector2i(2, 9), Vector2i(2, 10))
+	await _walk_cells(Vector2i(2, 10), Vector2i(6, 10))
+	await _walk_cells(Vector2i(6, 10), Vector2i(6, 9))
+	await _frames(8)
+	await _tap("interact")
+	await _frames(6)
+	await _walk_cells(Vector2i(6, 9), Vector2i(6, 10))
+	await _walk_cells(Vector2i(6, 10), Vector2i(2, 10))
+	await _walk_cells(Vector2i(2, 10), Vector2i(2, 9))
+
+
 ## 持键连续走位(全速):长路线录制用(逐帧 press/release 速度减半,超 30s 记录上限)
 func _walk_chain(points: Array) -> void:
 	var idx := 0
@@ -123,7 +142,6 @@ func _notify_seen(key: String) -> bool:
 
 
 func _run() -> void:
-	var save_backup := ""
 	if FileAccess.file_exists("user://save.json"):
 		save_backup = FileAccess.get_file_as_string("user://save.json")  # 备份真实存档,收尾还原(防测试污染开发机)
 	DirAccess.remove_absolute("user://save.json")  # 存档隔离:通关断言只认本轮
@@ -147,53 +165,54 @@ func _run() -> void:
 		print("NOTIFY: ", t))
 	root.get_node("GameEvents").level_completed.connect(func(id: int) -> void: print("LEVEL_COMPLETED id=", id))
 	_state("spawn")
-	if _core.get("is_on") or not _gate_s1.call("is_phased") or not _gate_s2.call("is_phased") \
-			or _gate_east.call("is_phased"):
-		print("FAIL: initial state should be core OFF / south pair sealed / east gate dropped")
-		quit(1)
+	if _core.get("is_on") or _gate_s1.call("is_phased") or _gate_s2.call("is_phased") \
+			or not _gate_east.call("is_phased"):
+		print("FAIL: initial state should be core OFF / south pair dropped (passable) / east gate sealed")
+		_finish(1)
 		return
 
-	# 1) 南口相位门教学:实体被挡(T-71);断电态东室门落下可进(TC-86)
-	await _walk_cells(Vector2i(2, 9), Vector2i(2, 10))
-	await _walk_cells(Vector2i(2, 10), Vector2i(8, 10))
-	await _walk_cells(Vector2i(8, 10), Vector2i(8, 9))
-	await _walk_to(_cw(8, 8))
+	# 1) 初始可自由北上(OFF 南口落下)+ 穿越悖论区(空区,合法)→ 回南区
+	await _chain(_cell_chain(Vector2i(2, 9), Vector2i(2, 10)) \
+			+ _cell_chain(Vector2i(2, 10), Vector2i(8, 10)) \
+			+ _cell_chain(Vector2i(8, 10), Vector2i(8, 9)) \
+			+ _cell_chain(Vector2i(8, 9), Vector2i(8, 8)) \
+			+ _cell_chain(Vector2i(8, 8), Vector2i(8, 7)) \
+			+ _cell_chain(Vector2i(8, 7), Vector2i(8, 6)) \
+			+ _cell_chain(Vector2i(8, 6), Vector2i(8, 5)) \
+			+ _cell_chain(Vector2i(8, 5), Vector2i(8, 4)) \
+			+ _cell_chain(Vector2i(8, 4), Vector2i(8, 3)))
+	await _frames(6)
+	_state("north_free")
+	var at_hall := _player.global_position.distance_to(_cw(8, 3))
+	if at_hall > 8.0:
+		print("FAIL: player should cross freely at OFF, dist to (8,3)=%.1f" % at_hall)
+		_finish(1)
+		return
+	print("PASS free_crossing: south gates dropped at OFF")
+	await _chain(_cell_chain(Vector2i(8, 3), Vector2i(8, 6)) \
+			+ _cell_chain(Vector2i(8, 6), Vector2i(8, 9)) \
+			+ _cell_chain(Vector2i(8, 9), Vector2i(8, 10)) \
+			+ _cell_chain(Vector2i(8, 10), Vector2i(2, 10)) \
+			+ _cell_chain(Vector2i(2, 10), Vector2i(2, 9)))
+
+	# 2) 东室门密封教学:实体被挡 + T-71(TC-86)
+	await _chain(_cell_chain(Vector2i(2, 9), Vector2i(2, 10)) \
+			+ _cell_chain(Vector2i(2, 10), Vector2i(12, 10)))
+	await _walk_to(_cw(12, 9))
 	await _frames(6)
 	if not _notify_seen("相位封锁"):
-		print("FAIL: T-71 gate hint not shown near sealed gate")
-		quit(1)
+		print("FAIL: T-71 gate hint not shown near sealed east gate")
+		_finish(1)
 		return
-	var blocked := _player.global_position.distance_to(_cw(8, 7))
+	var blocked := _player.global_position.distance_to(_cw(12, 8))
 	if blocked <= 16.0:
-		print("FAIL: player should be blocked by sealed south gate, dist to (8,7)=%.1f" % blocked)
-		quit(1)
+		print("FAIL: player should be blocked by sealed east gate, dist to (12,8)=%.1f" % blocked)
+		_finish(1)
 		return
-	print("PASS south_gate_sealed: T-71 shown, entity blocked")
-
-	# 2) 东室侦察(断电态门落下):直达 S1(15,6)——实体不可穿密封门、门落可穿双态可见
-	await _chain(_cell_chain(Vector2i(8, 9), Vector2i(8, 10)) \
-			+ _cell_chain(Vector2i(8, 10), Vector2i(12, 10)) \
-			+ _cell_chain(Vector2i(12, 10), Vector2i(12, 9)) \
-			+ _cell_chain(Vector2i(12, 9), Vector2i(12, 8)) \
-			+ _cell_chain(Vector2i(12, 8), Vector2i(12, 7)) \
-			+ _cell_chain(Vector2i(12, 7), Vector2i(15, 7)) \
-			+ _cell_chain(Vector2i(15, 7), Vector2i(15, 6)))
-	await _frames(6)
-	_state("east_room")
-	var at_s1 := _player.global_position.distance_to(_cw(15, 6))
-	if at_s1 > 8.0:
-		print("FAIL: player should reach S1 through dropped east gate, dist=%.1f" % at_s1)
-		quit(1)
-		return
-	print("PASS east_gate_dropped: player reached S1")
+	print("PASS east_gate_sealed: T-71 shown, entity blocked")
 
 	# 3) 悖论初体验(凹室):录进凹室 → 回放 → 跟进 → 消散 + T-72(TC-88)
-	await _chain(_cell_chain(Vector2i(15, 6), Vector2i(15, 7)) \
-			+ _cell_chain(Vector2i(15, 7), Vector2i(12, 7)) \
-			+ _cell_chain(Vector2i(12, 7), Vector2i(12, 8)) \
-			+ _cell_chain(Vector2i(12, 8), Vector2i(12, 9)) \
-			+ _cell_chain(Vector2i(12, 9), Vector2i(12, 10)) \
-			+ _cell_chain(Vector2i(12, 10), Vector2i(2, 10)) \
+	await _chain(_cell_chain(Vector2i(12, 10), Vector2i(2, 10)) \
 			+ _cell_chain(Vector2i(2, 10), Vector2i(2, 9)))
 	await _tap("record_toggle")
 	await _chain(_cell_chain(Vector2i(2, 9), Vector2i(2, 10)) \
@@ -214,14 +233,24 @@ func _run() -> void:
 	_state("sandbox_paradox")
 	if _mgr.echo_count() != 0 or not _notify_seen("只能有一个你"):
 		print("FAIL: sandbox paradox dissolve/T-72, count=", _mgr.echo_count())
-		quit(1)
+		_finish(1)
 		return
 	print("PASS sandbox_paradox: echo dissolved + T-72")
 
-	# 4) 录 E1(断电态穿东门)→ 回记录区 → 发射 → 守 S1(TC-94 前半)
+	# 4) 拨核心供电(南口密封 + 东门落下)→ 回记录区起录 E1 守 S1(TC-87)
 	await _walk_cells(Vector2i(7, 8), Vector2i(6, 8))
 	await _walk_cells(Vector2i(6, 8), Vector2i(6, 9))
-	await _walk_cells(Vector2i(6, 9), Vector2i(6, 10))
+	await _frames(8)
+	await _tap("interact")
+	await _frames(6)
+	_state("core_on")
+	if not _core.get("is_on") or not _gate_s1.call("is_phased") or not _gate_s2.call("is_phased") \
+			or _gate_east.call("is_phased"):
+		print("FAIL: core ON should seal south pair AND drop east gate")
+		_finish(1)
+		return
+	print("PASS core_tradeoff: south pair sealed + east gate dropped")
+	await _walk_cells(Vector2i(6, 9), Vector2i(6, 10))  # 回记录区起录(R1 门控,docs/17 §5.1)
 	await _walk_cells(Vector2i(6, 10), Vector2i(2, 10))
 	await _walk_cells(Vector2i(2, 10), Vector2i(2, 9))
 	await _tap("record_toggle")
@@ -235,6 +264,14 @@ func _run() -> void:
 	await _frames(8)
 	await _tap("record_toggle")
 	_state("e1_recorded")
+
+	# 5) 拨回 OFF(东门密封)→ 发射 E1:回声穿**密封**东门守 S1(E-75)
+	await _set_core(false)
+	_state("core_off")
+	if _core.get("is_on") or not _gate_east.call("is_phased") or _gate_s1.call("is_phased"):
+		print("FAIL: core OFF should drop south pair AND seal east gate")
+		_finish(1)
+		return
 	await _tap("play_echo")
 	for i in 900:
 		if _sw1.is_active():
@@ -242,30 +279,12 @@ func _run() -> void:
 		await physics_frame
 	_state("e1_parked")
 	if not _sw1.is_active():
-		print("FAIL: echo1 never parked S1")
-		quit(1)
+		print("FAIL: echo1 never parked S1 through sealed east gate")
+		_finish(1)
 		return
-	print("PASS echo1_parked: parks S1 via dropped east gate")
+	print("PASS echo1_sealed_gate: echo passed sealed east gate, parks S1")
 
-	# 5) 拨核心供电:南口双门落下 + 东门密封(取舍,TC-87)
-	await _walk_cells(Vector2i(2, 9), Vector2i(2, 10))
-	await _walk_cells(Vector2i(2, 10), Vector2i(6, 10))
-	await _walk_cells(Vector2i(6, 10), Vector2i(6, 9))
-	await _frames(8)
-	await _tap("interact")
-	await _frames(6)
-	_state("core_on")
-	if not _core.get("is_on") or _gate_s1.call("is_phased") or _gate_s2.call("is_phased") \
-			or not _gate_east.call("is_phased"):
-		print("FAIL: core ON should drop south pair AND seal east gate")
-		quit(1)
-		return
-	print("PASS core_tradeoff: south pair dropped + east gate sealed")
-
-	# 6) 录 E2(穿落下的南门,空区北上 → 停 S2 区内)
-	await _walk_cells(Vector2i(6, 9), Vector2i(6, 10))
-	await _walk_cells(Vector2i(6, 10), Vector2i(2, 10))
-	await _walk_cells(Vector2i(2, 10), Vector2i(2, 9))
+	# 6) 录 E2(南口落下,空区北上 → 停 S2 区内)
 	await _tap("record_toggle")
 	await _chain(_cell_chain(Vector2i(2, 9), Vector2i(2, 10)) \
 			+ _cell_chain(Vector2i(2, 10), Vector2i(8, 10)) \
@@ -296,11 +315,11 @@ func _run() -> void:
 	_state("e2_parked")
 	if not _sw2.is_active():
 		print("FAIL: echo2 never parked S2 (north-fire)")
-		quit(1)
+		_finish(1)
 		return
 	if not _door.is_open():
 		print("FAIL: door should open at S1 && S2")
-		quit(1)
+		_finish(1)
 		return
 	print("PASS north_fire: echo2 crossed field from north launch, door open")
 
@@ -318,14 +337,19 @@ func _run() -> void:
 	print("after_key current_scene=", nxt)
 	if nxt != "Level_08":
 		print("FAIL: expected advance to Level_08, got ", nxt)
-		quit(1)
+		_finish(1)
 		return
 	print("PASS advance_l8: L7 -> L8")
+	_finish(0)
+
+
+## 统一收尾:无论成功/失败路径都还原真实存档(返修 3 教训:失败路径 quit(1) 跳过还原会污染开发机)
+func _finish(code: int) -> void:
 	if save_backup != "":
 		var fb := FileAccess.open("user://save.json", FileAccess.WRITE)
 		fb.store_string(save_backup)
 		fb.close()
-	quit()
+	quit(code)
 
 
 func _tap_key(keycode: Key) -> void:

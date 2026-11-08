@@ -1,9 +1,9 @@
 extends SceneTree
 ## 构建 Level_07.tscn(T7-A,docs/18 §3):18×12 相位回廊——相位门 ×3(南口双门 + 东室门,
-## 核心 C1 统一驱动:供电 = 南落东封,返修 2)+ 悖论区 P1(主)/P2(教学凹室)+ 双开关 AND 门;
-## 回声上限 3。
-## 密封要求:西储块/东块封死绕行,P1 横贯回廊为南北唯一通路(南口由双相位门把守),
-## y2 行除门格外全墙(出口行唯一入口 = 门,仿 L6 门位铁律)。
+## 核心 C1 统一驱动:断电 = 南落东封(初始),供电 = 南封东落,返修 3 交换)+ 悖论区 P1(主)/
+## P2(教学凹室)+ 双开关 AND 门;回声上限 3。
+## 密封要求:西储块/东块封死绕行,P1 横贯回廊为南北唯一通路(南口由双相位门把守,
+## x10 列墙 y4..8 封死东缘侧绕——返修 3),y2 行除门格外全墙(出口行唯一入口 = 门)。
 ## 运行:godot --headless --path . -s tools/build_level_07.gd
 
 const ROOM_W := 18
@@ -199,7 +199,8 @@ func _run() -> void:
 	quit()
 
 
-## 周界(完整)+ 密封块:西储 x1..7,y4..7 / 东块 x14..16,y1..5 / y4 行 x10..13 /
+## 周界(完整)+ 密封块:西储 x1..7,y4..7 / 东块 x14..16,y1..5 / y4 行 x10..13 +
+## x10 列 y5..8(回廊东墙,返修 3:缺此列则 (10,8)→(9,7) 绕过南口双门直穿悖论区)/
 ## y2 行(除门格)/ 东室墙(x11 y6..8 西墙、y5 x11..13 北墙、y9 x11..16 南墙——门洞 (12,9))
 func _wall_cells() -> Array[Vector2i]:
 	var cells: Array[Vector2i] = []
@@ -215,6 +216,8 @@ func _wall_cells() -> Array[Vector2i]:
 			cells.append(Vector2i(x, y))
 	for x in range(10, 14):
 		cells.append(Vector2i(x, 4))
+	for y in range(5, 9):
+		cells.append(Vector2i(10, y))
 	for x in range(1, 14):
 		if x != DOOR_CELL.x:
 			cells.append(Vector2i(x, 2))

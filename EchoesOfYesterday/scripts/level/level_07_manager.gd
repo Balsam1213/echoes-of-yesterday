@@ -1,9 +1,10 @@
 class_name Level07Manager
 extends LevelManagerBase
-## 第七关流程(docs/18,返修 2 修订):能量核心 C1 统一驱动三扇相位门——
-## **供电(ON)= 南口双门落下(主通路开)+ 东室门密封(S1 仅回声可达);断电反之**。
-## C1 初始 OFF(南口封死,玩家必须拨核才能北上)——核心是不可绕过的取舍机关:
-## 录 E1 须断电进东室,北上通关须供电,两头不能兼得。
+## 第七关流程(docs/18,返修 3 修订):能量核心 C1 统一驱动三扇相位门——
+## **断电(OFF,初始)= 南口双门落下(可自由北上)+ 东室门密封(S1 仅回声可达);
+## 供电(ON)= 南口双门密封 + 东门落下**。东室默认回声专属,录 E1 须临时供电
+## (东室入口在南侧贴条,不经南口,双向均无被困风险);南口经 x10 列墙封死侧绕,
+## 密封态下南区→北厅仅南口一条路(且被双门把守)——核心是不可绕过的取舍机关。
 ## 出口门 D2 = S1 ∧ S2(当刻 AND,缺员退行当刻重估,E-79);
 ## 悖论区消散接线(E-71/72):玩家 ∧ 回声同场 → 区内全部回声消散。
 ## 教学链:T-70 开场 / T-71 相位门 / T-72 悖论触发 / T-73 凹室 / T-74 主区 / T-51 核心(复用)。
@@ -55,12 +56,14 @@ func _on_core_toggled(_on: bool) -> void:
 	_sync_gates()
 
 
-## 相位门统一极性(返修 2):供电 = 南口双门落下 + 东门密封;断电 = 南封东落
+## 相位门统一极性(返修 3,交换):**断电(OFF,初始)= 南口双门落下 + 东门密封**;
+## 供电(ON)= 南口双门密封 + 东门落下。默认可自由北上探索,东室默认回声专属;
+## 录 E1 须临时供电(东室入口在南侧贴条,不经南口,双向均无被困风险)
 func _sync_gates() -> void:
 	var on := _core.is_on
-	_gate_south1.set_phased(not on)
-	_gate_south2.set_phased(not on)
-	_gate_east.set_phased(on)
+	_gate_south1.set_phased(on)
+	_gate_south2.set_phased(on)
+	_gate_east.set_phased(not on)
 
 
 func _update_door() -> void:
@@ -114,7 +117,7 @@ func _on_reset_extra() -> void:
 	_door.force_reset()
 	_field_main.force_reset()
 	_field_sandbox.force_reset()
-	_sync_gates()  # E-76:重置复位 C1 OFF 初始态(南封东落)
+	_sync_gates()  # E-76:重置复位 C1 OFF 初始态(南落东封)
 	_t71_shown = false
 	_t72_shown = false
 	_t73_shown = false

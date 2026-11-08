@@ -14,6 +14,7 @@ var _gate: StaticBody2D
 var _door: StaticBody2D
 var _mgr: Node
 var _notifies: Array[String] = []
+var save_backup := ""  # 真实存档备份(_finish 统一还原;成功/失败路径都要走)
 
 
 func _initialize() -> void:
@@ -121,7 +122,6 @@ func _notify_seen(key: String) -> bool:
 
 
 func _run() -> void:
-	var save_backup := ""
 	if FileAccess.file_exists("user://save.json"):
 		save_backup = FileAccess.get_file_as_string("user://save.json")  # 备份真实存档,收尾还原(防测试污染开发机,返修 2026-11-08)
 	DirAccess.remove_absolute("user://save.json")  # 存档隔离:通关断言只认本轮
@@ -145,7 +145,7 @@ func _run() -> void:
 	_state("spawn")
 	if not _core.get("is_on") or not _gate.call("is_phased") or _door.is_open():
 		print("FAIL: initial state should be core ON + gate sealed + door closed")
-		quit(1)
+		_finish(1)
 		return
 
 	# 1) 西窄道侦察支路(TC-98):可达横廊与舱门外;G1 密封阻挡 + T-81
@@ -161,12 +161,12 @@ func _run() -> void:
 	_state("gate_recon")
 	if not _notify_seen("核心舱"):
 		print("FAIL: T-81 gate hint not shown near sealed gate")
-		quit(1)
+		_finish(1)
 		return
 	var stuck := _player.global_position.distance_to(_cw(14, 2))
 	if stuck <= 16.0:
 		print("FAIL: player should be blocked by sealed G1, dist to (14,2)=%.1f" % stuck)
-		quit(1)
+		_finish(1)
 		return
 	print("PASS recon: west corridor reachable, G1 blocks entity (T-81)")
 
@@ -185,7 +185,7 @@ func _run() -> void:
 	await _frames(8)
 	if not _notify_seen("异常核心"):
 		print("FAIL: T-82 core hint not shown in sea")
-		quit(1)
+		_finish(1)
 		return
 	print("PASS core_recon: T-82 shown, C1 reachable only inside sea")
 	await _chain(_cell_chain(Vector2i(6, 4), Vector2i(6, 9)) \
@@ -212,7 +212,7 @@ func _run() -> void:
 	_state("ea_parked")
 	if not _sw1.is_active():
 		print("FAIL: echo A never parked S1")
-		quit(1)
+		_finish(1)
 		return
 	print("PASS echo_a: crossed sea, parks S1")
 
@@ -235,7 +235,7 @@ func _run() -> void:
 	_state("eb_parked")
 	if not _sw2.is_active():
 		print("FAIL: echo B never parked S2")
-		quit(1)
+		_finish(1)
 		return
 	print("PASS echo_b: crossed sea, parks S2 (sea now clear)")
 
@@ -253,7 +253,7 @@ func _run() -> void:
 	_state("core_off")
 	if _core.get("is_on") or _gate.call("is_phased"):
 		print("FAIL: core toggle should drop G1")
-		quit(1)
+		_finish(1)
 		return
 	await _chain(_cell_chain(Vector2i(6, 4), Vector2i(6, 3)) \
 			+ _cell_chain(Vector2i(6, 3), Vector2i(6, 2)) \
@@ -276,19 +276,24 @@ func _run() -> void:
 	print("after_key current_scene=", nxt)
 	if nxt != "LevelSelect":
 		print("FAIL: expected LevelSelect menu, got ", nxt)
-		quit(1)
+		_finish(1)
 		return
 	var btns: Node = current_scene.get_node("%Buttons")
 	if btns == null or btns.get_child_count() != 8:
 		print("FAIL: menu should list 8 levels, got ", btns.get_child_count() if btns else -1)
-		quit(1)
+		_finish(1)
 		return
 	print("PASS advance_select: chapter end -> LevelSelect with 8 levels")
+	_finish(0)
+
+
+## 统一收尾:无论成功/失败路径都还原真实存档(返修 3 教训:失败路径 quit(1) 跳过还原会污染开发机)
+func _finish(code: int) -> void:
 	if save_backup != "":
 		var fb := FileAccess.open("user://save.json", FileAccess.WRITE)
 		fb.store_string(save_backup)
 		fb.close()
-	quit()
+	quit(code)
 
 
 func _tap_key(keycode: Key) -> void:
