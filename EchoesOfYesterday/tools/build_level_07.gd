@@ -1,8 +1,9 @@
 extends SceneTree
-## 构建 Level_07.tscn(T7-A,docs/18 §3):18×12 相位回廊——相位门 G1(核心 C1 供电)
-## + 悖论区 P1(主)/P2(教学凹室)+ 双开关 AND 门;回声上限 3。
-## 密封要求:西储块/东块封死绕行,P1 横贯回廊为南北唯一通路,y2 行除门格外全墙
-## (出口行唯一入口 = 门,仿 L6 门位铁律)。
+## 构建 Level_07.tscn(T7-A,docs/18 §3):18×12 相位回廊——相位门 ×3(南口双门 + 东室门,
+## 核心 C1 统一驱动:供电 = 南落东封,返修 2)+ 悖论区 P1(主)/P2(教学凹室)+ 双开关 AND 门;
+## 回声上限 3。
+## 密封要求:西储块/东块封死绕行,P1 横贯回廊为南北唯一通路(南口由双相位门把守),
+## y2 行除门格外全墙(出口行唯一入口 = 门,仿 L6 门位铁律)。
 ## 运行:godot --headless --path . -s tools/build_level_07.gd
 
 const ROOM_W := 18
@@ -10,10 +11,12 @@ const ROOM_H := 12
 const SPAWN_CELL := Vector2i(2, 9)
 const DEVICE_CELL := Vector2i(3, 8)
 const CORE_CELL := Vector2i(5, 9)
-const GATE_CELL := Vector2i(11, 7)      # 东室西墙唯一入口(凹形口袋 (11,8) 是唯一接近格)
-const SWITCH1_CELL := Vector2i(14, 7)   # 东室内——密封后仅回声可及
-const SWITCH2_CELL := Vector2i(8, 6)    # 主悖论区 P1 内部(谜题之眼,docs/18 §3)
-const DOOR_CELL := Vector2i(8, 2)       # 门正对出口 (8,1);y2 行其余全墙封死侧向绕行
+const GATE_EAST_CELL := Vector2i(12, 9)   # 东室南墙唯一入口(凹形口袋 (12,10) 是唯一接近格)
+const GATE_S1_CELL := Vector2i(8, 8)      # 南口双相位门(回廊 2 宽 = 两个口,双门同时密封/落下)
+const GATE_S2_CELL := Vector2i(9, 8)
+const SWITCH1_CELL := Vector2i(15, 6)     # 东室西北角——遮挡锥全空(返修 2:(14,7) 被南墙立方体完全盖住)
+const SWITCH2_CELL := Vector2i(8, 6)      # 主悖论区 P1 内部(谜题之眼,docs/18 §3)
+const DOOR_CELL := Vector2i(8, 2)         # 门正对出口 (8,1);y2 行其余全墙封死侧向绕行
 const EXIT_CELL := Vector2i(8, 1)
 static var FOOTPRINT := PackedVector2Array([Vector2(0, -16), Vector2(32, 0), Vector2(0, 16), Vector2(-32, 0)])
 
@@ -86,29 +89,35 @@ func _run() -> void:
 			if wall_cells_set.has(Vector2i(x, y)):
 				ysorted.add_child(_make_wall(wall_tex, floor_layer.map_to_local(Vector2i(x, y))))
 
-	# 相位门 G1(东室入口;联动由 Level07Manager 订阅 core_toggled 驱动,docs/18 §4)
-	var gate: StaticBody2D = (load("res://scenes/mechanisms/PhaseGate.tscn") as PackedScene).instantiate()
-	gate.name = "PhaseGate"
-	gate.unique_name_in_owner = true
-	gate.position = floor_layer.map_to_local(GATE_CELL)
-	ysorted.add_child(gate)
+	# 相位门 ×3(返修 2:南口双门 + 东室门;联动极性由 Level07Manager 统一驱动——
+	# C1 供电 = 南口双门落下 + 东门密封,断电反之)
+	for g in [["GateSouth1", GATE_S1_CELL], ["GateSouth2", GATE_S2_CELL], ["GateEast", GATE_EAST_CELL]]:
+		var gate: StaticBody2D = (load("res://scenes/mechanisms/PhaseGate.tscn") as PackedScene).instantiate()
+		gate.name = g[0]
+		gate.unique_name_in_owner = true
+		gate.position = floor_layer.map_to_local(g[1])
+		ysorted.add_child(gate)
 
-	# 压力开关 S1(东室内)/ S2(P1 内)+ 底座贴花
+	# 压力开关 S1(东室内)/ S2(P1 内)+ 底座
+	# 底座挂 YSorted(不再进 Decals):正确参与 Y-sort 遮挡——贴花层恒在墙体精灵之下,
+	# 室内开关会被墙立方体完全盖住(返修 2:S1 (14,7) 不可见)
 	var sw1: Area2D = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
 	sw1.name = "Switch1"
 	sw1.unique_name_in_owner = true
 	sw1.position = floor_layer.map_to_local(SWITCH1_CELL)
 	ysorted.add_child(sw1)
-	decals.add_child(_make_pad(floor_layer, SWITCH1_CELL, "Switch1Pad"))
-	sw1.bind_pad(decals.get_node("Switch1Pad"))
+	var pad1 := _make_pad(floor_layer, SWITCH1_CELL, "Switch1Pad")
+	ysorted.add_child(pad1)
+	sw1.bind_pad(pad1)
 
 	var sw2: Area2D = (load("res://scenes/mechanisms/PressureSwitch.tscn") as PackedScene).instantiate()
 	sw2.name = "Switch2"
 	sw2.unique_name_in_owner = true
 	sw2.position = floor_layer.map_to_local(SWITCH2_CELL)
 	ysorted.add_child(sw2)
-	decals.add_child(_make_pad(floor_layer, SWITCH2_CELL, "Switch2Pad"))
-	sw2.bind_pad(decals.get_node("Switch2Pad"))
+	var pad2 := _make_pad(floor_layer, SWITCH2_CELL, "Switch2Pad")
+	ysorted.add_child(pad2)
+	sw2.bind_pad(pad2)
 
 	# 能量核心 C1(持续型;初始 ON 由 Level07Manager 驱动,docs/18 §4)
 	var core: Area2D = (load("res://scenes/mechanisms/EnergyCore.tscn") as PackedScene).instantiate()
@@ -191,7 +200,7 @@ func _run() -> void:
 
 
 ## 周界(完整)+ 密封块:西储 x1..7,y4..7 / 东块 x14..16,y1..5 / y4 行 x10..13 /
-## y2 行(除门格)/ 东室墙((11,6)、y5 x11..13、y8 x12..15、y9 x11..15)
+## y2 行(除门格)/ 东室墙(x11 y6..8 西墙、y5 x11..13 北墙、y9 x11..16 南墙——门洞 (12,9))
 func _wall_cells() -> Array[Vector2i]:
 	var cells: Array[Vector2i] = []
 	for x in ROOM_W:
@@ -209,13 +218,13 @@ func _wall_cells() -> Array[Vector2i]:
 	for x in range(1, 14):
 		if x != DOOR_CELL.x:
 			cells.append(Vector2i(x, 2))
-	cells.append(Vector2i(11, 6))
+	for y in range(6, 9):
+		cells.append(Vector2i(11, y))
 	for x in range(11, 14):
 		cells.append(Vector2i(x, 5))
-	for x in range(12, 16):
-		cells.append(Vector2i(x, 8))
-	for x in range(11, 16):
-		cells.append(Vector2i(x, 9))
+	for x in range(11, 17):
+		if x != GATE_EAST_CELL.x:
+			cells.append(Vector2i(x, 9))
 	return cells
 
 

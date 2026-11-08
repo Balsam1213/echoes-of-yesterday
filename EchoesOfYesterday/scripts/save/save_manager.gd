@@ -15,6 +15,16 @@ func is_level_unlocked(id: int) -> bool:
 	return id in unlocked_levels
 
 
+## 关卡选择菜单的可选口径(返修 2,2026-11-08):**已通关 ∪ 当前进度关**
+## (最远已到达 = max(已通关)+1)。玩到 L6 未通关时 1—6 均可选——回玩低关后
+## 不必重新通关高关即可回到原进度;全新存档时进度关 = 第一关(菜单永不全灰)。
+func is_level_selectable(id: int) -> bool:
+	var max_done := 0
+	for done in unlocked_levels:
+		max_done = maxi(max_done, done)
+	return id <= max_done + 1
+
+
 func mark_level_completed(id: int) -> void:
 	if id in unlocked_levels:
 		return

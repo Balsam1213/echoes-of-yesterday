@@ -1,8 +1,9 @@
 class_name LevelSelect
 extends Control
-## 关卡选择菜单(用户验收新增):重玩任意**已通关**关卡;Esc/返回回到来源场景。
+## 关卡选择菜单:重玩**已通关 ∪ 当前进度关**(返修 2,2026-11-08——玩到 L6 未通关时
+## 1—6 均可选,回玩低关不丢进度);Esc/返回回到来源场景。
 ## 入口:章节末完成界面任意键(LevelManagerBase)/ 暂停菜单「关卡选择」按钮。
-## 未解锁关卡灰置显示,提供进度反馈(docs/08 存档口径:unlocked_levels = 已通关)。
+## 存档口径:unlocked_levels = 已通关;可选口径见 SaveManager.is_level_selectable。
 
 const SELECT_SCENE := "res://scenes/ui/LevelSelect.tscn"
 const MAX_LEVEL := 8
@@ -20,9 +21,10 @@ func _ready() -> void:
 func _build_buttons() -> void:
 	for id in range(1, MAX_LEVEL + 1):
 		var btn := Button.new()
-		var unlocked := id == 1 or SaveManager.is_level_unlocked(id)  # 第一关恒可选:游戏本就始于第一关,全新存档时菜单不能全灰(返修 2026-11-08)
-		btn.text = UIText.level_title(id) + ("(未通关)" if not unlocked else "")
-		btn.disabled = not unlocked
+		var selectable := SaveManager.is_level_selectable(id)  # 已通关 ∪ 当前进度关(返修 2:回玩低关不丢进度)
+		var completed := SaveManager.is_level_unlocked(id)
+		btn.text = UIText.level_title(id) + ("(未通关)" if not completed else "")
+		btn.disabled = not selectable
 		btn.pressed.connect(_on_level_pressed.bind(id))
 		%Buttons.add_child(btn)
 

@@ -1,8 +1,10 @@
 class_name Level07Manager
 extends LevelManagerBase
-## 第七关流程(docs/18):相位门 G1 由核心 C1 驱动(C1 ON=密封/OFF=落下,E-76;
-## C1 持续型可逆,**初始 ON 由本管理器驱动**——EnergyCore 契约不改,_pack 不存运行态);
-## 出口门 D2 = S1 ∧ S2(当刻 AND,关卡层聚合,缺员退行当刻重估,E-79);
+## 第七关流程(docs/18,返修 2 修订):能量核心 C1 统一驱动三扇相位门——
+## **供电(ON)= 南口双门落下(主通路开)+ 东室门密封(S1 仅回声可达);断电反之**。
+## C1 初始 OFF(南口封死,玩家必须拨核才能北上)——核心是不可绕过的取舍机关:
+## 录 E1 须断电进东室,北上通关须供电,两头不能兼得。
+## 出口门 D2 = S1 ∧ S2(当刻 AND,缺员退行当刻重估,E-79);
 ## 悖论区消散接线(E-71/72):玩家 ∧ 回声同场 → 区内全部回声消散。
 ## 教学链:T-70 开场 / T-71 相位门 / T-72 悖论触发 / T-73 凹室 / T-74 主区 / T-51 核心(复用)。
 
@@ -18,7 +20,9 @@ var _t51_shown := false
 @onready var _sw1: PressureSwitch = %Switch1
 @onready var _sw2: PressureSwitch = %Switch2
 @onready var _core: EnergyCore = %Core
-@onready var _gate: PhaseGate = %PhaseGate
+@onready var _gate_east: PhaseGate = %GateEast
+@onready var _gate_south1: PhaseGate = %GateSouth1
+@onready var _gate_south2: PhaseGate = %GateSouth2
 @onready var _door: SecurityDoor = %SecurityDoor
 @onready var _field_main: ParadoxField = %FieldMain
 @onready var _field_sandbox: ParadoxField = %FieldSandbox
@@ -36,18 +40,27 @@ func _on_ready() -> void:
 	_sw2.switch_deactivated.connect(_update_door)
 	_core.core_toggled.connect(_on_core_toggled)
 	_core.player_nearby.connect(_on_core_nearby)
-	_gate.player_nearby.connect(_on_gate_nearby)
+	for gate: PhaseGate in [_gate_east, _gate_south1, _gate_south2]:
+		gate.player_nearby.connect(_on_gate_nearby)
 	_field_main.player_entered.connect(_on_main_entered)
 	_field_sandbox.player_entered.connect(_on_sandbox_entered)
 	_field_main.paradox_triggered.connect(_on_paradox)
 	_field_sandbox.paradox_triggered.connect(_on_paradox)
-	_core.set_on(true)  # C1 初始 ON(G1 密封,docs/18 §3);先接线后驱动
+	_sync_gates()  # C1 初始 OFF:南口双门密封、东室门落下(EnergyCore 默认态,无需驱动)
 	GameEvents.notify_requested.emit(UIText.T70_INTRO)
 	_update_door()
 
 
-func _on_core_toggled(on: bool) -> void:
-	_gate.set_phased(on)  # C1 ON = 密封;OFF = 落下(E-76)
+func _on_core_toggled(_on: bool) -> void:
+	_sync_gates()
+
+
+## 相位门统一极性(返修 2):供电 = 南口双门落下 + 东门密封;断电 = 南封东落
+func _sync_gates() -> void:
+	var on := _core.is_on
+	_gate_south1.set_phased(not on)
+	_gate_south2.set_phased(not on)
+	_gate_east.set_phased(on)
 
 
 func _update_door() -> void:
@@ -95,11 +108,13 @@ func _on_reset_extra() -> void:
 	_sw1.force_reset()
 	_sw2.force_reset()
 	_core.force_reset()
-	_gate.force_reset()
+	_gate_east.force_reset()
+	_gate_south1.force_reset()
+	_gate_south2.force_reset()
 	_door.force_reset()
 	_field_main.force_reset()
 	_field_sandbox.force_reset()
-	_core.set_on(true)  # E-76:重置复位 C1 初始 ON(core_toggled 驱动 G1 复封)
+	_sync_gates()  # E-76:重置复位 C1 OFF 初始态(南封东落)
 	_t71_shown = false
 	_t72_shown = false
 	_t73_shown = false
