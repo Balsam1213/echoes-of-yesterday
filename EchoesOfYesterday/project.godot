@@ -15,8 +15,8 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 [application]
 
 config/name="EchoesOfYesterday"
-config/description="以时间记录与自我协作为核心机制的 2.5D 等距像素解谜游戏(第一章:第 1—3 关)"
-config/version="0.2"
+config/description="以时间记录与自我协作为核心机制的 2.5D 等距像素解谜游戏(全三章:第 1—8 关)"
+config/version="0.4"
 run/main_scene="res://scenes/levels/Level_01.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 boot_splash/bg_color=Color(0.0666667, 0.0941176, 0.152941, 1)

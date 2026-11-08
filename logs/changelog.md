@@ -4,7 +4,7 @@
 > 内部细粒度改动以 Git 提交历史与 devlog 为准,不在此重复。
 > 版本号约定:demo-v0.x(单关 Demo)→ chapter1-v0.2(第一章)→ chapter2-v0.x(第二章)→ chapter3-v0.x(第三章)。
 
-## [chapter3-v0.1] - 2026-11-08 · 第三章实现交付(第 7—8 关「昨日回声」;待发布)
+## [chapter3-v0.1] - 2026-11-08 · 第三章交付(第 7—8 关「昨日回声」,全三章 8 关完整 Demo + Windows 运行包 v0.4)
 
 ### Added
 - **第 7 关「相位回廊」**(18×12):**相位门**(实体玩家不可过、时间回声恒可穿——E-51 既有设定显性化)+ **悖论区**(玩家与回声同场 → 区内回声全部消散,玩家无伤)双新机关;谜题之眼 = 开关设在悖论区内部,标准解含「先穿区北上、再从北侧发射回声」原创技巧与误序 X 删除恢复路径
@@ -18,9 +18,9 @@
 - 第七关(用户返修 2/3):能量核心改为**必经取舍机关**——南口双相位门 + 三门统一联动,极性为**断电(初始)= 南口落下 + 东室密封,供电 = 南口密封 + 东门落下**;修复南口密封被 (10,8)→(9,7) 侧绕击穿的缺口(补 x10 列墙),新增 BFS 密封审计工具;东室开关 S1 被墙立方体完全遮挡 → 移位至遮挡锥全空的 (15,6),开关底座改挂 YSorted 正确参与遮挡;悖论区覆层移至贴花层之下(返修 1)
 
 ### Verified
-- 全量回归九套件全绿:regression_m5 / regression_m6 / regression_m7 ALL PASS + 七关冒烟(smoke_screenshot/level02..08);L1→…→L8→LevelSelect 全链按键推进断言通过;日志无 SCRIPT ERROR 与 Error calling from signal
+- 全量回归十一套件全绿:regression_m5 / regression_m6 / regression_m7 ALL PASS + 八关冒烟(smoke_screenshot/level02..08)+ BFS 密封审计(audit_seal_l7,双态 6 断言);L1→…→L8→LevelSelect 全链按键推进断言通过;日志无 SCRIPT ERROR 与 Error calling from signal
+- Windows 运行包 v0.4 导出(EchoesOfYesterday_Chapter3_v0.1.zip,exe + 操作说明),启动冒烟 0 错误;GitHub Release 已发布
 - 待人工:第三章首通时长硬指标(L7≥5 分 / L8≥7 分,docs/17 §7)、60FPS 实测、悖论区紫色视觉定稿
-- 待发布:Windows 运行包导出、tag/GitHub Release(SmartScreen 放行指引沿用操作说明)
 
 ## [chapter2-v0.1] - 2026-11-07 · 第二章交付(第 4—6 关「时间异常」+ Windows 运行包 v0.3)
 

@@ -12,7 +12,7 @@ description: >
 # 《昨日回声》开发规范(echoes-of-yesterday-dev)
 
 Godot 4.x 等距像素解谜游戏,核心机制:**时间记录(R)→ 回声回放(空格)→ 自我协作**。
-当前进度:**第一~三章(第 1—8 关)已实现交付**(tag `chapter1-v0.2` / `chapter2-v0.1`;第三章待发布运行包)。
+当前进度:**全三章(第 1—8 关)已交付**(tag `chapter1-v0.2` / `chapter2-v0.1` / `chapter3-v0.1`,Windows 运行包 v0.4,完整 Demo 收官)。
 第一章(第 1—3 关):回声上限 1/2/3、压力开关/安全门/时间锁;第二章(第 4—6 关):干扰场/脉冲板/能量核心/联动桥/序列门 + 初始记录区 + 关卡选择菜单;第三章(第 7—8 关,docs/17—19):悖论区/相位门 + 时空在场调度(全游戏 8 关收官)。
 仓库布局:`docs/`(上位文档 00—19)、`logs/`(devlog/changelog/issues)、`EchoesOfYesterday/`(Godot 工程)、`tools/`(构建与测试脚本)。
 
@@ -95,7 +95,7 @@ godot --path EchoesOfYesterday -s tools/smoke_level07.gd     # L7 全流程(相�
 godot --path EchoesOfYesterday -s tools/smoke_level08.gd     # L8 全流程(断电窗冲刺)+ 章末菜单断言
 ```
 
-**发布运行包** → 更新 `export_presets.cfg` 版本/描述 → `godot --headless --path . --export-release "Windows Desktop" "../build/EchoesOfYesterday.exe"` → 启动冒烟(`--headless --quit-after 180`)→ 打 zip(exe + 操作说明)→ 更新 `build/操作说明.txt`。注意:exe 未签名,SmartScreen 提示属正常(操作说明已附放行指引)。
+**发布运行包** → 更新 `export_presets.cfg` 版本/描述(**project.godot `config/version` 一并同步**,v0.4 起两处都改)→ `godot --headless --path . --export-release "Windows Desktop" "../build/EchoesOfYesterday.exe"` → 启动冒烟(`--headless --quit-after 180`,exit 0 无错误)→ 打 zip(exe + 操作说明,PowerShell Compress-Archive)→ 重写 `build/操作说明.txt`(含新章机关/SmartScreen 放行指引)→ 更新 docs/09 交付记录、changelog、README 章节摘要 → `git tag chapterX-v0.x` + push + `gh release create`(zip 作 asset)。注意:exe 未签名,SmartScreen 提示属正常(操作说明已附放行指引)。
 
 ## 工具链注意
 

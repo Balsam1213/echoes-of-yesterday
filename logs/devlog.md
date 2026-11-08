@@ -612,3 +612,19 @@
 **验证**:audit_seal_l7 6/6 ALL PASS;regression_m7 ALL PASS;smoke_level07/08 全绿(统一收尾还原 [1..7]);全量十一套件复跑全绿,日志无 SCRIPT ERROR。
 
 **下一步**:用户复验(南口密封态北上被挡/供电录 E1 流程/菜单口径);可选:运行包 v0.4 导出 + tag chapter3-v0.1。
+
+---
+
+## 2026-11-08 | 第三章 Windows 运行包 v0.4 导出 + GitHub Release 发布(全三章 8 关完整 Demo)
+
+**完成**:
+- 版本号:export_presets.cfg 0.4.0.0 / product_version 0.4 / 描述「第三章(第 1-8 关)」;**project.godot config/version 0.2→0.4 同步**(v0.4 起两处都改,ch2 曾漏改);
+- `build/操作说明.txt` 全面重写:全三章 8 关、第三章机关(相位门/悖论区/核心取舍/断电窗)、菜单进度口径、「站到门的另一侧再发射」等技巧、SmartScreen 放行指引;
+- 导出 exe(111MB 内嵌 PCK)→ 启动冒烟 `--headless --quit-after 180` exit=0 无错误 → 打包 `build/EchoesOfYesterday_Chapter3_v0.1.zip`(40MB,exe + 操作说明);
+- 文档:docs/09 §13 第三章交付记录、changelog [chapter3-v0.1] 定版、README 章节摘要(全三章)、技能 echoes-of-yesterday-dev 进度与发布工作流同步(版本两处同步/gh release 步骤入册);
+- git tag `chapter3-v0.1` + push + `gh release create`(zip 作 asset,标题「第三章『昨日回声』v0.1(第 1—8 关)」)。
+
+**问题与决定**:
+- 无新问题;发布流程按第二章先例执行,一次通过。
+
+**下一步**:用户游玩反馈与人工补测(L7≥5 分 / L8≥7 分、60FPS);后续可选项:正式美术/音效/手柄、代码签名证书决策、成就/更多章节。
