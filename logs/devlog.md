@@ -628,3 +628,20 @@
 - 无新问题;发布流程按第二章先例执行,一次通过。
 
 **下一步**:用户游玩反馈与人工补测(L7≥5 分 / L8≥7 分、60FPS);后续可选项:正式美术/音效/手柄、代码签名证书决策、成就/更多章节。
+
+---
+
+## 2026-11-11 | 引入 GitHub Actions:CI 测试矩阵 + tag 自动发布(两条工作流全部跑通)
+
+**完成**:
+- `ci.yml`:push(main)/PR/dispatch 触发,windows-latest 上 **12 套件并行**(三回归+八关冒烟+密封审计),chickensoft setup-godot@v2 装 Godot 4.7.2(自带缓存)→ headless import → 窗口模式套件;**首轮 12/12 全绿,零迭代**——窗口化套件 + 引擎层输入模拟在 runner 上原样可用;
+- `release.yml`:chapter* tag 自动「导出→启动冒烟→zip(exe+操作说明)→挂 Release」;workflow_dispatch 预演模式(不建 Release,产物走 artifact);预演三轮后全绿;
+- `distribution/操作说明.txt` 迁入 git 追踪(build/ 被忽略,CI 取不到);README 双语徽章换真实 CI 状态。
+
+**问题与决定**:
+- workflow_dispatch 只能触发**默认分支上已存在**的工作流 → 新工作流首轮直接合 main 试跑(未设分支保护,红灯可迭代),分支保护随后再开;
+- Godot 导出相对输出路径按 **--path 的工程目录**解析而非 CWD——runner 上 `dist/...` 指向不存在的 EchoesOfYesterday/dist,报「Prepare Template: The given export path doesn't exist」→ 改绝对路径 `$(pwd)/dist/...`(本地 CWD==工程目录所以从未暴露);
+- 导出前必须 `mkdir -p` 目标目录;
+- probe_map 泄漏时也 exit 0,无门禁能力——未纳入 CI 矩阵,后续可补非零退出码。
+
+**下一步**:GitHub 网页设置分支保护(main:Require status checks → `tests`);下次发布走「改版本号/操作说明 → 打 chapter* tag」全自动流程,按首用结果微调 Release 正文。
