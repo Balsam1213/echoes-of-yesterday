@@ -1,0 +1,55 @@
+name: 🚥 CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: 🧪 ${{ matrix.suite }}
+    runs-on: windows-latest
+    timeout-minutes: 20
+    strategy:
+      # 一个套件失败不取消其余套件——并行收集全部结果
+      fail-fast: false
+      matrix:
+        suite:
+          - regression_m5
+          - regression_m6
+          - regression_m7
+          - smoke_screenshot
+          - smoke_level02
+          - smoke_level03
+          - smoke_level04
+          - smoke_level05
+          - smoke_level06
+          - smoke_level07
+          - smoke_level08
+          - audit_seal_l7
+    defaults:
+      run:
+        # Windows runner 上统一用 Git Bash(套件为窗口模式 + 引擎层输入模拟;
+        # 若 GL 上下文异常,兜底方案:换 ubuntu-latest 并用 xvfb-run -a 包裹,
+        # Mesa 软渲染支持 Godot 的 GL Compatibility——见 testing.md 的运行约束)
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        name: 🧾 Checkout
+
+      - uses: chickensoft-games/setup-godot@v2
+        name: 🤖 Setup Godot 4.7.2
+        with:
+          version: 4.7.2
+          use-dotnet: false
+
+      - name: 📦 Import project resources
+        run: godot --headless --path EchoesOfYesterday --import
+
+      - name: 🧑‍🔬 Run suite ${{ matrix.suite }}
+        run: |
+          timeout 600 godot --path EchoesOfYesterday -s "tools/${{ matrix.suite }}.gd"
