@@ -1,0 +1,58 @@
+name: 📦 Release
+
+on:
+  push:
+    tags: ['chapter*']
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: 📦 Export & package
+    runs-on: windows-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v4
+        name: 🧾 Checkout
+
+      - uses: chickensoft-games/setup-godot@v2
+        name: 🤖 Setup Godot 4.7.2 (+ export templates)
+        with:
+          version: 4.7.2
+          use-dotnet: false
+          include-templates: true
+
+      - name: 📦 Import project resources
+        run: godot --headless --path EchoesOfYesterday --import
+
+      - name: 🧑‍🔬 Export Windows build
+        run: godot --headless --path EchoesOfYesterday --export-release "Windows Desktop" "dist/EchoesOfYesterday.exe"
+
+      - name: 🚦 Startup smoke
+        run: |
+          ./dist/EchoesOfYesterday.exe --headless --quit-after 180
+
+      - name: 🗜 Assemble zip (exe + 操作说明)
+        shell: pwsh
+        run: |
+          Copy-Item 'distribution/操作说明.txt' 'dist/操作说明.txt'
+          Compress-Archive -Path 'dist/EchoesOfYesterday.exe','dist/操作说明.txt' `
+            -DestinationPath "dist/EchoesOfYesterday_${{ github.ref_name }}.zip" -CompressionLevel Optimal
+
+      - name: ⬆ Upload workflow artifact (dispatch 预演用;tag 触发时同样保留备份)
+        uses: actions/upload-artifact@v4
+        with:
+          name: EchoesOfYesterday_${{ github.ref_name }}
+          path: dist/EchoesOfYesterday_${{ github.ref_name }}.zip
+
+      - name: 🚀 Attach to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/EchoesOfYesterday_${{ github.ref_name }}.zip
+          generate_release_notes: true

@@ -11,7 +11,7 @@
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D6?logo=windows&logoColor=white)
 ![Version](https://img.shields.io/badge/version-0.4-2EA043)
 ![Content](https://img.shields.io/badge/campaign-3%20chapters%20%2F%208%20levels-8957E5)
-![Tests](https://img.shields.io/badge/automated%20tests-11%20suites%20green-2EA043)
+![CI](https://github.com/Balsam1213/echoes-of-yesterday/actions/workflows/ci.yml/badge.svg)
 
 **[⬇ Download the latest build](https://github.com/Balsam1213/echoes-of-yesterday/releases/latest)**
 

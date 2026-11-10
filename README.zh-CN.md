@@ -11,7 +11,7 @@
 ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-0078D6?logo=windows&logoColor=white)
 ![Version](https://img.shields.io/badge/version-0.4-2EA043)
 ![Content](https://img.shields.io/badge/内容-三章%20%2F%208%20关-8957E5)
-![Tests](https://img.shields.io/badge/自动化测试-11%20套件全绿-2EA043)
+![CI](https://github.com/Balsam1213/echoes-of-yesterday/actions/workflows/ci.yml/badge.svg)
 
 **[⬇ 下载最新版本](https://github.com/Balsam1213/echoes-of-yesterday/releases/latest)**
 
