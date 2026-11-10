@@ -1,6 +1,7 @@
 # testing —— 测试规范
 
-> 工具:`tools/regression_m5.gd`(第一章回归)、`tools/regression_m6.gd`(第二章机关回归)、`tools/smoke_screenshot.gd` + `tools/smoke_level02..06.gd`(全流程通关冒烟);用例库:docs/08 §6(TC-01~85)。
+> 工具:`tools/regression_m5.gd`(第一章回归)、`tools/regression_m6.gd`(第二章机关回归)、`tools/regression_m7.gd`(第三章机关回归)、`tools/audit_seal_l7.gd`(L7 密封审计)、`tools/smoke_screenshot.gd` + `tools/smoke_level02..08.gd`(全流程通关冒烟);用例库:docs/08 §6(TC-01~113)。
+> **CI**:GitHub Actions(`.github/workflows/ci.yml`)在 push/PR 上并行跑全部 12 套件(windows-latest,窗口模式原样可用;输入模拟为引擎层,不依赖窗口焦点);`release.yml` 在 chapter* tag 上自动导出发布。本地与 CI 的判定口径完全一致。
 
 ## 何时必跑
 

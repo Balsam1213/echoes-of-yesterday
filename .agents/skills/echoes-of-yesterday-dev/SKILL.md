@@ -95,7 +95,7 @@ godot --path EchoesOfYesterday -s tools/smoke_level07.gd     # L7 全流程(相�
 godot --path EchoesOfYesterday -s tools/smoke_level08.gd     # L8 全流程(断电窗冲刺)+ 章末菜单断言
 ```
 
-**发布运行包** → 更新 `export_presets.cfg` 版本/描述(**project.godot `config/version` 一并同步**,v0.4 起两处都改)→ `godot --headless --path . --export-release "Windows Desktop" "../build/EchoesOfYesterday.exe"` → 启动冒烟(`--headless --quit-after 180`,exit 0 无错误)→ 打 zip(exe + 操作说明,PowerShell Compress-Archive)→ 重写 `build/操作说明.txt`(含新章机关/SmartScreen 放行指引)→ 更新 docs/09 交付记录、changelog、README 章节摘要 → `git tag chapterX-v0.x` + push + `gh release create`(zip 作 asset)。注意:exe 未签名,SmartScreen 提示属正常(操作说明已附放行指引)。
+**发布运行包(v0.5 起走 CI 自动化)** → 更新 `export_presets.cfg` 版本/描述(**project.godot `config/version` 一并同步**)→ 重写 `distribution/操作说明.txt`(受追踪的唯一源;build/ 被忽略,CI 取不到)→ `git tag chapterX-v0.x && git push --tags` → GitHub Actions `release.yml` 自动「导出→启动冒烟→zip→挂 Release」。本地手工导出仍可用:`godot --headless --path . --export-release "Windows Desktop" "../build/EchoesOfYesterday.exe"` → 启动冒烟(`--headless --quit-after 180`)→ zip。注意:exe 未签名,SmartScreen 提示属正常(操作说明已附放行指引)。CI 细节:`.github/workflows/`(ci.yml = 12 套件并行矩阵;release.yml = tag 自动发布;导出输出须绝对路径 + 预先 mkdir,见 devlog 2026-11-11)。
 
 ## 工具链注意
 
