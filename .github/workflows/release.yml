@@ -31,7 +31,9 @@ jobs:
         run: godot --headless --path EchoesOfYesterday --import
 
       - name: 🧑‍🔬 Export Windows build
-        run: godot --headless --path EchoesOfYesterday --export-release "Windows Desktop" "dist/EchoesOfYesterday.exe"
+        run: |
+          mkdir -p dist  # Godot 导出要求目标目录已存在
+          godot --headless --path EchoesOfYesterday --export-release "Windows Desktop" "dist/EchoesOfYesterday.exe"
 
       - name: 🚦 Startup smoke
         run: |
