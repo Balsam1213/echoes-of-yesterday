@@ -53,3 +53,21 @@ jobs:
       - name: 🧑‍🔬 Run suite ${{ matrix.suite }}
         run: |
           timeout 600 godot --path EchoesOfYesterday -s "tools/${{ matrix.suite }}.gd"
+
+  # 汇总门禁:分支保护「Require status checks」只选这一个稳定检查名(ci-gate),
+  # 以后增删 matrix 套件无需回头改保护规则。tests 失败/取消时本 job 为 skipped
+  # (= 未通过),不会放行。
+  ci-gate:
+    name: ci-gate
+    runs-on: ubuntu-latest
+    needs: [tests]
+    if: ${{ !cancelled() }}
+    timeout-minutes: 5
+    steps:
+      - name: 🚦 Evaluate test matrix result
+        run: |
+          echo "tests result: ${{ needs.tests.result }}"
+          if [ "${{ needs.tests.result }}" != "success" ]; then
+            echo "test matrix did not pass"
+            exit 1
+          fi
