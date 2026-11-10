@@ -33,7 +33,8 @@ jobs:
       - name: 🧑‍🔬 Export Windows build
         run: |
           mkdir -p dist  # Godot 导出要求目标目录已存在
-          godot --headless --path EchoesOfYesterday --export-release "Windows Desktop" "dist/EchoesOfYesterday.exe"
+          # 绝对路径:Godot 相对输出路径按 --path 的工程目录解析(而非 CWD),相对写法会指向不存在的 EchoesOfYesterday/dist
+          godot --headless --path EchoesOfYesterday --export-release "Windows Desktop" "$(pwd)/dist/EchoesOfYesterday.exe"
 
       - name: 🚦 Startup smoke
         run: |
